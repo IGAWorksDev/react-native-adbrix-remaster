@@ -5,7 +5,9 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
+#import <AdBrixRM/AdBrixRM-Swift.h>
+
 @interface RNAdbrixRmReact : NSObject <RCTBridgeModule>
 
 @end
-  
+

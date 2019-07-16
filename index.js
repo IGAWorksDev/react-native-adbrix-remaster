@@ -17,14 +17,25 @@ const {AdbrixRm} = NativeModules;
 // model
 var deferredDeeplinkListener = null;
 
+AdbrixRmReact.UserProperties = class {
+    constructor() {
+        this.obj = {};
+    }
+    setProperty = (key, value) => {
+        this.obj[key] = value;
+    }
+    getProperties = () => {
+        return this.obj;
+    }
+}
+
 AdbrixRmReact.AttrModel = class {
     constructor() {
         this.obj = {};
     }
-
+    
     setAttrs = (key, value) => {
         this.obj[key] = value;
-        console.log();
     }
     getAttrs = () => {
         return this.obj;
@@ -34,7 +45,7 @@ AdbrixRmReact.CategoryModel = class {
     constructor() {
         this.categories = [];
     }
-
+    
     setCategory = (category) => {
         this.categories.push(category);
     }
@@ -46,7 +57,7 @@ AdbrixRmReact.ProductModel = class {
     constructor() {
         this.obj = {};
     }
-
+    
     setProductId = (productId) => {
         this.obj["productId"] = productId;
     }
@@ -72,13 +83,13 @@ AdbrixRmReact.ProductModel = class {
     getProductModel = () => {
         return this.obj;
     }
-
+    
 }
 AdbrixRmReact.ProductModelList = class {
     constructor() {
         this.list = [];
     }
-
+    
     setProduct = (product) => {
         var productElement = Object.assign(AdbrixRmReact.ProductModel, product);
         this.list.push(productElement.getProductModel());
@@ -119,9 +130,20 @@ AdbrixRmReact.CURRENCY_TH_THB = "THB";
 AdbrixRmReact.CURRENCY_VN_VND = "VND";
 AdbrixRmReact.CURRENCY_MY_MYR = "MYR";
 
-// event
-AdbrixRmReact.addEvent = (name) => {
-    return AdbrixRm.addEvent(name);
+AdbrixRmReact.GENDER_MALE = 2;
+AdbrixRmReact.GENDER_FEMALE = 1;
+AdbrixRmReact.GENDER_UNKOWN = 0;
+
+AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MIN = 10;
+AdbrixRmReact.UPLOAD_COUNT_INTERVAL_NORMAL = 30;
+AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MAX = 1000;
+
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 60;
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
+
+AdbrixRmReact.testDictionary = (attr) => {
+    AdbrixRm.testDictionary(assignAttrModel(attr));
 }
 
 
@@ -155,20 +177,23 @@ AdbrixRmReact.setEnableLocationListening = (option) => {
 AdbrixRmReact.setLocation = (lat, lon) => {
     return AdbrixRm.setLocation(lat, lon);
 }
-AdbrixRmReact.setUserProperties = (key, value) => {
-    switch (typeof value) {
-        case "boolean":
-            return AdbrixRm.setUserPropertiesBoolean(key, value);
-        case "number":
-            if (isDouble(value)) {
-                return AdbrixRm.setUserPropertiesDouble(key, value);
-            } else {
-                return AdbrixRm.setUserPropertiesLong(key, value.toString());
-            }
-        default :
-            return AdbrixRm.setUserPropertiesString(key, value);
-    }
+AdbrixRmReact.setUserProperties = (userProperties) => {
+    return AdbrixRmReact.setUserProperties(assignUserProperties(userProperties));
 }
+// AdbrixRmReact.setUserProperties = (key, value) => {
+//     switch (typeof value) {
+//         case "boolean":
+//             return AdbrixRm.setUserPropertiesBoolean(key, value);
+//         case "number":
+//             if (isDouble(value)) {
+//                 return AdbrixRm.setUserPropertiesDouble(key, value);
+//             } else {
+//                 return AdbrixRm.setUserPropertiesLong(key, value.toString());
+//             }
+//         default :
+//             return AdbrixRm.setUserPropertiesString(key, value);
+//     }
+// }
 AdbrixRmReact.event = (eventName, attrs) => {
     AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
@@ -277,6 +302,13 @@ function isDouble(value) {
     }
 }
 
+function assignUserProperties(userProperties) {
+    if (userProperties == null) return null;
+    else {
+        let userPropertyObject = Object.assign(AdbrixRmReact.UserProperties, userProperties);
+        return JSON.stringify(userPropertyObject.getProperties());
+    }
+}
 function assignAttrModel(attrs) {
     if (attrs == null) return null;
     else {

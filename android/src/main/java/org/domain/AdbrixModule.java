@@ -1,4 +1,4 @@
-package com.test02;
+package org.domain;
 
 import android.util.Log;
 
@@ -78,7 +78,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
 
             }
         });
-            
+
     }
 
     @ReactMethod
@@ -193,35 +193,16 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     }
 
     @ReactMethod
-    public void setUserPropertiesInt(String key, int value) {
-        AdBrixRm.UserProperties userProperties = new AdBrixRm.UserProperties();
-        userProperties.setAttrs(key, value);
-        AdBrixRm.saveUserProperties(userProperties);
-    }
-    @ReactMethod
-    public void setUserPropertiesLong(String key, String value) {
-        AdBrixRm.UserProperties userProperties = new AdBrixRm.UserProperties();
-        userProperties.setAttrs(key, AdbrixUtils.castStringToLong(value));
-        AdBrixRm.saveUserProperties(userProperties);
-    }
-    @ReactMethod
-    public void setUserPropertiesDouble(String key, double value) {
-        AdBrixRm.UserProperties userProperties = new AdBrixRm.UserProperties();
-        userProperties.setAttrs(key, value);
-        AdBrixRm.saveUserProperties(userProperties);
-    }
-
-    @ReactMethod
-    public void setUserPropertiesBoolean(String key, boolean value) {
-        AdBrixRm.UserProperties userProperties = new AdBrixRm.UserProperties();
-        userProperties.setAttrs(key, value);
-        AdBrixRm.saveUserProperties(userProperties);
-    }
-
-    @ReactMethod
-    public void setUserPropertiesString(String key, String value) {
-        AdBrixRm.UserProperties userProperties = new AdBrixRm.UserProperties();
-        userProperties.setAttrs(key, value);
+    public void setUserProperties(String jsonString){
+        JSONObject userPropertiesJSON = new JSONObject();
+        try {
+            if(!AdbrixUtils.isNullString(jsonString)) {
+                userPropertiesJSON = new JSONObject(jsonString);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AdBrixRm.UserProperties userProperties = AdbrixUtils.makeUserProperties(userPropertiesJSON);
         AdBrixRm.saveUserProperties(userProperties);
     }
 
@@ -288,24 +269,24 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
             e.printStackTrace();
         }
     }
-   @ReactMethod
+    @ReactMethod
     public void commerceProductView(final String productString, final String extraString) {
-       try {
-           JSONObject product = new JSONObject();
-           JSONObject extraAttrs = new JSONObject();
-           if(!AdbrixUtils.isNullString(productString)){
-               product = new JSONObject(productString);
-           }
-           if(!AdbrixUtils.isNullString(extraString)){
-               extraAttrs = new JSONObject(extraString);
-           }
+        try {
+            JSONObject product = new JSONObject();
+            JSONObject extraAttrs = new JSONObject();
+            if(!AdbrixUtils.isNullString(productString)){
+                product = new JSONObject(productString);
+            }
+            if(!AdbrixUtils.isNullString(extraString)){
+                extraAttrs = new JSONObject(extraString);
+            }
 
-           AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
-           AdBrixRm.Commerce.productView(productModel, extraAttrs);
+            AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
+            AdBrixRm.Commerce.productView(productModel, extraAttrs);
 
-       } catch (JSONException e) {
-           e.printStackTrace();
-       }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @ReactMethod
@@ -410,24 +391,24 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         }
     }
 
-   @ReactMethod
+    @ReactMethod
     public void commerceShare(final String sharingChannel, final String productString, final String extraString) {
-       try {
-           JSONObject product = new JSONObject();
-           JSONObject extraAttrs = new JSONObject();
-           if(!AdbrixUtils.isNullString(productString)){
-               product = new JSONObject(productString);
-           }
-           if(!AdbrixUtils.isNullString(extraString)){
-               extraAttrs = new JSONObject(extraString);
-           }
+        try {
+            JSONObject product = new JSONObject();
+            JSONObject extraAttrs = new JSONObject();
+            if(!AdbrixUtils.isNullString(productString)){
+                product = new JSONObject(productString);
+            }
+            if(!AdbrixUtils.isNullString(extraString)){
+                extraAttrs = new JSONObject(extraString);
+            }
 
-           AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
-           AdBrixRm.Commerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel),productModel, extraAttrs);
+            AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
+            AdBrixRm.Commerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel),productModel, extraAttrs);
 
-       } catch (JSONException e) {
-           e.printStackTrace();
-       }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @ReactMethod
@@ -633,18 +614,18 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
             e.printStackTrace();
         }
     }
-    
+
     @ReactMethod
     public void setPushEnable(boolean toEnable) {
-                AdBrixRm.setPushEnable(toEnable);
+        AdBrixRm.setPushEnable(toEnable);
     }
     @ReactMethod
     public void setRegistrationId(String token) {
-                AdBrixRm.setRegistrationId(token);
+        AdBrixRm.setRegistrationId(token);
     }
     @ReactMethod
     public void setAppScanEnable(boolean enable){
-                AdBrixRm.setAppScanEnable(enable);
+        AdBrixRm.setAppScanEnable(enable);
     }
 
     @Override

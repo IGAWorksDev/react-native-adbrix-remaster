@@ -1,4 +1,4 @@
-package com.test02;
+package org.domain;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

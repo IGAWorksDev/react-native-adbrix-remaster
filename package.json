@@ -1,17 +1,24 @@
 
 {
   "name": "react-native-adbrix-remaster",
-  "version": "1.0.4",
+  "version": "1.2.5",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "android",
+    "ios",
+    "adbrix"
   ],
   "author": "david-honguk",
   "license": "",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/IGAWorksDev/react-native-adbrix-remaster.git"
+  },
   "peerDependencies": {
     "react-native": "^0.41.2"
   }

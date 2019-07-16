@@ -1,4 +1,4 @@
-package com.test02;
+package org.domain;
 
 import android.util.Log;
 
@@ -78,5 +78,35 @@ public class AdbrixUtils {
             e.printStackTrace();
             return new AdBrixRm.CommerceProductModel();
         }
+    }
+    public static AdBrixRm.UserProperties makeUserProperties(JSONObject userPropertiesJSON){
+        AdBrixRm.UserProperties userProperties = new AdBrixRm.UserProperties();
+        for (Iterator<String> it = userPropertiesJSON.keys(); it.hasNext(); ) {
+            try {
+                String key = it.next();
+                Object value = userPropertiesJSON.get(key);
+                if(value instanceof Integer){
+                    userProperties.setAttrs(key,Long.valueOf((int)value));
+                }
+                else if(value instanceof Long){
+                    userProperties.setAttrs(key,(long)value);
+                }
+                else if(value instanceof Boolean){
+                    userProperties.setAttrs(key,(boolean)value);
+                }
+                else if(value instanceof Double){
+                    userProperties.setAttrs(key,(double)value);
+                }
+                else if(value instanceof Float){
+                    userProperties.setAttrs(key,(float)value);
+                }
+                else {
+                    userProperties.setAttrs(key,String.valueOf(value));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return userProperties;
     }
 }
