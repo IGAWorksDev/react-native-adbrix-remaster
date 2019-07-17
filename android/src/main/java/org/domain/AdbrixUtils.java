@@ -3,8 +3,6 @@ package org.domain;
 import android.util.Log;
 
 import com.igaworks.v2.core.AdBrixRm;
-import com.igaworks.v2.core.utils.common.IgawConstant;
-import com.igaworks.v2.core.utils.common.IgawLogger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +19,13 @@ public class AdbrixUtils {
     }
 
     public static boolean isNullString(String s){
-        return s.equals("null") || s == null ;
+        try{
+            return s == null || s.equals("null");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return true;
+        }
     }
 
     public static List<AdBrixRm.CommerceProductModel> makeProductList(JSONArray items){

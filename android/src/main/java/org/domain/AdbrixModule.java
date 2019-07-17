@@ -10,9 +10,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.igaworks.v2.core.AdBrixRm;
 import com.igaworks.v2.core.application.AbxActivityHelper;
-import com.igaworks.v2.core.utils.common.CommonUtils;
-import com.igaworks.v2.core.utils.common.IgawConstant;
-import com.igaworks.v2.core.utils.common.IgawLogger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -152,7 +149,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
             case 30:
                 AdBrixRm.setEventUploadCountInterval(AdBrixRm.AdBrixEventUploadCountInterval.NORMAL);
                 break;
-            case IgawConstant.EVENT_UPLOAD_MAX_BATCH_SIZE:
+            case 60:
                 AdBrixRm.setEventUploadCountInterval(AdBrixRm.AdBrixEventUploadCountInterval.MAX);
                 break;
             default:
@@ -208,14 +205,16 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
 
     @ReactMethod
     public void event(String eventName, String paramJson) {
-        if (CommonUtils.isEmptyString(paramJson)){
+        if (AdbrixUtils.isNullString(paramJson)){
             AdBrixRm.event(eventName);
-            return;
         }
-        try {
-            AdBrixRm.event(eventName, new JSONObject(paramJson));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        else {
+            try {
+                JSONObject attrmodel = new JSONObject(paramJson);
+                AdBrixRm.event(eventName, attrmodel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

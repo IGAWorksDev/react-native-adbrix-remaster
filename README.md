@@ -12,9 +12,9 @@
 ### Manual installation
 
 `$ cd ios; pod install`
-you must update pod whenever you update our SDK. 
-If you don't update your pod, it will be errors including serious crash.
-Please follow this step if you want to build IOS project.
+  - You must install adbrix podspec whenever you update our SDK. 
+  - If you don't update your pod, it will be errors such as critical crash.
+  - Please follow these steps if you want to build in IOS project.
 
 
 Lecacy integration GUIDE ( we don't recommend you )
