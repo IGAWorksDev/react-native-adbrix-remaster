@@ -8,12 +8,11 @@ import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 const AdbrixRmReact = new EventEmitter();
 const {AdbrixRm} = NativeModules;
 
-// const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
+const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
 
-// const AdbrixDeferredDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeferredDeeplinkListener", (deeplink) => {
-//     AdbrixRmReact.emit("AdbrixDeferredDeeplinkListener", deeplink);
-// });
-
+const AdbrixDeferredDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeferredDeeplinkListener", (deeplink) => {
+                                                                        AdbrixRmReact.emit("AdbrixDeferredDeeplinkListener", deeplink);
+                                                                        });
 // model
 var deferredDeeplinkListener = null;
 
@@ -99,49 +98,6 @@ AdbrixRmReact.ProductModelList = class {
     }
 }
 
-AdbrixRmReact.INVITE_CHANNEL_KAKAO = "Kakao";
-AdbrixRmReact.INVITE_CHANNEL_NAVER = "Naver";
-AdbrixRmReact.INVITE_CHANNEL_LINE = "Line";
-AdbrixRmReact.INVITE_CHANNEL_GOOGLE = "Google";
-AdbrixRmReact.INVITE_CHANNEL_FACEBOOK = "Facebook";
-AdbrixRmReact.INVITE_CHANNEL_TWITTER = "Twitter";
-AdbrixRmReact.INVITE_CHANNEL_WHATSAPP = "whatsApp";
-AdbrixRmReact.INVITE_CHANNEL_QQ = "QQ";
-AdbrixRmReact.INVITE_CHANNEL_WECHAT = "WeChat";
-AdbrixRmReact.INVITE_CHANNEL_ETC = "ETC";
-
-AdbrixRmReact.PAYMENT_METHOD_CREDIT_CARD = "CreditCard";
-AdbrixRmReact.PAYMENT_METHOD_BANK_TRASNFER = "BankTransfer";
-AdbrixRmReact.PAYMENT_METHOD_MOBILE_PAYMENT = "MobilePayment";
-AdbrixRmReact.PAYMENT_METHOD_ETC = "ETC";
-
-AdbrixRmReact.CURRENCY_KR_KRW = "KRW";
-AdbrixRmReact.CURRENCY_US_USD = "USD";
-AdbrixRmReact.CURRENCY_JP_JPY = "JPY";
-AdbrixRmReact.CURRENCY_EU_EUR = "EUR";
-AdbrixRmReact.CURRENCY_UK_GBP = "GBP";
-AdbrixRmReact.CURRENCY_CN_CNY = "CNY";
-AdbrixRmReact.CURRENCY_TW_TWD = "TWD";
-AdbrixRmReact.CURRENCY_HK_HKD = "HKD";
-AdbrixRmReact.CURRENCY_ID_IDR = "IDR";
-AdbrixRmReact.CURRENCY_IN_INR = "INR";
-AdbrixRmReact.CURRENCY_RU_RUB = "RUB";
-AdbrixRmReact.CURRENCY_TH_THB = "THB";
-AdbrixRmReact.CURRENCY_VN_VND = "VND";
-AdbrixRmReact.CURRENCY_MY_MYR = "MYR";
-
-AdbrixRmReact.GENDER_MALE = 2;
-AdbrixRmReact.GENDER_FEMALE = 1;
-AdbrixRmReact.GENDER_UNKOWN = 0;
-
-AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MIN = 10;
-AdbrixRmReact.UPLOAD_COUNT_INTERVAL_NORMAL = 30;
-AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MAX = 1000;
-
-AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 60;
-AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
-AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
-
 AdbrixRmReact.testDictionary = (attr) => {
     AdbrixRm.testDictionary(assignAttrModel(attr));
 }
@@ -178,24 +134,10 @@ AdbrixRmReact.setLocation = (lat, lon) => {
     return AdbrixRm.setLocation(lat, lon);
 }
 AdbrixRmReact.setUserProperties = (userProperties) => {
-    return AdbrixRmReact.setUserProperties(assignUserProperties(userProperties));
+    return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
-// AdbrixRmReact.setUserProperties = (key, value) => {
-//     switch (typeof value) {
-//         case "boolean":
-//             return AdbrixRm.setUserPropertiesBoolean(key, value);
-//         case "number":
-//             if (isDouble(value)) {
-//                 return AdbrixRm.setUserPropertiesDouble(key, value);
-//             } else {
-//                 return AdbrixRm.setUserPropertiesLong(key, value.toString());
-//             }
-//         default :
-//             return AdbrixRm.setUserPropertiesString(key, value);
-//     }
-// }
 AdbrixRmReact.event = (eventName, attrs) => {
-    AdbrixRm.event(eventName, assignAttrModel(attrs));
+    return AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
 AdbrixRmReact.login = (userId) => {
     return AdbrixRm.login(userId);
@@ -254,7 +196,7 @@ AdbrixRmReact.gameStageCleared = (stageName, extraAttrs) => {
 }
 //string, string, double, double, string, string
 AdbrixRmReact.commonPurchase = (orderId, productList, discount, deliveryCharge, paymentMethod, extraAttrs) => {
-    return AdbrixRm.commonPurchase(orderId, assignProductModelList(productList, discount, deliveryCharge, paymentMethod, assignAttrModel(extraAttrs)));
+    return AdbrixRm.commonPurchase(orderId, assignProductModelList(productList), discount, deliveryCharge, paymentMethod, assignAttrModel(extraAttrs));
 }
 AdbrixRmReact.commonSignUp = (channelName, extraAttrs) => {
     return AdbrixRm.commonSignUp(channelName, assignAttrModel(extraAttrs));
@@ -265,8 +207,8 @@ AdbrixRmReact.commonUseCredit = (extraAttrs) => {
 AdbrixRmReact.commonAppUpdate = (prevVer, currentVer, extraAttrs) => {
     return AdbrixRm.commonAppUpdate(prevVer, currentVer, assignAttrModel(extraAttrs));
 }
-AdbrixRmReact.commonInvite = (channleName, extraAttrs) => {
-    return AdbrixRm.commonInvite(channleName, assignAttrModel(extraAttrs));
+AdbrixRmReact.commonInvite = (channelName, extraAttrs) => {
+    return AdbrixRm.commonInvite(channelName, assignAttrModel(extraAttrs));
 }
 AdbrixRmReact.setPushEnable = (enable) => {
     return AdbrixRm.setPushEnable(enable);
@@ -274,6 +216,9 @@ AdbrixRmReact.setPushEnable = (enable) => {
 AdbrixRmReact.setRegistrationId = (token) => {
     return AdbrixRm.setRegistrationId(token);
 }
+/*
+ Android Only
+ */
 AdbrixRmReact.setAppScanEnable = (enable) => {
     return AdbrixRm.setAppScanEnable(enable);
 }
@@ -341,5 +286,75 @@ function assignProductModelList(productList) {
     }
 }
 
+
+
+//constant
+
+AdbrixRmReact.INVITE_CHANNEL_KAKAO = "Kakao";
+AdbrixRmReact.INVITE_CHANNEL_NAVER = "Naver";
+AdbrixRmReact.INVITE_CHANNEL_LINE = "Line";
+AdbrixRmReact.INVITE_CHANNEL_GOOGLE = "Google";
+AdbrixRmReact.INVITE_CHANNEL_FACEBOOK = "Facebook";
+AdbrixRmReact.INVITE_CHANNEL_TWITTER = "Twitter";
+AdbrixRmReact.INVITE_CHANNEL_WHATSAPP = "whatsApp";
+AdbrixRmReact.INVITE_CHANNEL_QQ = "QQ";
+AdbrixRmReact.INVITE_CHANNEL_WECHAT = "WeChat";
+AdbrixRmReact.INVITE_CHANNEL_ETC = "ETC";
+
+AdbrixRmReact.SHARING_CHANNEL_KAKAO = "Kakao";
+AdbrixRmReact.SHARING_CHANNEL_KAKAOSTORY = "KakaoStory";
+AdbrixRmReact.SHARING_CHANNEL_LINE = "Line";
+AdbrixRmReact.SHARING_CHANNEL_TWITTER = "Twitter";
+AdbrixRmReact.SHARING_CHANNEL_WHATSAPP = "whatsApp";
+AdbrixRmReact.SHARING_CHANNEL_QQ = "QQ";
+AdbrixRmReact.SHARING_CHANNEL_WECHAT = "WeChat";
+AdbrixRmReact.SHARING_CHANNEL_SMS = "SMS";
+AdbrixRmReact.SHARING_CHANNEL_EMAIL = "Email";
+AdbrixRmReact.SHARING_CHANNEL_COPYURL = "CopyUrl";
+AdbrixRmReact.SHARING_CHANNEL_ETC = "ETC";
+
+AdbrixRmReact.SIGNUP_CHANNEL_KAKAO = "Kakao";
+AdbrixRmReact.SIGNUP_CHANNEL_NAVER = "Naver";
+AdbrixRmReact.SIGNUP_CHANNEL_LINE = "Line";
+AdbrixRmReact.SIGNUP_CHANNEL_GOOGLE = "Google";
+AdbrixRmReact.SIGNUP_CHANNEL_FACEBOOK = "Facebook";
+AdbrixRmReact.SIGNUP_CHANNEL_TWITTER = "Twitter";
+AdbrixRmReact.SIGNUP_CHANNEL_WHATSAPP = "whatsApp";
+AdbrixRmReact.SIGNUP_CHANNEL_QQ = "QQ";
+AdbrixRmReact.SIGNUP_CHANNEL_WECHAT = "WeChat";
+AdbrixRmReact.SIGNUP_CHANNEL_USERID = "UserId";
+AdbrixRmReact.SIGNUP_CHANNEL_ETC = "ETC";
+
+AdbrixRmReact.PAYMENT_METHOD_CREDIT_CARD = "CreditCard";
+AdbrixRmReact.PAYMENT_METHOD_BANK_TRASNFER = "BankTransfer";
+AdbrixRmReact.PAYMENT_METHOD_MOBILE_PAYMENT = "MobilePayment";
+AdbrixRmReact.PAYMENT_METHOD_ETC = "ETC";
+
+AdbrixRmReact.CURRENCY_KR_KRW = "KRW";
+AdbrixRmReact.CURRENCY_US_USD = "USD";
+AdbrixRmReact.CURRENCY_JP_JPY = "JPY";
+AdbrixRmReact.CURRENCY_EU_EUR = "EUR";
+AdbrixRmReact.CURRENCY_UK_GBP = "GBP";
+AdbrixRmReact.CURRENCY_CN_CNY = "CNY";
+AdbrixRmReact.CURRENCY_TW_TWD = "TWD";
+AdbrixRmReact.CURRENCY_HK_HKD = "HKD";
+AdbrixRmReact.CURRENCY_ID_IDR = "IDR";
+AdbrixRmReact.CURRENCY_IN_INR = "INR";
+AdbrixRmReact.CURRENCY_RU_RUB = "RUB";
+AdbrixRmReact.CURRENCY_TH_THB = "THB";
+AdbrixRmReact.CURRENCY_VN_VND = "VND";
+AdbrixRmReact.CURRENCY_MY_MYR = "MYR";
+
+AdbrixRmReact.GENDER_MALE = 2;
+AdbrixRmReact.GENDER_FEMALE = 1;
+AdbrixRmReact.GENDER_UNKOWN = 0;
+
+AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MIN = 10;
+AdbrixRmReact.UPLOAD_COUNT_INTERVAL_NORMAL = 30;
+AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MAX = 1000;
+
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 60;
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
 
 export default AdbrixRmReact;

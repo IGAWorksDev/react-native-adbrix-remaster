@@ -11,7 +11,13 @@
 
 ### Manual installation
 
+`$ cd ios; pod install`
+you must update pod whenever you update our SDK. 
+If you don't update your pod, it will be errors including serious crash.
+Please follow this step if you want to build IOS project.
 
+
+Lecacy integration GUIDE ( we don't recommend you )
 #### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
@@ -35,11 +41,11 @@
   	```
 
 
+
 ## Usage
 ```javascript
-import RNAdbrixRmReact from 'react-native-adbrix-rm-react';
+import AdbrixRm from 'react-native-adbrix-rm-react';
 
-// TODO: What to do with the module?
-RNAdbrixRmReact;
+
 ```
   

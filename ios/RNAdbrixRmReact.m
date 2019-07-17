@@ -9,17 +9,47 @@ static RNAdbrixRmReact *_sharedInstance = nil;
 {
     return dispatch_get_main_queue();
 }
+
+RCT_EXPORT_MODULE(AdbrixRm)
+
+
+
++ (id)allocWithZone:(NSZone *)zone {
+    static RNAdbrixRmReact *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [super allocWithZone:zone];
+    });
+    return sharedInstance;
+}
+
 + (void)initialize
 {
     if (self == [RNAdbrixRmReact class])
     {
         _sharedInstance = [[self alloc] init];
     }
+    [[RNAdbrixRmReact sharedInstance]setAdBrixDeeplinkDelegate];
 }
 + (RNAdbrixRmReact *)sharedInstance
 {
     return _sharedInstance;
 }
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[@"AdbrixDeferredDeeplinkListener"];
+}
+
+- (void)setAdBrixDeeplinkDelegate
+{
+    [[AdBrixRM sharedInstance] setDeferredDeeplinkDelegateWithDelegate:self];
+}
+
+- (void)didReceiveDeferredDeeplinkWithDeferredDeeplink:(NSString *)deeplink
+{
+    [self sendEventWithName:@"AdbrixDeferredDeeplinkListener" body:deeplink];
+}
+
 
 - (NSString *)checkNilToBlankString:(id)target
 {
@@ -280,7 +310,7 @@ static RNAdbrixRmReact *_sharedInstance = nil;
 }
 //+(NSDictionary )
 
-RCT_EXPORT_MODULE(AdbrixRm)
+
 
 
 RCT_EXPORT_METHOD(startAdbrixSDK:(NSString *)appKey secretKey :(NSString *)secretKey)
@@ -298,6 +328,10 @@ RCT_EXPORT_METHOD(setDeviceId:(NSString *)deviceId)
 RCT_EXPORT_METHOD(setAge:(int)age)
 {
     [[AdBrixRM sharedInstance] setAgeWithInt:age];
+}
+RCT_EXPORT_METHOD(setGender:(NSString *)gender)
+{
+    [[AdBrixRM sharedInstance] setGenderWithAdBrixGenderType:[[AdBrixRM sharedInstance] convertGender:gender]];
 }
 RCT_EXPORT_METHOD(setLogLevel:(int)logLevel)
 {

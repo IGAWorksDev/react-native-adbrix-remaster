@@ -5,9 +5,10 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
+#import <React/RCTEventEmitter.h>
 #import <AdBrixRM/AdBrixRM-Swift.h>
 
-@interface RNAdbrixRmReact : NSObject <RCTBridgeModule>
+@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate>
 
 @end
 
