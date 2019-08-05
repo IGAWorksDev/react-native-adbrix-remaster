@@ -8,7 +8,7 @@
 #import <React/RCTEventEmitter.h>
 #import <AdBrixRM/AdBrixRM-Swift.h>
 
-@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate>
+@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate, AdBrixRMDeeplinkDelegate>
 
 @end
 

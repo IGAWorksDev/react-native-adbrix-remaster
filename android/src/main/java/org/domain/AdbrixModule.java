@@ -22,7 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.RegEx;
 
-public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener {
+public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener, AdBrixRm.DeeplinkListener {
 
     private final ReactApplicationContext mContext;
 
@@ -47,6 +47,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void startAdbrixSDK(String appKey, String secretKey) {
         AbxActivityHelper.initializeSdk(mContext, appKey, secretKey);
         AdBrixRm.setDeferredDeeplinkListener(this);
+        AdBrixRm.setDeeplinkListener(this);
         registerLifeCycle();
     }
 
@@ -629,7 +630,11 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
 
     @Override
     public void onReceiveDeferredDeeplink(String deeplink) {
-        Log.d("HONG", "Receive deferred: "+deeplink);
         mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeferredDeeplinkListener", deeplink);
+    }
+
+    @Override
+    public void onReceivedDeeplink(String deeplink) {
+        mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeeplinkListener", deeplink);
     }
 }

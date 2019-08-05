@@ -11,10 +11,16 @@ const {AdbrixRm} = NativeModules;
 const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
 
 const AdbrixDeferredDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeferredDeeplinkListener", (deeplink) => {
+                                                                        console.log("honguk deferred deeplink get msg from xcode");
                                                                         AdbrixRmReact.emit("AdbrixDeferredDeeplinkListener", deeplink);
                                                                         });
+const AdbrixDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeeplinkListener", (deeplink) => {
+                                                                console.log("honguk deeplink get msg from xcode");
+                                                                AdbrixRmReact.emit("AdbrixDeeplinkListener", deeplink);
+                                                                });
 // model
 var deferredDeeplinkListener = null;
+var deeplinkListener = null;
 
 AdbrixRmReact.UserProperties = class {
     constructor() {
@@ -66,7 +72,7 @@ AdbrixRmReact.ProductModel = class {
     setPrice = (price) => {
         this.obj["price"] = price;
     }
-    setQuqantity = (quantity) => {
+    setQuantity = (quantity) => {
         this.obj["quantity"] = quantity;
     }
     setCurreny = (currency) => {
@@ -137,7 +143,7 @@ AdbrixRmReact.setUserProperties = (userProperties) => {
     return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
 AdbrixRmReact.event = (eventName, attrs) => {
-    return AdbrixRm.event(eventName, assignAttrModel(attrs));
+    AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
 AdbrixRmReact.login = (userId) => {
     return AdbrixRm.login(userId);
@@ -167,7 +173,7 @@ AdbrixRmReact.commerceReviewOrder = (orderId, productList, discount, deliveryCha
 AdbrixRmReact.commerceRefund = (orderId, productList, penaltyCharge, extraAttrs) => {
     return AdbrixRm.commerceRefund(orderId, assignProductModelList(productList), penaltyCharge, assignAttrModel(extraAttrs));
 }
-AdbrixRmReact.commerceSerach = (keyWord, productList, extraAttrs) => {
+AdbrixRmReact.commerceSearch = (keyWord, productList, extraAttrs) => {
     return AdbrixRm.commerceSearch(keyWord, assignProductModelList(productList), assignAttrModel(extraAttrs));
 }
 AdbrixRmReact.commerceShare = (sharingChannel, productModel, extraAttrs) => {
@@ -233,8 +239,16 @@ AdbrixRmReact.setDeferredDeeplinkListener = (functionName) => {
         deferredDeeplinkListener = null;
     }
     if (functionName != null){
-        console.log("add listener!!")
         deferredDeeplinkListener = AdbrixRmReact.addListener('AdbrixDeferredDeeplinkListener', functionName);
+    }
+}
+AdbrixRmReact.setDeeplinkListener = (functionName) => {
+    if( null != deeplinkListener){
+        deeplinkListener.remove();
+        deeplinkListener = null;
+    }
+    if (functionName != null){
+        deeplinkListener = AdbrixRmReact.addListener('AdbrixDeeplinkListener', functionName);
     }
 }
 

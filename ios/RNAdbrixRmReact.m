@@ -30,6 +30,7 @@ RCT_EXPORT_MODULE(AdbrixRm)
         _sharedInstance = [[self alloc] init];
     }
     [[RNAdbrixRmReact sharedInstance]setAdBrixDeeplinkDelegate];
+    
 }
 + (RNAdbrixRmReact *)sharedInstance
 {
@@ -37,17 +38,23 @@ RCT_EXPORT_MODULE(AdbrixRm)
 }
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"AdbrixDeferredDeeplinkListener"];
+    return @[@"AdbrixDeferredDeeplinkListener",@"AdbrixDeeplinkListener"];
 }
 
 - (void)setAdBrixDeeplinkDelegate
 {
     [[AdBrixRM sharedInstance] setDeferredDeeplinkDelegateWithDelegate:self];
+    [[AdBrixRM sharedInstance] setDeeplinkDelegateWithDelegate:self];
 }
 
 - (void)didReceiveDeferredDeeplinkWithDeferredDeeplink:(NSString *)deeplink
 {
     [self sendEventWithName:@"AdbrixDeferredDeeplinkListener" body:deeplink];
+}
+
+- (void)didReceiveDeeplinkWithDeeplink:(NSString *)deeplink
+{
+    [self sendEventWithName:@"AdbrixDeeplinkListener" body:deeplink];
 }
 
 

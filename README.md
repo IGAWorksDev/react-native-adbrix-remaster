@@ -28,8 +28,8 @@ Lecacy integration GUIDE ( we don't recommend you )
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import org.domain.RNAdbrixRmReactPackage;` to the imports at the top of the file
-  - Add `new RNAdbrixRmReactPackage()` to the list returned by the `getPackages()` method
+  - Add `import org.domain.AdbrixPackage;` to the imports at the top of the file
+  - Add `new AdbrixPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
   	include ':react-native-adbrix-rm-react'
@@ -37,7 +37,7 @@ Lecacy integration GUIDE ( we don't recommend you )
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
-      compile project(':react-native-adbrix-rm-react')
+      implementation project(':react-native-adbrix-rm-react')
   	```
 
 
