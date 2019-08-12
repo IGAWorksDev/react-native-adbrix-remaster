@@ -1,8 +1,8 @@
 
 {
   "name": "react-native-adbrix-remaster",
-  "version": "1.3.5",
-  "description": "",
+  "version": "1.3.8",
+  "description": "Adbrux SDK for react-native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +14,8 @@
     "adbrix"
   ],
   "author": "david-honguk",
-  "license": "",
+  "homepage" : "https://www.adbrix.io",
+  "license": "IGAWORKS",
   "repository": {
       "type": "git",
       "url": "git+https://github.com/IGAWorksDev/react-native-adbrix-remaster.git"

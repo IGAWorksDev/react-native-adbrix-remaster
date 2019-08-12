@@ -11,11 +11,9 @@ const {AdbrixRm} = NativeModules;
 const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
 
 const AdbrixDeferredDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeferredDeeplinkListener", (deeplink) => {
-                                                                        console.log("honguk deferred deeplink get msg from xcode");
                                                                         AdbrixRmReact.emit("AdbrixDeferredDeeplinkListener", deeplink);
                                                                         });
 const AdbrixDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeeplinkListener", (deeplink) => {
-                                                                console.log("honguk deeplink get msg from xcode");
                                                                 AdbrixRmReact.emit("AdbrixDeeplinkListener", deeplink);
                                                                 });
 // model

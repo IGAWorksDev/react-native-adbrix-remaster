@@ -458,7 +458,7 @@ RCT_EXPORT_METHOD(commerceRefund:(NSString *)orderId productList:(NSString *)pro
     [[AdBrixRM sharedInstance] commerceRefundWithOrderId:orderId productInfo:productArray penaltyCharge:penaltyCharge orderAttr:extraAttrs];
     
 }
-RCT_EXPORT_METHOD(commerceSerach:(NSString *)keyWord productList:(NSString *)productList attrs:(NSString *)attrs)
+RCT_EXPORT_METHOD(commerceSearch:(NSString *)keyWord productList:(NSString *)productList attrs:(NSString *)attrs)
 {
     
     NSDictionary *extraAttrs = @{};
@@ -568,6 +568,15 @@ RCT_EXPORT_METHOD(commonSignUp:(NSString *)channelName attrs:(NSString *)attrs)
         extraAttrs = [[RNAdbrixRmReact sharedInstance] getDictionaryFromAttrs : attrs];
     }
     [[AdBrixRM sharedInstance] commonSignUpWithChannel:[[AdBrixRM sharedInstance] convertSignUpChannel:[[RNAdbrixRmReact sharedInstance]getCodeFromSignUpChannel:channelName]] commonAttr:extraAttrs];
+}
+RCT_EXPORT_METHOD(commonUseCredit:(NSString *)attrs)
+{
+    NSDictionary *extraAttrs = @{};
+    if (attrs != NULL) {
+        extraAttrs = [[RNAdbrixRmReact sharedInstance] getDictionaryFromAttrs : attrs];
+    }
+    [[AdBrixRM sharedInstance]commonUseCreditWithCommonAttr:extraAttrs];
+    
 }
 RCT_EXPORT_METHOD(commonAppUpdate:(NSString *)prevVer currentVer:(NSString *)currentVer attrs:(NSString *)attrs)
 {
