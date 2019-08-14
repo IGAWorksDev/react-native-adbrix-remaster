@@ -336,7 +336,7 @@ RCT_EXPORT_METHOD(setAge:(int)age)
 {
     [[AdBrixRM sharedInstance] setAgeWithInt:age];
 }
-RCT_EXPORT_METHOD(setGender:(NSString *)gender)
+RCT_EXPORT_METHOD(setGender:(int)gender)
 {
     [[AdBrixRM sharedInstance] setGenderWithAdBrixGenderType:[[AdBrixRM sharedInstance] convertGender:gender]];
 }
