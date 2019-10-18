@@ -205,6 +205,11 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     }
 
     @ReactMethod
+    public void clearUserProperties(){
+        AdBrixRm.clearUserProperties();
+    }
+
+    @ReactMethod
     public void event(String eventName, String paramJson) {
         if (AdbrixUtils.isNullString(paramJson)){
             AdBrixRm.event(eventName);
@@ -222,6 +227,11 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     @ReactMethod
     public void login(String userId) {
         AdBrixRm.login(userId);
+    }
+
+    @ReactMethod
+    public void logout() {
+        AdBrixRm.logout();
     }
 
     @ReactMethod

@@ -366,6 +366,10 @@ RCT_EXPORT_METHOD(setUserProperties:(NSString *)dictionaryString)
     NSDictionary *json = [[RNAdbrixRmReact sharedInstance] getDictionaryFromAttrs : dictionaryString];
     [[AdBrixRM sharedInstance] setUserPropertiesWithDictionary:json];
 }
+RCT_EXPORT_METHOD(clearUserProperties)
+{
+    [[AdBrixRM sharedInstance] clearUserProperties];
+}
 RCT_EXPORT_METHOD(event:(NSString *)eventName attrs:(NSString *)attrs)
 {
     NSDictionary *extraAttrs = @{};
@@ -377,6 +381,10 @@ RCT_EXPORT_METHOD(event:(NSString *)eventName attrs:(NSString *)attrs)
 RCT_EXPORT_METHOD(login:(NSString *)userId)
 {
     [[AdBrixRM sharedInstance] loginWithUserId:userId];
+}
+RCT_EXPORT_METHOD(logout)
+{
+    [[AdBrixRM sharedInstance] logout];
 }
 RCT_EXPORT_METHOD(commerceViewHome:(NSString *)attrs)
 {

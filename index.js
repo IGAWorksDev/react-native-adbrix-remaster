@@ -140,11 +140,17 @@ AdbrixRmReact.setLocation = (lat, lon) => {
 AdbrixRmReact.setUserProperties = (userProperties) => {
     return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
+AdbrixRmReact.clearUserProperties = () => {
+    return AdbrixRm.clearUserProperties();
+}
 AdbrixRmReact.event = (eventName, attrs) => {
     AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
 AdbrixRmReact.login = (userId) => {
     return AdbrixRm.login(userId);
+}
+AdbrixRmReact.logout = () => {
+    return AdbrixRm.logout();
 }
 AdbrixRmReact.commerceViewHome = (attrs) => {
     if (attrs == null) return AdbrixRm.commerceViewHome(null);
