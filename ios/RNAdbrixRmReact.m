@@ -47,13 +47,15 @@ RCT_EXPORT_MODULE(AdbrixRm)
     [[AdBrixRM sharedInstance] setDeeplinkDelegateWithDelegate:self];
 }
 
-- (void)didReceiveDeferredDeeplinkWithDeferredDeeplink:(NSString *)deeplink
+- (void)didReceiveDeferredDeeplinkWithDeeplink:(NSString *)deeplink
 {
+    // Try-catch
     [self sendEventWithName:@"AdbrixDeferredDeeplinkListener" body:deeplink];
 }
 
 - (void)didReceiveDeeplinkWithDeeplink:(NSString *)deeplink
 {
+    // Try-catch
     [self sendEventWithName:@"AdbrixDeeplinkListener" body:deeplink];
 }
 
