@@ -61,18 +61,11 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
 
             @Override
             public void onHostPause() {
-                Log.d("HONG", "------------------------------------------------------");
-                Log.d("HONG", "onHostPause!!!!!!!!!!");
-                Log.d("HONG", "------------------------------------------------------");
                 AbxActivityHelper.onPause(mContext.getCurrentActivity());
             }
 
             @Override
             public void onHostDestroy() {
-
-                Log.d("HONG", "------------------------------------------------------");
-                Log.d("HONG", "onHostDestroyed!!!!!!!!!!");
-                Log.d("HONG", "------------------------------------------------------");
 
             }
         });
