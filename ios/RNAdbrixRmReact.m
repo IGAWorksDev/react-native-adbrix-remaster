@@ -160,6 +160,12 @@ RCT_EXPORT_MODULE(AdbrixRm)
     else if([channelName isEqualToString:@"UserId"]){
         return 10;
     }
+    else if([channelName isEqualToString:@"SkTid"]){
+        return 12;
+    }
+    else if([channelName isEqualToString:@"AppleId"]){
+        return 13;
+    }
     else {
         return 11;
     }
