@@ -20,6 +20,7 @@ If you still need to work on Xcode 12.4, use the iOS SDK 1.6.5406. After install
 ### Notice for iOS development environment (❗Important)
   - You must update adbrix podspec to match your development environment (Xcode, Swift version etc). 
   - If you don't update your podspec with suitable version, it can cause errors such as critical crash or compile error.
+  - After updating a suitable version by modify react-native-adbrix-remaster.podspec, change directory to your_project_root_dir/ios and run **pod update** command 
 
 ## Installation
 
