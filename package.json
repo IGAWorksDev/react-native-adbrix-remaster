@@ -19,8 +19,5 @@
   "repository": {
       "type": "git",
       "url": "git+https://github.com/IGAWorksDev/react-native-adbrix-remaster.git"
-  },
-  "peerDependencies": {
-    "react-native": "^0.41.2"
-  }
+  }  
 }
