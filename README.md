@@ -3,7 +3,7 @@
 
 # React Native [adbrix Dfinery](https://console.dfinery.io/) plugin for Android and iOS.
 
-🛠 We try our best to support you to integrate our RN Plugin into your project, if you have any issues please contact us via email se.team@igaworks.com
+We try our best to support you to integrate our RN Plugin into your project, if you have any issues please contact us via email se.team@igaworks.com
 
 *When submitting an issue please tell us relevant information such as your appkey, development environment, code snippet, etc..*
 

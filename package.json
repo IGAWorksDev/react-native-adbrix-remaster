@@ -2,10 +2,18 @@
 {
   "name": "react-native-adbrix-remaster",
   "version": "1.4.6",
-  "description": "Adbrixx SDK for react-native",
+  "description": "Adbrix SDK for react-native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "react": "16.13.1",
+    "react-native": "0.63.4"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "keywords": [
     "react-native",

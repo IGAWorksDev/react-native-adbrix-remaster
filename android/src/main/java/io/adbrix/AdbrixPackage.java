@@ -10,13 +10,12 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import androidx.annotation.NonNull;
 
 public class AdbrixPackage implements ReactPackage { 
     
-    @NonNull
+    @Nonnull
     @Override
-    public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+    public List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new AdbrixModule(reactContext));
         return modules;

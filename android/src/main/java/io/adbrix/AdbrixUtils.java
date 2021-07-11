@@ -140,7 +140,6 @@ public class AdbrixUtils {
                 e.printStackTrace();
             }
         }
-
         return eventProps;
     }
 }

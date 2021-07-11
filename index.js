@@ -1,15 +1,12 @@
 /**
  * @format
  */
- import DemoYp from './src/DemoYp';
  import {NativeModules, NativeEventEmitter} from 'react-native';
  import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
  
  const AdbrixRmReact = new EventEmitter();
- AdbrixRmReact.DemmoYP = DemoYp;
  
  const {AdbrixRm} = NativeModules;
-AdbrixRmReact.native = AdbrixRm;
 
 const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
  
@@ -378,14 +375,5 @@ const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
  AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
  AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
 
- AdbrixRmReact.logTest = (msg) =>{
-    if(Platform.OS === 'ios'){
-        console.log("IOS LOG");
-      }else{
-        console.log("Andoid LOG");
-        AdbrixRm.nativeHongLog("Hello Yen");
-      }
- }
- 
  export default AdbrixRmReact;
  

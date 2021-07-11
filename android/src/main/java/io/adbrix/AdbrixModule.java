@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-
 @ReactModule(name = AdbrixModule.NAME)
 public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener, AdBrixRm.DeeplinkListener {
 

@@ -2,12 +2,24 @@
 # OSX
 #
 .DS_Store
+*.DS_Store
+
+# XDE
+.expo/
+
+# VSCode
+.vscode/
+jsconfig.json
+
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+package-lock.json
+yarn.lock
+yarn-debug.log
   
 
 # Xcode
@@ -30,17 +42,17 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
       
-
 # Android/IntelliJ
 #
-build/
+*.iml
 .idea
 .gradle
 local.properties
-*.iml
+android/gradlew.bat
+android/gradle
 
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
-      
+android/app/libs
+android/keystores/debug.keystore
