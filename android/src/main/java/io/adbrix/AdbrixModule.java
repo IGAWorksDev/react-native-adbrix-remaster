@@ -19,8 +19,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+// Version 2 note: 20210707
+// Remove startAdbrixSDK API, add new initRNAdbrixSDK_v2 API
+// startAdbrixSDK (v1): Move to native android code. This part needs low level integration with android platform
+// Use React Native Linking class instead. https://reactnative.dev/docs/linking
+
 @ReactModule(name = AdbrixModule.NAME)
-public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener, AdBrixRm.DeeplinkListener {
+public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener{
 
     private final ReactApplicationContext mContext;
     public static final String NAME = "AdbrixRm";
@@ -28,7 +33,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public AdbrixModule(@Nonnull final ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
-
     }
 
     @Nonnull
@@ -38,38 +42,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     }
 
     @ReactMethod
-    public void nativeHongLog(String msg){
-        Log.d("HONG", msg);
-    }
-
-    @ReactMethod
-    public void startAdbrixSDK(String appKey, String secretKey) {
-        AbxActivityHelper.initializeSdk(mContext, appKey, secretKey);
+    public void initRNAdbrixSDK_v2(){
         AdBrixRm.setDeferredDeeplinkListener(this);
-        AdBrixRm.setDeeplinkListener(this);
-        registerLifeCycle();
     }
 
-    public void registerLifeCycle() {
-        mContext.addLifecycleEventListener(new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
-                AdBrixRm.onResume(mContext.getCurrentActivity());
-                AdBrixRm.deeplinkEvent(mContext.getCurrentActivity());
-            }
-
-            @Override
-            public void onHostPause() {
-                AdBrixRm.onPause();
-            }
-
-            @Override
-            public void onHostDestroy() {
-
-            }
-        });
-
-    }
 
     @ReactMethod
     public void gdprForgetMe() {
@@ -77,10 +53,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     }
 
     // Yen 20210709
-//    @ReactMethod
-//    public void setDeviceId(String deviceId) {
+    @ReactMethod
+    public void setDeviceId(String deviceId) {
 //        AdBrixRm.setCustomDeviceId(deviceId);
-//    }
+    }
 
     @ReactMethod
     public void setAge(int age) {
@@ -637,9 +613,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void onReceiveDeferredDeeplink(String deeplink) {
         mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeferredDeeplinkListener", deeplink);
     }
-    // Yen 20210709
-    @Override
-    public void onReceiveDeeplink(String deeplink) {
-        mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeeplinkListener", deeplink);
-    }
+    // Yen 20210709 Use React Native Linking class instead. https://reactnative.dev/docs/linking
+//    @Override
+//    public void onReceiveDeeplink(String deeplink) {
+//        mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeeplinkListener", deeplink);
+//    }
 }

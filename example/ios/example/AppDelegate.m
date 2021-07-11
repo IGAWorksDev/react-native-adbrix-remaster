@@ -1,4 +1,10 @@
 #import "AppDelegate.h"
+#import <AdSupport/AdSupport.h>
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import <AdBrixRM_XC/AdBrixRM_XC-Swift.h> // We use AdBrixRM_XC module name instead of AdBrixRM
+
+// iOS 9.x or newer
+#import <React/RCTLinkingManager.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -11,6 +17,8 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
+
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -47,6 +55,40 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  // Create AdBrixRM Instance
+  AdBrixRM *adBrix = [AdBrixRM sharedInstance];
+  [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
+
+  if ((NSClassFromString(@"ASIdentifierManager")) != nil) {
+     NSUUID *ifa =[[ASIdentifierManager sharedManager]advertisingIdentifier];
+     // Get IDFA from a Device and Set it in SDK
+     [adBrix setAppleAdvertisingIdentifier:[ifa UUIDString]];
+  }
+  
+  
+  if (@available(iOS 14, *)) {
+    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+      switch (status) {
+        case ATTrackingManagerAuthorizationStatusAuthorized:
+          [adBrix startGettingIDFA];
+          break;
+        case ATTrackingManagerAuthorizationStatusDenied:
+          [adBrix stopGettingIDFA];
+          break;
+        case ATTrackingManagerAuthorizationStatusRestricted:
+          [adBrix stopGettingIDFA];
+          break;
+        case ATTrackingManagerAuthorizationStatusNotDetermined:
+          [adBrix stopGettingIDFA];
+          break;
+        default:
+          [adBrix stopGettingIDFA];
+          break;
+      }
+    }];
+  }
+  
   return YES;
 }
 
@@ -57,6 +99,21 @@ static void InitializeFlipper(UIApplication *application) {
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+ restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                  continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
 }
 
 @end

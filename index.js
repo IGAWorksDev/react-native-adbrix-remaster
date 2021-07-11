@@ -106,16 +106,22 @@ const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
      AdbrixRm.testDictionary(assignAttrModel(attr));
  }
  
- 
+ //V2 API
+ AdbrixRmReact.initRNAdbrixSDK_v2 = () => {
+     console.log("Called initRNAdbrixSDK_v2");
+    AdbrixRm.initRNAdbrixSDK_v2();
+ }
+ // Depreciated: Should implement on native side
  AdbrixRmReact.startAdbrixSDK = (appKey, secretKey) => {
-     return AdbrixRm.startAdbrixSDK(appKey, secretKey);
+     console.log("startAdbrixSDK was removed from plugin version 2. Please use initRNAdbrixSDK_v2. Check new integration guide at: https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-")
+    //  return AdbrixRm.startAdbrixSDK(appKey, secretKey);
  }
  AdbrixRmReact.gdprForgetMe = () => {
      return AdbrixRm.gdprForgetMe();
  }
-//  AdbrixRmReact.setDeviceId = (deviceId) => {
-//      return AdbrixRm.setDeviceId(deviceId)
-//  }
+ AdbrixRmReact.setDeviceId = (deviceId) => {
+    //  return AdbrixRm.setDeviceId(deviceId)
+ }
  AdbrixRmReact.setAge = (age) => {
      return AdbrixRm.setAge(age);
  }
@@ -247,13 +253,13 @@ const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
      }
  }
  AdbrixRmReact.setDeeplinkListener = (functionName) => {
-     if( null != deeplinkListener){
-         deeplinkListener.remove();
-         deeplinkListener = null;
-     }
-     if (functionName != null){
-         deeplinkListener = AdbrixRmReact.addListener('AdbrixDeeplinkListener', functionName);
-     }
+    //  if( null != deeplinkListener){
+    //      deeplinkListener.remove();
+    //      deeplinkListener = null;
+    //  }
+    //  if (functionName != null){
+    //      deeplinkListener = AdbrixRmReact.addListener('AdbrixDeeplinkListener', functionName);
+    //  }
  }
  
  function isDouble(value) {

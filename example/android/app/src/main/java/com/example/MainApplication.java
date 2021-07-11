@@ -14,6 +14,8 @@ import java.util.List;
 
 import android.os.Build;
 import io.adbrix.AdbrixPackage;
+import com.igaworks.v2.core.application.AbxActivityHelper;
+import com.igaworks.v2.core.application.AbxActivityLifecycleCallbacks;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -51,7 +53,8 @@ public class MainApplication extends Application implements ReactApplication {
       SoLoader.init(this, /* native exopackage */ false);
       initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
-      AbxActivityHelper.initializeSdk(MainApplication.this, "your_adbrix_remastered_app_key", "your_adbrix_remastered_secret_key");
+//      AbxActivityHelper.initializeSdk(MainApplication.this, "dW6eSX9fbk2r0Rr4KJIQ0A", "your_adbrix_remastered_secret_key");
+      AbxActivityHelper.initializeSdk(MainApplication.this, "dW6eSX9fbk2r0Rr4KJIQ0A", "tkBFgB2bOUK0L0Jo9FKqyw");
       if (Build.VERSION.SDK_INT >= 14) {
           registerActivityLifecycleCallbacks(new AbxActivityLifecycleCallbacks());
       }
