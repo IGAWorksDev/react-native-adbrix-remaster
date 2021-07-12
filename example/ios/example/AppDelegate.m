@@ -60,11 +60,11 @@ static void InitializeFlipper(UIApplication *application) {
   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
   [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
 
-  if ((NSClassFromString(@"ASIdentifierManager")) != nil) {
-     NSUUID *ifa =[[ASIdentifierManager sharedManager]advertisingIdentifier];
-     // Get IDFA from a Device and Set it in SDK
-     [adBrix setAppleAdvertisingIdentifier:[ifa UUIDString]];
-  }
+//  if ((NSClassFromString(@"ASIdentifierManager")) != nil) {
+//     NSUUID *ifa =[[ASIdentifierManager sharedManager]advertisingIdentifier];
+//     // Get IDFA from a Device and Set it in SDK
+//     [adBrix setAppleAdvertisingIdentifier:[ifa UUIDString]];
+//  }
   
   
   if (@available(iOS 14, *)) {

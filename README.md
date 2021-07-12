@@ -14,13 +14,10 @@ We try our best to support you to integrate our RN Plugin into your project, if 
 
 > 
 Pls check [release log](https://help.dfinery.io/hc/ko/articles/360006568953-SDK-Release-Note-iOS) to find suitable version for your development environment.
-29th April 2021 SDK for Xcode 12.5 (Swift 5.4) has been released. 
-If you still need to work on Xcode 12.4, use the iOS SDK 1.6.5406. After installing plugin from npm, go to node_modules/react-native-adbrix-remaster/react-native-adbrix-remaster.podspec, update native dependency:  **s.dependency 'AdBrixRemastered', '1.6.5406'**
-
-### Notice for iOS development environment (❗Important)
-  - You must update adbrix podspec to match your development environment (Xcode, Swift version etc). 
-  - If you don't update your podspec with suitable version, it can cause errors such as critical crash or compile error.
-  - After updating a suitable version by modify react-native-adbrix-remaster.podspec, change directory to your_project_root_dir/ios and run **pod update** command 
+To change iOS xcframework version, after installing plugin from npm, go to node_modules/react-native-adbrix-remaster/react-native-adbrix-remaster.podspec, update native dependency:  **s.dependency 'AdBrixRemastered_XC', '1.0.0'**. Then use pod update command:
+```
+cd ios && pod update
+```
 
 ## Installation
 
@@ -42,24 +39,34 @@ $ react-native run-android
 ```
 
 > Starting from RN [v0.60](https://facebook.github.io/react-native/blog/2019/07/03/version-60), and react-native-adbrix-remaster `v1.4.6` the plugin uses [autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md). <br/>
-If your app does not support autolinking, follow steps below:
+If your app does not support autolinking, follow steps below. You can also reference example app in this repository to learn more about manual link.
 
 #### iOS
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-adbrix-remaster and add `RNAdbrixRmReact.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libRNAdbrixRmReact.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)
+1. Add to pod file path to react-native-adbrix-remaster.podspec. Example: `pod 'react-native-adbrix-remaster', :path => '../..'`
+2. You can find react-native-adbrix-remaster source files inside Development Pods > react-native-adbrix-remaster
+
 
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import org.domain.AdbrixPackage;` to the imports at the top of the file
+  - Add `import io.adbrix.AdbrixPackage;` to the imports at the top of the file
   - Add `new AdbrixPackage()` to the list returned by the `getPackages()` method
+  ```
+  @Override
+        protected List<ReactPackage> getPackages() {
+          @SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
+          packages.add(new AdbrixPackage());
+          return packages;
+        }
+  ```
 2. Append the following lines to `android/settings.gradle`:
   	```
   	include ':react-native-adbrix-remaster
-  	project(':react-native-adbrix-remaster).projectDir = new File(rootProject.projectDir, 	'../node_modules/rreact-native-adbrix-remaster/android')
+  	project(':react-native-adbrix-remaster).projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-adbrix-remaster/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
@@ -79,3 +86,7 @@ Great installation and setup guides can be viewed [here](https://help.dfinery.io
 - [Platform Setup Guide](https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-#toc2)
 - [Deeplink and Deferred Deeplink Guide](https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-#toc5)
 - [Custom Event API Guide](https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-#toc12)  
+
+### Notice for iOS development environment
+  - You can update adbrix podspec to match your development environment (Xcode, Swift version etc). 
+  - (IOS) After selecting a suitable version, modify react-native-adbrix-remaster.podspec, change directory to your_project_root_dir/ios and run **pod update** command 

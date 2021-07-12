@@ -29,7 +29,7 @@
 
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
-              <data android:scheme="adbrixExample" />
+              <data android:scheme="adbrixexample" />
           </intent-filter>
 
       </activity>
