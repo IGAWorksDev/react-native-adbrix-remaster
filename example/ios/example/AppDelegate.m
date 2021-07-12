@@ -56,7 +56,7 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  // Create AdBrixRM Instance
+  // Create AdBrixRM Instance, Only need with Adbrix RN Plugin V2
   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
   [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
 
@@ -105,12 +105,22 @@ static void InitializeFlipper(UIApplication *application) {
    openURL:(NSURL *)url
    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
+   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
+   [adBrix deepLinkOpenWithUrl:url]; // Deeplink tracking code
+   
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
 {
+  if ([userActivity.activityType isEqualToString: NSUserActivityTypeBrowsingWeb]) {
+    NSURL *incomeingurl = userActivity.webpageURL;
+    NSLog(@"DEEPLINK :: UniversialLink was Clicked!! : %@", incomeingurl);
+    AdBrixRM *adBrix = [AdBrixRM sharedInstance];
+    [adBrix deepLinkOpenWithUrl:incomeingurl];
+    
+  }
  return [RCTLinkingManager application:application
                   continueUserActivity:userActivity
                     restorationHandler:restorationHandler];

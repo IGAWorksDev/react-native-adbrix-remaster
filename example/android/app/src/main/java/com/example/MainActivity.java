@@ -22,18 +22,6 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     onNewIntent(MainActivity.this.getIntent());
-//    AdBrixRm.setDeferredDeeplinkListener(new AdBrixRm.DeferredDeeplinkListener() {
-//      @Override
-//      public void onReceiveDeferredDeeplink(String deeplink) {
-//
-//      }
-//    });
-//    AdBrixRm.setDeeplinkListener(new AdBrixRm.DeeplinkListener() {
-//      @Override
-//      public void onReceiveDeeplink(String deeplink) {
-//
-//      }
-//    });
   }
 
   @Override

@@ -107,15 +107,11 @@ const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
  }
  
  //V2 API
- AdbrixRmReact.initRNAdbrixSDK_v2 = () => {
-     console.log("Called initRNAdbrixSDK_v2");
-    AdbrixRm.initRNAdbrixSDK_v2();
+ AdbrixRmReact.initRNPlugin = () => {
+     console.log("Called initRNPlugin");
+    AdbrixRm.initRNPlugin();
  }
- // Depreciated: Should implement on native side
- AdbrixRmReact.startAdbrixSDK = (appKey, secretKey) => {
-     console.log("startAdbrixSDK was removed from plugin version 2. Please use initRNAdbrixSDK_v2. Check new integration guide at: https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-")
-    //  return AdbrixRm.startAdbrixSDK(appKey, secretKey);
- }
+
  AdbrixRmReact.gdprForgetMe = () => {
      return AdbrixRm.gdprForgetMe();
  }
@@ -252,15 +248,6 @@ const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
          deferredDeeplinkListener = AdbrixRmReact.addListener('AdbrixDeferredDeeplinkListener', functionName);
      }
  }
- AdbrixRmReact.setDeeplinkListener = (functionName) => {
-    //  if( null != deeplinkListener){
-    //      deeplinkListener.remove();
-    //      deeplinkListener = null;
-    //  }
-    //  if (functionName != null){
-    //      deeplinkListener = AdbrixRmReact.addListener('AdbrixDeeplinkListener', functionName);
-    //  }
- }
  
  function isDouble(value) {
      var temp = value.toString();
@@ -380,6 +367,23 @@ const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
  AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 60;
  AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
  AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
+
+ // ******************** For v1 backward compatibility only. Please use new API *********************
+ // Depreciated: Should implement on native side
+ AdbrixRmReact.startAdbrixSDK = (appKey, secretKey) => {
+    console.log("startAdbrixSDK was removed from plugin version 2. Please use initRNPlugin. Check new integration guide at: https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-")
+    return AdbrixRm.startAdbrixSDK(appKey, secretKey);
+}
+AdbrixRmReact.setDeeplinkListener = (functionName) => {
+     if( null != deeplinkListener){
+         deeplinkListener.remove();
+         deeplinkListener = null;
+     }
+     if (functionName != null){
+         deeplinkListener = AdbrixRmReact.addListener('AdbrixDeeplinkListener', functionName);
+     }
+ }
+ // ******************** END v1 backward compatibility *************
 
  export default AdbrixRmReact;
  
