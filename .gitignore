@@ -50,6 +50,8 @@ project.xcworkspace
 local.properties
 android/gradlew.bat
 android/gradle
+android/build/
+example/android/app/build/
 
 # BUCK
 buck-out/
