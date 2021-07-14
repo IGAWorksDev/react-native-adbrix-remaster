@@ -33,5 +33,15 @@
           </intent-filter>
 
       </activity>
+
+        <receiver android:name="com.igaworks.v2.core.push.notification.AbxPushReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.igaworks.v2.core.pushServiceImplement.CLIENT_PUSH_RECEIVE"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>
