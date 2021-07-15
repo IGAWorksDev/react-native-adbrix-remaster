@@ -1,5 +1,8 @@
 
-<img src="https://adbrix.vn/blog/abx-images/2021/07/banner3.jpg"  width="450">
+<p align="center">
+    <img src="https://adbrix.vn/blog/abx-images/2021/07/banner3.jpg"  width="450"><br/>
+    adbrix Dfinery Product
+</p>
 
 # React Native [adbrix Dfinery](https://console.dfinery.io/) plugin for Android and iOS.
 
