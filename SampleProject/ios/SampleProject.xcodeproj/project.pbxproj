@@ -11,6 +11,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		4F2D74A026BC110B00D5D5AB /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D749F26BC110B00D5D5AB /* iAd.framework */; };
+		4F2D74A226BC111800D5D5AB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D74A126BC111800D5D5AB /* AdSupport.framework */; };
+		4F2D74A426BC112300D5D5AB /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D74A326BC112300D5D5AB /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		4F2D74A626BC114E00D5D5AB /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D74A526BC114E00D5D5AB /* AppTrackingTransparency.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ECBF1E316CA30D409B1D6721 /* libPods-SampleProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB18C5F1C6DC0907C7C7BF4D /* libPods-SampleProject.a */; };
 		FD61B29E044678238FFB6B34 /* libPods-SampleProject-SampleProjectTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACE97EAECC8A16CF3EDC9203 /* libPods-SampleProject-SampleProjectTests.a */; };
@@ -38,6 +42,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SampleProject/main.m; sourceTree = "<group>"; };
 		1D1D1A623467246C76A1A72D /* Pods-SampleProject-SampleProjectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleProject-SampleProjectTests.debug.xcconfig"; path = "Target Support Files/Pods-SampleProject-SampleProjectTests/Pods-SampleProject-SampleProjectTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3D8DB445E059580D88813B87 /* Pods-SampleProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleProject.release.xcconfig"; path = "Target Support Files/Pods-SampleProject/Pods-SampleProject.release.xcconfig"; sourceTree = "<group>"; };
+		4F2D749F26BC110B00D5D5AB /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		4F2D74A126BC111800D5D5AB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		4F2D74A326BC112300D5D5AB /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		4F2D74A526BC114E00D5D5AB /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		61D66F6458FA65B8F5E259A3 /* Pods-SampleProject-SampleProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleProject-SampleProjectTests.release.xcconfig"; path = "Target Support Files/Pods-SampleProject-SampleProjectTests/Pods-SampleProject-SampleProjectTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SampleProject/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB18C5F1C6DC0907C7C7BF4D /* libPods-SampleProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SampleProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,7 +67,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2D74A626BC114E00D5D5AB /* AppTrackingTransparency.framework in Frameworks */,
 				ECBF1E316CA30D409B1D6721 /* libPods-SampleProject.a in Frameworks */,
+				4F2D74A426BC112300D5D5AB /* AdServices.framework in Frameworks */,
+				4F2D74A026BC110B00D5D5AB /* iAd.framework in Frameworks */,
+				4F2D74A226BC111800D5D5AB /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,13 +116,16 @@
 				1D1D1A623467246C76A1A72D /* Pods-SampleProject-SampleProjectTests.debug.xcconfig */,
 				61D66F6458FA65B8F5E259A3 /* Pods-SampleProject-SampleProjectTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F2D74A526BC114E00D5D5AB /* AppTrackingTransparency.framework */,
+				4F2D74A326BC112300D5D5AB /* AdServices.framework */,
+				4F2D74A126BC111800D5D5AB /* AdSupport.framework */,
+				4F2D749F26BC110B00D5D5AB /* iAd.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				AB18C5F1C6DC0907C7C7BF4D /* libPods-SampleProject.a */,
 				ACE97EAECC8A16CF3EDC9203 /* libPods-SampleProject-SampleProjectTests.a */,
@@ -496,7 +511,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = io.adbrix.reactnative.example;
 				PRODUCT_NAME = SampleProject;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -521,7 +536,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = io.adbrix.reactnative.example;
 				PRODUCT_NAME = SampleProject;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

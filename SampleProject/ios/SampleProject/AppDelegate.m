@@ -1,4 +1,7 @@
 #import "AppDelegate.h"
+#import <AdSupport/AdSupport.h>
+#import <AdBrixRM_XC/AdBrixRM_XC-Swift.h> // We use AdBrixRM_XC module name instead of AdBrixRM
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -47,6 +50,34 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  // Adbrix SDK Init   
+  AdBrixRM *adBrix = [AdBrixRM sharedInstance];
+  [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
+  
+  if (@available(iOS 14, *)) {
+    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+      switch (status) {
+        case ATTrackingManagerAuthorizationStatusAuthorized:
+          [adBrix startGettingIDFA];
+          break;
+        case ATTrackingManagerAuthorizationStatusDenied:
+          [adBrix stopGettingIDFA];
+          break;
+        case ATTrackingManagerAuthorizationStatusRestricted:
+          [adBrix stopGettingIDFA];
+          break;
+        case ATTrackingManagerAuthorizationStatusNotDetermined:
+          [adBrix stopGettingIDFA];
+          break;
+        default:
+          [adBrix stopGettingIDFA];
+          break;
+      }
+    }];
+  }
+  
+  
   return YES;
 }
 
