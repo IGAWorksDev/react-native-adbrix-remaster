@@ -11,6 +11,11 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+/// Import classes
+import com.igaworks.v2.core.application.AbxActivityHelper;
+import com.igaworks.v2.core.application.AbxActivityLifecycleCallbacks;
+import android.os.Build;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -45,6 +50,11 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    //AbxActivityHelper.initializeSdk(MainApplication.this, "your_adbrix_remastered_appkey", "your_adbrix_remastered_secret_key"); 
+    AbxActivityHelper.initializeSdk(MainApplication.this, "dW6eSX9fbk2r0Rr4KJIQ0A", "tkBFgB2bOUK0L0Jo9FKqyw");
+    if (Build.VERSION.SDK_INT >= 14) {
+      registerActivityLifecycleCallbacks(new AbxActivityLifecycleCallbacks());
+    }
   }
 
   /**
