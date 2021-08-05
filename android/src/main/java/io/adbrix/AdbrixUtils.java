@@ -1,6 +1,4 @@
-package org.domain;
-
-import android.util.Log;
+package io.adbrix;
 
 import com.igaworks.v2.core.AdBrixRm;
 
@@ -112,5 +110,36 @@ public class AdbrixUtils {
             }
         }
         return userProperties;
+    }
+    // Yen: 20210709
+    public static AdBrixRm.AttrModel makeEventProperties(JSONObject eventProperties){
+        AdBrixRm.AttrModel eventProps = new AdBrixRm.AttrModel();
+        for(Iterator<String> it = eventProperties.keys(); it.hasNext();){
+            try{
+                String key = it.next();
+                Object value = eventProperties.get(key);
+                if(value instanceof Integer){
+                    eventProps.setAttrs(key,Long.valueOf((int)value));
+                }
+                else if(value instanceof Long){
+                    eventProps.setAttrs(key,(long)value);
+                }
+                else if(value instanceof Boolean){
+                    eventProps.setAttrs(key,(boolean)value);
+                }
+                else if(value instanceof Double){
+                    eventProps.setAttrs(key,(double)value);
+                }
+                else if(value instanceof Float){
+                    eventProps.setAttrs(key,(float)value);
+                }
+                else {
+                    eventProps.setAttrs(key,String.valueOf(value));
+                }
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        return eventProps;
     }
 }

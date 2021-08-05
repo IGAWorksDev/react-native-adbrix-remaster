@@ -12,7 +12,10 @@ static RNAdbrixRmReact *_sharedInstance = nil;
 
 RCT_EXPORT_MODULE(AdbrixRm)
 
-
+// Version 2 note: 20210707
+// Remove startAdbrixSDK API, add new initRNPlugin API
+// startAdbrixSDK (v1): Move to native android code. This part needs low level integration with android platform
+// Use React Native Linking class instead. https://reactnative.dev/docs/linking
 
 + (id)allocWithZone:(NSZone *)zone {
     static RNAdbrixRmReact *sharedInstance = nil;
@@ -49,16 +52,14 @@ RCT_EXPORT_MODULE(AdbrixRm)
 
 - (void)didReceiveDeferredDeeplinkWithDeeplink:(NSString *)deeplink
 {
-    // Try-catch
-    [self sendEventWithName:@"AdbrixDeferredDeeplinkListener" body:deeplink];
+    @try {
+        [self sendEventWithName:@"AdbrixDeferredDeeplinkListener" body:deeplink];
+    }
+    @catch ( NSException *e ) {
+        NSLog(@"AdbrixDeferredDeeplinkListener Exception: %@", e);
+    }
+    
 }
-
-- (void)didReceiveDeeplinkWithDeeplink:(NSString *)deeplink
-{
-    // Try-catch
-    [self sendEventWithName:@"AdbrixDeeplinkListener" body:deeplink];
-}
-
 
 - (NSString *)checkNilToBlankString:(id)target
 {
@@ -328,10 +329,13 @@ RCT_EXPORT_MODULE(AdbrixRm)
 
 
 
-RCT_EXPORT_METHOD(startAdbrixSDK:(NSString *)appKey secretKey :(NSString *)secretKey)
+
+RCT_EXPORT_METHOD(initRNPlugin)
 {
-    [[AdBrixRM sharedInstance] initAdBrixWithAppKey:appKey secretKey: secretKey ];
+   // Do nothing (Used by android to set Deferred Deeplink Listener)
+    NSLog(@"Start Adbrix Dfinery React Native Plugin - JS Part");
 }
+
 RCT_EXPORT_METHOD(gdprForgetMe)
 {
     [[AdBrixRM sharedInstance] gdprForgetMe];
@@ -620,8 +624,22 @@ RCT_EXPORT_METHOD(setPushEnable:(BOOL)enable)
 //    [[AdBrixRM sharedInstance]setRegistrationIdWithDeviceToken:token];
 //}
 
+// ******************** For v1 backward compatibility only. Please use new API *********************
+RCT_EXPORT_METHOD(startAdbrixSDK:(NSString *)appKey secretKey :(NSString *)secretKey)
+{
+   [[AdBrixRM sharedInstance] initAdBrixWithAppKey:appKey secretKey: secretKey ];
+}
 
+- (void)didReceiveDeeplinkWithDeeplink:(NSString *)deeplink
+{
+    @try {
+        [self sendEventWithName:@"AdbrixDeeplinkListener" body:deeplink];
+    }
+    @catch ( NSException *e ) {
+        NSLog(@"AdbrixDeeplinkListener Exception: %@", e);
+    }
 
-
+}
+// ******************** END v1 backward compatibility *************
 @end
 
