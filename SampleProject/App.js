@@ -60,15 +60,7 @@
    // https://reactnative.dev/docs/linking#handling-deep-links
    useEffect(() => {
      // Anything in here is fired on component mount.
-     
-     // adbrix RN plugin Version 1: If use V1, need to comment native function initAdBrixWithAppKey:secretKey in AppDelegate.m
-     // AdbrixRm.startAdbrixSDK('dW6eSX9fbk2r0Rr4KJIQ0A', 'tkBFgB2bOUK0L0Jo9FKqyw');
-     // AdbrixRm.setDeeplinkListener(function (deeplink) {
-     //   console.log('deeplink msg arrived!');
-     //   console.log(deeplink); // you will receive deeplink info on "deeplink"
-     // });
- 
-     // adbrix RN plugin Version 2:
+
      AdbrixRm.initRNPlugin();
      AdbrixRm.setDeferredDeeplinkListener(function (deferredDeeplink) {
        console.log('deferredDeeplink msg arrived!');
