@@ -15,6 +15,12 @@
 		4F2D74A226BC111800D5D5AB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D74A126BC111800D5D5AB /* AdSupport.framework */; };
 		4F2D74A426BC112300D5D5AB /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D74A326BC112300D5D5AB /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		4F2D74A626BC114E00D5D5AB /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2D74A526BC114E00D5D5AB /* AppTrackingTransparency.framework */; };
+		4F55ECFD26BCD1D200194C50 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F55ECFB26BCD1D200194C50 /* NotificationCenter.framework */; };
+		4F55ECFE26BCD1D200194C50 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F55ECFC26BCD1D200194C50 /* UserNotifications.framework */; };
+		4F55ED0726BCD1FD00194C50 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F55ED0626BCD1FD00194C50 /* NotificationService.m */; };
+		4F55ED0B26BCD1FD00194C50 /* adbrixPushNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4F55ED0326BCD1FD00194C50 /* adbrixPushNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4F55ED1126BCD24800194C50 /* AdBrixRM_XC.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F55ED1026BCD24800194C50 /* AdBrixRM_XC.xcframework */; };
+		4F55ED1226BCD24800194C50 /* AdBrixRM_XC.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F55ED1026BCD24800194C50 /* AdBrixRM_XC.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ECBF1E316CA30D409B1D6721 /* libPods-SampleProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB18C5F1C6DC0907C7C7BF4D /* libPods-SampleProject.a */; };
 		FD61B29E044678238FFB6B34 /* libPods-SampleProject-SampleProjectTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACE97EAECC8A16CF3EDC9203 /* libPods-SampleProject-SampleProjectTests.a */; };
@@ -28,7 +34,39 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = SampleProject;
 		};
+		4F55ED0926BCD1FD00194C50 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F55ED0226BCD1FD00194C50;
+			remoteInfo = adbrixPushNotificationService;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F55ED0F26BCD1FD00194C50 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4F55ED0B26BCD1FD00194C50 /* adbrixPushNotificationService.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F55ED1326BCD24800194C50 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4F55ED1226BCD24800194C50 /* AdBrixRM_XC.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* SampleProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +84,13 @@
 		4F2D74A126BC111800D5D5AB /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		4F2D74A326BC112300D5D5AB /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
 		4F2D74A526BC114E00D5D5AB /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		4F55ECFB26BCD1D200194C50 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		4F55ECFC26BCD1D200194C50 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		4F55ED0326BCD1FD00194C50 /* adbrixPushNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = adbrixPushNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F55ED0526BCD1FD00194C50 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		4F55ED0626BCD1FD00194C50 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		4F55ED0826BCD1FD00194C50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F55ED1026BCD24800194C50 /* AdBrixRM_XC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdBrixRM_XC.xcframework; path = Pods/AdBrixRemastered_XC/AdBrixRM_XC.xcframework; sourceTree = "<group>"; };
 		61D66F6458FA65B8F5E259A3 /* Pods-SampleProject-SampleProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleProject-SampleProjectTests.release.xcconfig"; path = "Target Support Files/Pods-SampleProject-SampleProjectTests/Pods-SampleProject-SampleProjectTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SampleProject/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB18C5F1C6DC0907C7C7BF4D /* libPods-SampleProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SampleProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,11 +112,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F55ECFD26BCD1D200194C50 /* NotificationCenter.framework in Frameworks */,
 				4F2D74A626BC114E00D5D5AB /* AppTrackingTransparency.framework in Frameworks */,
 				ECBF1E316CA30D409B1D6721 /* libPods-SampleProject.a in Frameworks */,
 				4F2D74A426BC112300D5D5AB /* AdServices.framework in Frameworks */,
 				4F2D74A026BC110B00D5D5AB /* iAd.framework in Frameworks */,
 				4F2D74A226BC111800D5D5AB /* AdSupport.framework in Frameworks */,
+				4F55ECFE26BCD1D200194C50 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F55ED0026BCD1FD00194C50 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F55ED1126BCD24800194C50 /* AdBrixRM_XC.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +177,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F55ED1026BCD24800194C50 /* AdBrixRM_XC.xcframework */,
+				4F55ECFB26BCD1D200194C50 /* NotificationCenter.framework */,
+				4F55ECFC26BCD1D200194C50 /* UserNotifications.framework */,
 				4F2D74A526BC114E00D5D5AB /* AppTrackingTransparency.framework */,
 				4F2D74A326BC112300D5D5AB /* AdServices.framework */,
 				4F2D74A126BC111800D5D5AB /* AdSupport.framework */,
@@ -131,6 +189,16 @@
 				ACE97EAECC8A16CF3EDC9203 /* libPods-SampleProject-SampleProjectTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F55ED0426BCD1FD00194C50 /* adbrixPushNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				4F55ED0526BCD1FD00194C50 /* NotificationService.h */,
+				4F55ED0626BCD1FD00194C50 /* NotificationService.m */,
+				4F55ED0826BCD1FD00194C50 /* Info.plist */,
+			);
+			path = adbrixPushNotificationService;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -146,6 +214,7 @@
 				13B07FAE1A68108700A75B9A /* SampleProject */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SampleProjectTests */,
+				4F55ED0426BCD1FD00194C50 /* adbrixPushNotificationService */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				1FB72E7DE7FE39658BFA5E21 /* Pods */,
@@ -160,6 +229,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* SampleProject.app */,
 				00E356EE1AD99517003FC87E /* SampleProjectTests.xctest */,
+				4F55ED0326BCD1FD00194C50 /* adbrixPushNotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -200,15 +270,35 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				1D25FD2F0B38ADD0AE6E41E9 /* [CP] Embed Pods Frameworks */,
 				639979F4C590A3F5AE436662 /* [CP] Copy Pods Resources */,
+				4F55ED0F26BCD1FD00194C50 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4F55ED0A26BCD1FD00194C50 /* PBXTargetDependency */,
 			);
 			name = SampleProject;
 			productName = SampleProject;
 			productReference = 13B07F961A680F5B00A75B9A /* SampleProject.app */;
 			productType = "com.apple.product-type.application";
+		};
+		4F55ED0226BCD1FD00194C50 /* adbrixPushNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F55ED0C26BCD1FD00194C50 /* Build configuration list for PBXNativeTarget "adbrixPushNotificationService" */;
+			buildPhases = (
+				4F55ECFF26BCD1FD00194C50 /* Sources */,
+				4F55ED0026BCD1FD00194C50 /* Frameworks */,
+				4F55ED0126BCD1FD00194C50 /* Resources */,
+				4F55ED1326BCD24800194C50 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = adbrixPushNotificationService;
+			productName = adbrixPushNotificationService;
+			productReference = 4F55ED0326BCD1FD00194C50 /* adbrixPushNotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -224,6 +314,9 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					4F55ED0226BCD1FD00194C50 = {
+						CreatedOnToolsVersion = 12.5.1;
 					};
 				};
 			};
@@ -242,6 +335,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* SampleProject */,
 				00E356ED1AD99517003FC87E /* SampleProjectTests */,
+				4F55ED0226BCD1FD00194C50 /* adbrixPushNotificationService */,
 			);
 		};
 /* End PBXProject section */
@@ -260,6 +354,13 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F55ED0126BCD1FD00194C50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +532,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4F55ECFF26BCD1FD00194C50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F55ED0726BCD1FD00194C50 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -438,6 +547,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* SampleProject */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		4F55ED0A26BCD1FD00194C50 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F55ED0226BCD1FD00194C50 /* adbrixPushNotificationService */;
+			targetProxy = 4F55ED0926BCD1FD00194C50 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -540,6 +654,62 @@
 				PRODUCT_NAME = SampleProject;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		4F55ED0D26BCD1FD00194C50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = adbrixPushNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.adbrix.reactnative.example.adbrixPushNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4F55ED0E26BCD1FD00194C50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = adbrixPushNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.adbrix.reactnative.example.adbrixPushNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -683,6 +853,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F55ED0C26BCD1FD00194C50 /* Build configuration list for PBXNativeTarget "adbrixPushNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F55ED0D26BCD1FD00194C50 /* Debug */,
+				4F55ED0E26BCD1FD00194C50 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

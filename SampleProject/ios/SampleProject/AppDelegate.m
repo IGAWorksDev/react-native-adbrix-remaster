@@ -78,6 +78,25 @@ static void InitializeFlipper(UIApplication *application) {
     }];
   }
   
+  // Push notification service
+  
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
+  [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
+    
+    if(granted){
+      [[UIApplication sharedApplication] registerForRemoteNotifications];
+      AdBrixRM * adBrix = [AdBrixRM sharedInstance];
+      [adBrix setPushEnableToPushEnable:true];
+    }
+    
+    else{
+      AdBrixRM * adBrix = [AdBrixRM sharedInstance];
+      [adBrix setPushEnableToPushEnable:false];
+    }
+    
+  }];
+  
   return YES;
 }
 
@@ -115,6 +134,23 @@ static void InitializeFlipper(UIApplication *application) {
  return [RCTLinkingManager application:application
                   continueUserActivity:userActivity
                     restorationHandler:restorationHandler];
+}
+
+// adbrix push notification service
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+
+   AdBrixRM * adBrix = [AdBrixRM sharedInstance];
+   [adBrix setRegistrationIdWithDeviceToken:deviceToken];
+
+}
+
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
+  
+  AdBrixRM * adBrix =[AdBrixRM sharedInstance];
+  [adBrix userNotificationCenterWithCenter:center response:response];
+  completionHandler();
+  
 }
 
 @end
