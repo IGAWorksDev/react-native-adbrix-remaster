@@ -85,9 +85,12 @@ static void InitializeFlipper(UIApplication *application) {
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
     
     if(granted){
-      [[UIApplication sharedApplication] registerForRemoteNotifications];
+     
       AdBrixRM * adBrix = [AdBrixRM sharedInstance];
       [adBrix setPushEnableToPushEnable:true];
+      dispatch_async(dispatch_get_main_queue(), ^{
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        });
     }
     
     else{
@@ -139,10 +142,8 @@ static void InitializeFlipper(UIApplication *application) {
 // adbrix push notification service
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-
    AdBrixRM * adBrix = [AdBrixRM sharedInstance];
    [adBrix setRegistrationIdWithDeviceToken:deviceToken];
-
 }
 
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
