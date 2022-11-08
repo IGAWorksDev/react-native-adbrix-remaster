@@ -144,6 +144,7 @@ const App: () => Node = () => {
               userProperties.setProperty('user_nick', 'peterPark');
               userProperties.setProperty('place', 'Seoul');
               userProperties.setProperty('height', 180);
+              userProperties.setProperty('double_value', 1.1234);
               userProperties.setProperty('married', false);
 
               AdbrixRm.setUserProperties(userProperties);

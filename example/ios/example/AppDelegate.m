@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 #import <AdSupport/AdSupport.h>
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import <AdBrixRM_XC/AdBrixRM_XC-Swift.h> // We use AdBrixRM_XC module name instead of AdBrixRM
+#import <AdBrixRmKit/AdBrixRmKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 // iOS 9.x or newer
@@ -59,7 +59,7 @@ static void InitializeFlipper(UIApplication *application) {
   
   // Create AdBrixRM Instance, Only need with Adbrix RN Plugin V2
   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
-  [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
+  [adBrix initAdBrixWithAppKey:@"IqDU25JtZkaTEoy0VquaAw" secretKey:@"HiZeD4ZdCU6TVRwS4QPHQg"];
 
 //  if ((NSClassFromString(@"ASIdentifierManager")) != nil) {
 //     NSUUID *ifa =[[ASIdentifierManager sharedManager]advertisingIdentifier];

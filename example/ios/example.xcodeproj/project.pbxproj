@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* exampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* exampleTests.m */; };
+		0CF3E708290A1DC500193F2B /* AdBrixRmKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF3E707290A1DC500193F2B /* AdBrixRmKit.xcframework */; };
+		0CF3E709290A1DC500193F2B /* AdBrixRmKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF3E707290A1DC500193F2B /* AdBrixRmKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -21,8 +23,6 @@
 		4FFAABFD269EC12C00C76A3D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFAABFC269EC12C00C76A3D /* NotificationCenter.framework */; };
 		4FFAAC06269EC1B200C76A3D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAAC05269EC1B200C76A3D /* NotificationService.m */; };
 		4FFAAC0A269EC1B200C76A3D /* adbrixDfineryExamplePushExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4FFAAC02269EC1B200C76A3D /* adbrixDfineryExamplePushExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		4FFAAC10269EC1FB00C76A3D /* AdBrixRM_XC.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFAAC0F269EC1FB00C76A3D /* AdBrixRM_XC.xcframework */; };
-		4FFAAC11269EC1FB00C76A3D /* AdBrixRM_XC.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFAAC0F269EC1FB00C76A3D /* AdBrixRM_XC.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +44,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0CF3E70A290A1DC500193F2B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0CF3E709290A1DC500193F2B /* AdBrixRmKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FFAAC0E269EC1B200C76A3D /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -55,23 +66,13 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4FFAAC12269EC1FB00C76A3D /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				4FFAAC11269EC1FB00C76A3D /* AdBrixRM_XC.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* exampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = exampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* exampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = exampleTests.m; sourceTree = "<group>"; };
+		0CF3E707290A1DC500193F2B /* AdBrixRmKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdBrixRmKit.xcframework; path = Pods/AdBrixRmKit/AdBrixRmKit.xcframework; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = example/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = example/AppDelegate.m; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		4FFAAC04269EC1B200C76A3D /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		4FFAAC05269EC1B200C76A3D /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		4FFAAC07269EC1B200C76A3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4FFAAC0F269EC1FB00C76A3D /* AdBrixRM_XC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdBrixRM_XC.xcframework; path = Pods/AdBrixRemastered_XC/AdBrixRM_XC.xcframework; sourceTree = "<group>"; };
 		696B4795B122014849FEC4F1 /* Pods-example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example.release.xcconfig"; path = "Target Support Files/Pods-example/Pods-example.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = example/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D4078947E160516951B13320 /* libPods-example-exampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example-exampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FFAAC10269EC1FB00C76A3D /* AdBrixRM_XC.xcframework in Frameworks */,
+				0CF3E708290A1DC500193F2B /* AdBrixRmKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +169,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4FFAAC0F269EC1FB00C76A3D /* AdBrixRM_XC.xcframework */,
+				0CF3E707290A1DC500193F2B /* AdBrixRmKit.xcframework */,
 				4FFAABFC269EC12C00C76A3D /* NotificationCenter.framework */,
 				4FFAABFA269EC11400C76A3D /* UserNotifications.framework */,
 				4F38643E269AB5790079BC1A /* AdServices.framework */,
@@ -293,7 +293,7 @@
 				4FFAABFE269EC1B200C76A3D /* Sources */,
 				4FFAABFF269EC1B200C76A3D /* Frameworks */,
 				4FFAAC00269EC1B200C76A3D /* Resources */,
-				4FFAAC12269EC1FB00C76A3D /* Embed Frameworks */,
+				0CF3E70A290A1DC500193F2B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -810,7 +810,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -875,7 +875,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
