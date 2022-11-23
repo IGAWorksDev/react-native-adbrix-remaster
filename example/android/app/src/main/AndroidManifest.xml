@@ -3,8 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- OPTIONAL -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
       android:name=".MainApplication"
@@ -13,9 +12,8 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
-      <meta-data
-        android:name="com.google.firebase.messaging.default_notification_channel_id"
-        android:value="example app channel" />
+      <meta-data android:name="AdBrixRmAppKey" android:value="IqDU25JtZkaTEoy0VquaAw" />
+      <meta-data android:name="AdBrixRmSecretKey" android:value="HiZeD4ZdCU6TVRwS4QPHQg" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

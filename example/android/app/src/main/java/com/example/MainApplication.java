@@ -13,51 +13,43 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import android.os.Build;
+import com.example.ReactNativeFlipper;
 import io.adbrix.AdbrixPackage;
+import io.adbrix.AbxReactApplication;
 import com.igaworks.v2.core.application.AbxActivityHelper;
 import com.igaworks.v2.core.application.AbxActivityLifecycleCallbacks;
 
-public class MainApplication extends Application implements ReactApplication {
-
-  private final ReactNativeHost mReactNativeHost =
-      new ReactNativeHost(this) {
-        @Override
-        public boolean getUseDeveloperSupport() {
-          return BuildConfig.DEBUG;
-        }
-
-        @Override
-        protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
-          List<ReactPackage> packages = new PackageList(this).getPackages();
-          // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
-          packages.add(new AdbrixPackage());
-          return packages;
-        }
-
-        @Override
-        protected String getJSMainModuleName() {
-          return "index";
-        }
-      };
+public class MainApplication extends AbxReactApplication {
 
   @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
+  public ReactNativeHost initReactNativeHost() {
+    return new ReactNativeHost(this) {
+      @Override
+      public boolean getUseDeveloperSupport() {
+        return BuildConfig.DEBUG;
+      }
+
+      @Override
+      protected List<ReactPackage> getPackages() {
+        @SuppressWarnings("UnnecessaryLocalVariable")
+        List<ReactPackage> packages = new PackageList(this).getPackages();
+        // Packages that cannot be autolinked yet can be added manually here, for example:
+        // packages.add(new MyReactNativePackage());
+        packages.add(new AdbrixPackage());
+        return packages;
+      }
+
+      @Override
+      protected String getJSMainModuleName() {
+        return "index";
+      }
+    };
   }
 
   @Override
   public void onCreate() {
     super.onCreate();
-      SoLoader.init(this, /* native exopackage */ false);
       initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-
-//      AbxActivityHelper.initializeSdk(MainApplication.this, "dW6eSX9fbk2r0Rr4KJIQ0A", "your_adbrix_remastered_secret_key");
-      AbxActivityHelper.initializeSdk(MainApplication.this, "dW6eSX9fbk2r0Rr4KJIQ0A", "tkBFgB2bOUK0L0Jo9FKqyw");
-      if (Build.VERSION.SDK_INT >= 14) {
-          registerActivityLifecycleCallbacks(new AbxActivityLifecycleCallbacks());
-      }
   }
 
   /**
@@ -67,27 +59,9 @@ public class MainApplication extends Application implements ReactApplication {
    * @param context
    * @param reactInstanceManager
    */
-  private static void initializeFlipper(
-      Context context, ReactInstanceManager reactInstanceManager) {
+  private static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {
-      try {
-        /*
-         We use reflection here to pick up the class that initializes Flipper,
-        since Flipper library is not available in release mode
-        */
-        Class<?> aClass = Class.forName("com.example.ReactNativeFlipper");
-        aClass
-            .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
-            .invoke(null, context, reactInstanceManager);
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-      } catch (NoSuchMethodException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      } catch (InvocationTargetException e) {
-        e.printStackTrace();
-      }
+      ReactNativeFlipper.initializeFlipper(context, reactInstanceManager);
     }
   }
 }
