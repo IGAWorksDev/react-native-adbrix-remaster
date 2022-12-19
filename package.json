@@ -1,4 +1,3 @@
-
 {
   "name": "react-native-adbrix-remaster",
   "version": "2.1.0",
@@ -8,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "react": "16.13.1",
-    "react-native": "0.63.4"
+    "react": "18.1.0",
+    "react-native": "0.70.6"
   },
   "peerDependencies": {
     "react": "*",
@@ -24,10 +23,10 @@
     "igaworks"
   ],
   "author": "mike-han",
-  "homepage" : "https://www.adbrix.io",
+  "homepage": "https://www.adbrix.io",
   "license": "IGAWORKS",
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/IGAWorksDev/react-native-adbrix-remaster.git"
-  }  
+    "type": "git",
+    "url": "git+https://github.com/IGAWorksDev/react-native-adbrix-remaster.git"
+  }
 }

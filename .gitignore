@@ -20,7 +20,7 @@ yarn-error.log
 package-lock.json
 yarn.lock
 yarn-debug.log
-  
+*.hprof
 
 # Xcode
 #

@@ -1,6 +1,8 @@
 package io.adbrix;
 
-import android.util.Log;
+import android.app.Activity;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -17,7 +19,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import io.adbrix.sdk.component.AbxLog;
 
 // Version 2 note: 20210707
 // Remove startAdbrixSDK API, add new initRNPlugin API
@@ -25,37 +27,37 @@ import javax.annotation.Nonnull;
 // Use React Native Linking class instead. https://reactnative.dev/docs/linking
 
 @ReactModule(name = AdbrixModule.NAME)
-public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener, AdBrixRm.DeeplinkListener{
+public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm.DeferredDeeplinkListener, AdBrixRm.DeeplinkListener {
 
-    private final ReactApplicationContext mContext;
+    private final ReactApplicationContext reactApplicationContext;
     public static final String NAME = "AdbrixRm";
 
-    public AdbrixModule(@Nonnull final ReactApplicationContext reactContext) {
-        super(reactContext);
-        this.mContext = reactContext;
+    public AdbrixModule(@NonNull final ReactApplicationContext reactApplicationContext) {
+        super(reactApplicationContext);
+        this.reactApplicationContext = reactApplicationContext;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public String getName() {
         return NAME;
     }
 
+    //region AdBrixRm
+
     @ReactMethod
-    public void initRNPlugin(){
-        AdBrixRm.setDeferredDeeplinkListener(this);
+    public void login(String userId) {
+        AdBrixRm.login(userId);
     }
 
+    @ReactMethod
+    public void logout() {
+        AdBrixRm.logout();
+    }
 
     @ReactMethod
     public void gdprForgetMe() {
-        AdBrixRm.gdprForgetMe(mContext);
-    }
-
-    // Yen 20210709
-    @ReactMethod
-    public void setDeviceId(String deviceId) {
-//        AdBrixRm.setCustomDeviceId(deviceId);
+        AdBrixRm.gdprForgetMe(reactApplicationContext);
     }
 
     @ReactMethod
@@ -81,6 +83,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
 
         }
     }
+
     // Yen 20210709
 //     @ReactMetho   public void setLogLevel(int logLevel) {
 //        switch (logLevel) {
@@ -108,6 +111,49 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
 //
 //        }
 //    }
+    @ReactMethod
+    public void setUserProperties(String jsonString) {
+        JSONObject userPropertiesJSON = new JSONObject();
+        try {
+            if (!AdbrixUtils.isNullString(jsonString)) {
+                userPropertiesJSON = new JSONObject(jsonString);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AdBrixRm.UserProperties userProperties = AdbrixUtils.makeUserProperties(userPropertiesJSON);
+        AdBrixRm.saveUserProperties(userProperties);
+    }
+
+    @ReactMethod
+    public void clearUserProperties() {
+        AdBrixRm.clearUserProperties();
+    }
+
+    @ReactMethod
+    public void setEnableLocationListening(boolean option) {
+        AdBrixRm.setEnableLocationListening(option);
+    }
+
+    @ReactMethod
+    public void setLocation(double lat, double lon) {
+        AdBrixRm.setLocation(lat, lon);
+    }
+
+    @ReactMethod
+    public void event(String eventName, String paramJson) {
+        if (AdbrixUtils.isNullString(paramJson)) {
+            AdBrixRm.event(eventName);
+        } else {
+            try {
+                JSONObject attrmodel = new JSONObject(paramJson);
+
+                AdBrixRm.event(eventName, AdbrixUtils.makeEventProperties(attrmodel));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @ReactMethod
     public void setEventUploadCountInterval(int interval) {
@@ -147,71 +193,25 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         }
     }
 
-
     @ReactMethod
-    public void setEnableLocationListening(boolean option) {
-        AdBrixRm.setEnableLocationListening(option);
+    public void setPushEnable(boolean toEnable) {
+        AdBrixRm.setPushEnable(toEnable);
     }
 
     @ReactMethod
-    public void setLocation(double lat, double lon) {
-        AdBrixRm.setLocation(lat, lon);
-    }
-
-    @ReactMethod
-    public void setUserProperties(String jsonString){
-        JSONObject userPropertiesJSON = new JSONObject();
-        try {
-            if(!AdbrixUtils.isNullString(jsonString)) {
-                userPropertiesJSON = new JSONObject(jsonString);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        AdBrixRm.UserProperties userProperties = AdbrixUtils.makeUserProperties(userPropertiesJSON);
-        AdBrixRm.saveUserProperties(userProperties);
-    }
-    //Yen 20210709 Public to private
-//    @ReactMethod
-//    public void clearUserProperties(){
-//        AdBrixRm.clearUserProperties();
-//    }
-
-    @ReactMethod
-    public void event(String eventName, String paramJson) {
-        if (AdbrixUtils.isNullString(paramJson)){
-            AdBrixRm.event(eventName);
-        }
-        else {
-            try {
-                JSONObject attrmodel = new JSONObject(paramJson);
-
-                AdBrixRm.event(eventName, AdbrixUtils.makeEventProperties(attrmodel));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @ReactMethod
-    public void login(String userId) {
-        AdBrixRm.login(userId);
-    }
-
-    @ReactMethod
-    public void logout() {
-        AdBrixRm.logout();
+    public void setRegistrationId(String token) {
+        AdBrixRm.setRegistrationId(token);
     }
 
     @ReactMethod
     public void commerceViewHome(String extraAttrJsonString) {
-        if(extraAttrJsonString == null){
+        if (extraAttrJsonString == null) {
             AdBrixRm.Commerce.viewHome();
             return;
         }
         JSONObject commerceExtraAttributes = null;
         try {
-                if (extraAttrJsonString != null && extraAttrJsonString.length() > 0) {
+            if (extraAttrJsonString != null && extraAttrJsonString.length() > 0) {
                 commerceExtraAttributes = new JSONObject(extraAttrJsonString);
             }
         } catch (JSONException e) {
@@ -227,18 +227,18 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
             JSONArray categoryArray = new JSONArray();
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(categoryString)){
+            if (!AdbrixUtils.isNullString(categoryString)) {
                 categoryArray = new JSONArray(categoryString);
             }
-            if(!AdbrixUtils.isNullString(productListString)){
+            if (!AdbrixUtils.isNullString(productListString)) {
                 items = new JSONArray(productListString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
             AdBrixRm.CommerceCategoriesModel categories = new AdBrixRm.CommerceCategoriesModel();
-            for(int i=0; i<categoryArray.length();i++){
+            for (int i = 0; i < categoryArray.length(); i++) {
                 categories.setCategory(categoryArray.getString(i));
             }
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
@@ -248,15 +248,16 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
             e.printStackTrace();
         }
     }
+
     @ReactMethod
     public void commerceProductView(final String productString, final String extraString) {
         try {
             JSONObject product = new JSONObject();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 product = new JSONObject(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -273,10 +274,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -293,10 +294,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONObject product = new JSONObject();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 product = new JSONObject(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -313,10 +314,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -334,10 +335,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -355,15 +356,15 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.search(keyword,products, AdbrixUtils.makeEventProperties(extraAttrs));
+            AdBrixRm.Commerce.search(keyword, products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -375,15 +376,15 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONObject product = new JSONObject();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 product = new JSONObject(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
             AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
-            AdBrixRm.Commerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel),productModel,  AdbrixUtils.makeEventProperties(extraAttrs));
+            AdBrixRm.Commerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel), productModel, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -395,10 +396,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -415,10 +416,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -436,7 +437,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void commercePaymentInfoAdded(final String extraString) {
         try {
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.Commerce.paymentInfoAdded(AdbrixUtils.makeEventProperties(extraAttrs));
@@ -450,7 +451,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void gameTutorialCompleted(final boolean is_skip, final String extraString) {
         try {
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.GameProperties.TutorialComplete gameProperties = new AdBrixRm.GameProperties.TutorialComplete()
@@ -466,7 +467,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void gameLevelAchieved(final int level, final String extraString) {
         try {
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.GameProperties.LevelAchieved gameProperties = new AdBrixRm.GameProperties.LevelAchieved().setLevel(level);
@@ -481,7 +482,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void gameCharacterCreated(final String extraString) {
         try {
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.GameProperties.CharacterCreated gameProperties = new AdBrixRm.GameProperties.CharacterCreated();
@@ -496,7 +497,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void gameStageCleared(final String stageName, final String extraString) {
         try {
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.GameProperties.StageCleared gameProperties = new AdBrixRm.GameProperties.StageCleared()
@@ -516,10 +517,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         try {
             JSONArray items = new JSONArray();
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(productString)){
+            if (!AdbrixUtils.isNullString(productString)) {
                 items = new JSONArray(productString);
             }
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
 
@@ -537,7 +538,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
     public void commonSignUp(final String channelName, final String extraString) {
         try {
             JSONObject extraAttrs = new JSONObject();
-            if(!AdbrixUtils.isNullString(extraString)){
+            if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.CommonProperties.SignUp properties = new AdBrixRm.CommonProperties.SignUp()
@@ -596,38 +597,32 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         }
     }
 
+
     @ReactMethod
-    public void setPushEnable(boolean toEnable) {
-        AdBrixRm.setPushEnable(toEnable);
-    }
-    @ReactMethod
-    public void setRegistrationId(String token) {
-        AdBrixRm.setRegistrationId(token);
-    }
-    @ReactMethod
-    public void setAppScanEnable(boolean enable){
+    public void setAppScanEnable(boolean enable) {
         AdBrixRm.setAppScanEnable(enable);
     }
 
     @Override
     public void onReceiveDeferredDeeplink(String deeplink) {
-        mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeferredDeeplinkListener", deeplink);
+        reactApplicationContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeferredDeeplinkListener", deeplink);
     }
+
     // ******************** For v1 backward compatibility only. Please use new API *********************
     @ReactMethod
     public void startAdbrixSDK(String appKey, String secretKey) {
-        AbxActivityHelper.initializeSdk(mContext, appKey, secretKey);
+        AbxActivityHelper.initializeSdk(reactApplicationContext, appKey, secretKey);
         AdBrixRm.setDeferredDeeplinkListener(this);
         AdBrixRm.setDeeplinkListener(this);
         registerLifeCycle();
     }
 
     public void registerLifeCycle() {
-        mContext.addLifecycleEventListener(new LifecycleEventListener() {
+        reactApplicationContext.addLifecycleEventListener(new LifecycleEventListener() {
             @Override
             public void onHostResume() {
-                AdBrixRm.onResume(mContext.getCurrentActivity());
-                AdBrixRm.deeplinkEvent(mContext.getCurrentActivity());
+                AdBrixRm.onResume(reactApplicationContext.getCurrentActivity());
+                AdBrixRm.deeplinkEvent(reactApplicationContext.getCurrentActivity());
             }
 
             @Override
@@ -642,9 +637,28 @@ public class AdbrixModule extends ReactContextBaseJavaModule implements AdBrixRm
         });
 
     }
+
     // Yen 20210709 Use React Native Linking class instead. https://reactnative.dev/docs/linking
     @Override
     public void onReceiveDeeplink(String deeplink) {
-        mContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeeplinkListener", deeplink);
+        reactApplicationContext.getJSModule(RCTNativeAppEventEmitter.class).emit("AdbrixDeeplinkListener", deeplink);
+    }
+
+    private void sendMessageToReact(final String callbackMethodName, final String arguments) {
+        if (reactApplicationContext == null) {
+            AbxLog.i("ReactApplicationContext is null", false);
+            return;
+        }
+        Activity activity = reactApplicationContext.getCurrentActivity();
+        if (activity == null) {
+            AbxLog.i("currentActivity is null", false);
+            return;
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                reactApplicationContext.getJSModule(RCTNativeAppEventEmitter.class).emit(callbackMethodName, arguments);
+            }
+        });
     }
 }
