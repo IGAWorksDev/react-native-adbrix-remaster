@@ -1,5 +1,7 @@
 package io.adbrix;
 
+import android.util.Log;
+
 import com.igaworks.v2.core.AdBrixRm;
 
 import org.json.JSONArray;
@@ -9,6 +11,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import io.adbrix.sdk.component.AbxLog;
+import io.adbrix.sdk.domain.ABXConstants;
+import io.adbrix.sdk.utils.CommonUtils;
 
 public class AdbrixUtils {
 
@@ -141,5 +147,19 @@ public class AdbrixUtils {
             }
         }
         return eventProps;
+    }
+
+    public static AdBrixRm.AbxRemotePushModel makeAbxRemotePushModel(JSONObject pushJsonObject) {
+        AdBrixRm.AbxRemotePushModel abxRemotePushModel = new AdBrixRm.AbxRemotePushModel();
+        try {
+            abxRemotePushModel.campaignId = pushJsonObject.getString(ABXConstants.GROWTH_EVENT_KEY_CAMPAIGN_ID);
+            abxRemotePushModel.campaignRevisionNo = pushJsonObject.getInt(ABXConstants.GROWTH_EVENT_KEY_CAMPAIGN_REVISION_NO);
+            abxRemotePushModel.stepId = pushJsonObject.getString(ABXConstants.GROWTH_EVENT_KEY_STEP_ID);
+            abxRemotePushModel.cycleTime = pushJsonObject.getString(ABXConstants.GROWTH_EVENT_KEY_CYCLE_TIME);
+        } catch (JSONException e) {
+            Log.d("abxrm", "AbxUnityActivity::openPush - Adbrix push tracking parameters don't exist!");
+        }
+
+        return abxRemotePushModel;
     }
 }
