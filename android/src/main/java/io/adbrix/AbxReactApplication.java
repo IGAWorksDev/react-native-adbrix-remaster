@@ -18,25 +18,26 @@ import com.igaworks.v2.core.application.AbxActivityHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.igaworks.v2.core.application.AbxActivityLifecycleCallbacks;
+
 import io.adbrix.sdk.component.AbxLog;
 import io.adbrix.sdk.domain.model.Empty;
 import io.adbrix.sdk.domain.model.Result;
-import io.adbrix.sdk.utils.CommonUtils;
 
 public abstract class AbxReactApplication extends Application implements ReactApplication {
     private ReactNativeHost reactNativeHost;
     public ReactApplicationContext reactApplicationContext;
 
     abstract public ReactNativeHost initReactNativeHost();
+    abstract public void registerListener();
 
     @Override
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
-        AbxActivityHelper.initializeSdk(this,
-                getStringFromMetaData(this, "AdBrixRmAppKey"),
-                getStringFromMetaData(this, "AdBrixRmSecretKey"));
+        AbxActivityHelper.initializeSdk(this, getStringFromMetaData(this, "AdBrixRmAppKey"), getStringFromMetaData(this, "AdBrixRmSecretKey"));
         reactNativeHost = initReactNativeHost();
+        registerActivityLifecycleCallbacks(new AbxActivityLifecycleCallbacks());
     }
 
     @Override
@@ -92,11 +93,11 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         return null;
     }
 
-    public void setDeeplinkListener(String callbackMethodName) {
+    public void setDeeplinkListener() {
         AdBrixRm.setDeeplinkListener(new AdBrixRm.DeeplinkListener() {
             @Override
             public void onReceiveDeeplink(String uriStr) {
-                sendMessageToReact(callbackMethodName, uriStr);
+                sendMessageToReact(DfnCallbackConstants.DEEP_LINK_LISTENER_CALLBACK, uriStr);
             }
         });
     }
@@ -105,11 +106,11 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         AdBrixRm.setDeeplinkListener(null);
     }
 
-    public void setDeferredDeeplinkListener(String callbackMethodName) {
+    public void setDeferredDeeplinkListener() {
         AdBrixRm.setDeferredDeeplinkListener(new AdBrixRm.DeferredDeeplinkListener() {
             @Override
             public void onReceiveDeferredDeeplink(String uriStr) {
-                sendMessageToReact(callbackMethodName, uriStr);
+                sendMessageToReact(DfnCallbackConstants.DEFERRED_LINK_LISTENER_CALLBACK, uriStr);
             }
         });
     }
@@ -118,11 +119,11 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         AdBrixRm.setDeferredDeeplinkListener(null);
     }
 
-    public void setLocalPushMessageListener(String callbackMethodName) {
+    public void setLocalPushMessageListener() {
         AdBrixRm.setLocalPushMessageListener(new AdBrixRm.onTouchLocalPushListener() {
             @Override
             public void onTouchLocalPush(String callbackJsonString) {
-                sendMessageToReact(callbackMethodName, callbackJsonString);
+                sendMessageToReact(DfnCallbackConstants.LOCAL_PUSH_MESSAGE_CALLBACK, callbackJsonString);
             }
         });
     }
@@ -131,11 +132,12 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         AdBrixRm.setLocalPushMessageListener(null);
     }
 
-    public void setRemotePushMessageListener(String callbackMethodName) {
+    public void setRemotePushMessageListener() {
+        AbxLog.d("setRemotePushMessageListener called.", false);
         AdBrixRm.setRemotePushMessageListener(new AdBrixRm.onTouchRemotePushListener() {
             @Override
             public void onTouchRemotePush(String callbackJsonString) {
-                sendMessageToReact(callbackMethodName, callbackJsonString);
+                sendMessageToReact(DfnCallbackConstants.REMOTE_PUSH_MESSAGE_CALLBACK, callbackJsonString);
             }
         });
     }
@@ -144,7 +146,7 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         AdBrixRm.setRemotePushMessageListener(null);
     }
 
-    public void setInAppMessageClickListener(String callbackMethodName) {
+    public void setInAppMessageClickListener() {
         AdBrixRm.setInAppMessageClickListener(new AdBrixRm.InAppMessageClickListener() {
             @Override
             public void onReceiveInAppMessageClick(String actionId, String actionType, String actionArg, boolean isClosed) {
@@ -157,7 +159,7 @@ public abstract class AbxReactApplication extends Application implements ReactAp
                 } catch (JSONException e) {
                     AbxLog.e("onReceiveInAppMessageClick() parse error", e, false);
                 }
-                sendMessageToReact(callbackMethodName, jsonObject.toString());
+                sendMessageToReact(DfnCallbackConstants.IN_APP_MESSAGE_CLICK_CALLBACK, jsonObject.toString());
             }
         });
     }
@@ -166,11 +168,11 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         AdBrixRm.setInAppMessageClickListener(null);
     }
 
-    public void setDfnInAppMessageAutoFetchListener(String callbackMethodName) {
+    public void setDfnInAppMessageAutoFetchListener() {
         AdBrixRm.setDfnInAppMessageAutoFetchListener(new AdBrixRm.DfnInAppMessageAutoFetchListener() {
             @Override
             public void onFetchInAppMessage(Result<Empty> result) {
-                sendMessageToReact(callbackMethodName, result.toString());
+                sendMessageToReact(DfnCallbackConstants.IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, result.toString());
             }
         });
     }
@@ -179,11 +181,7 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         AdBrixRm.setDfnInAppMessageAutoFetchListener(null);
     }
 
-    public void setLogListener(String callbackMethodName) {
-        if (CommonUtils.isNullOrEmpty(callbackMethodName)) {
-            AbxLog.d("callbackMethodName is null or empty", false);
-            return;
-        }
+    public void setLogListener() {
         AdBrixRm.setLogListener(new AdBrixRm.LogListener() {
             @Override
             public void onPrintLog(int level, String message) {
@@ -211,7 +209,7 @@ public abstract class AbxReactApplication extends Application implements ReactAp
                 }
                 stringBuilder.append("] ");
                 stringBuilder.append(message);
-                sendMessageToReact(callbackMethodName, stringBuilder.toString());
+                sendMessageToReact(DfnCallbackConstants.LOG_LISTENER_CALLBACK, stringBuilder.toString());
             }
         });
     }

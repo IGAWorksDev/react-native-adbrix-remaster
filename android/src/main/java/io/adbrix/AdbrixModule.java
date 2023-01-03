@@ -1,16 +1,13 @@
 package io.adbrix;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.icu.text.Edits;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -444,7 +441,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     @ReactMethod(isBlockingSynchronousMethod = true)
     public String getSDKVersion() {
         String sdkVersion = AdBrixRm.SDKVersion();
-        sendMessageToReact("sdkversion", sdkVersion);
         return sdkVersion;
     }
 
@@ -659,8 +655,32 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         });
     }
 
-    // todo : application?
+    @ReactMethod
+    public void setInAppMessageFetchMode(int mode) {
+        DfnInAppMessageFetchMode dfnInAppMessageFetchMode;
+        switch (mode){
+            case 0: {
+                dfnInAppMessageFetchMode = DfnInAppMessageFetchMode.USER_ID;
+                break;
+            }
+            case 1:{
+                dfnInAppMessageFetchMode = DfnInAppMessageFetchMode.ADID;
+                break;
+            }
+            default:{
+                dfnInAppMessageFetchMode = DfnInAppMessageFetchMode.USER_ID;
+                AbxLog.e("setInAppMessageFetchMode() unknown mode!", false);
+                break;
+            }
+        }
 
+        AdBrixRm.setInAppMessageFetchMode(dfnInAppMessageFetchMode);
+    }
+
+    @ReactMethod
+    public void setInAppMessageToken(String token) {
+        AdBrixRm.setInAppMessageToken(token);
+    }
 
     @ReactMethod
     public void fetchInAppMessage(Callback callback) {
@@ -668,8 +688,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.fetchInAppMessage(new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
-                System.out.println("fetchInAppMessage completion hanle() is called");
-                AbxLog.d("fetchInAppMessage completion hanle() is called", false);
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -702,9 +723,13 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void openInAppMessage(String campaignId, Callback callback) {
+        AbxLog.d("campaignId : "+campaignId, false);
         AdBrixRm.openInAppMessage(campaignId, new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -1107,33 +1132,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     // ******************** For v1 backward compatibility only. Please use new API *********************
     @ReactMethod
     public void startAdbrixSDK(String appKey, String secretKey) {
-        AbxActivityHelper.initializeSdk(reactApplicationContext, appKey, secretKey);
-        AdBrixRm.setDeferredDeeplinkListener(this);
-        AdBrixRm.setDeeplinkListener(this);
-        registerLifeCycle();
-    }
-
-    public void registerLifeCycle() {
-        reactApplicationContext.addLifecycleEventListener(new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
-                AbxLog.i("onHostResume", false);
-                AdBrixRm.onResume(reactApplicationContext.getCurrentActivity());
-                AdBrixRm.deeplinkEvent(reactApplicationContext.getCurrentActivity());
-            }
-
-            @Override
-            public void onHostPause() {
-                AbxLog.i("onHostPause", false);
-                AdBrixRm.onPause();
-            }
-
-            @Override
-            public void onHostDestroy() {
-                AbxLog.i("onHostDestroy", false);
-                AdBrixRm.onDestroy(reactApplicationContext.getCurrentActivity());
-            }
-        });
 
     }
 
