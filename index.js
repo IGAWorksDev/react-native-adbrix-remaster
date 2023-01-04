@@ -10,15 +10,14 @@ const { AdbrixRm } = NativeModules;
 
 const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
 
-const AdbrixDeferredDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeferredDeeplinkListener", (deeplink) => {
-    AdbrixRmReact.emit("AdbrixDeferredDeeplinkListener", deeplink);
-});
-const AdbrixDeeplinkEventEmitter = AdbrixRmCallBack.addListener("AdbrixDeeplinkListener", (deeplink) => {
-    AdbrixRmReact.emit("AdbrixDeeplinkListener", deeplink);
-});
 // model
 var deferredDeeplinkListener = null;
 var deeplinkListener = null;
+var localPushMessageListener = null;
+var remoteMessageListener = null;
+var inAppMessageClickListener = null;
+var dfnInAppMessageAutoFetchListener = null;
+var logListener = null;
 
 AdbrixRmReact.UserProperties = class {
     constructor() {
@@ -364,17 +363,6 @@ AdbrixRmReact.deepLinkEvent = () => {
     return AdbrixRm.deepLinkEvent();
 }
 
-
-AdbrixRmReact.setDeferredDeeplinkListener = (functionName) => {
-    if (null != deferredDeeplinkListener) {
-        deferredDeeplinkListener.remove();
-        deferredDeeplinkListener = null;
-    }
-    if (functionName != null) {
-        deferredDeeplinkListener = AdbrixRmReact.addListener('AdbrixDeferredDeeplinkListener', functionName);
-    }
-}
-
 function isDouble(value) {
     var temp = value.toString();
     if (temp.indexOf('.') == -1) {
@@ -432,7 +420,6 @@ function assignAbxRemotePushModel(pushModel) {
 
 
 //constant
-
 AdbrixRmReact.INVITE_CHANNEL_KAKAO = "Kakao";
 AdbrixRmReact.INVITE_CHANNEL_NAVER = "Naver";
 AdbrixRmReact.INVITE_CHANNEL_LINE = "Line";
@@ -500,21 +487,130 @@ AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 60;
 AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
 AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
 
+const DEFERRED_LINK_LISTENER_CALLBACK = "DfnDeferredDeeplinkListener";
+const DEEP_LINK_LISTENER_CALLBACK = "DfnDeeplinkListener";
+const LOCAL_PUSH_MESSAGE_CALLBACK = "DfnLocalPushMessageListener";
+const REMOTE_PUSH_MESSAGE_CALLBACK = "DfnRemotePushMessageListener";
+const IN_APP_MESSAGE_CLICK_CALLBACK = "DfnInAppMessageClickListener";
+const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK = "DfnInAppMessageAutoFetchListener";
+const LOG_LISTENER_CALLBACK = "DfnLogListener";
+
 // ******************** For v1 backward compatibility only. Please use new API *********************
 // Depreciated: Should implement on native side
 AdbrixRmReact.startAdbrixSDK = (appKey, secretKey) => {
     console.log("startAdbrixSDK was removed from plugin version 2. Please use initRNPlugin. Check new integration guide at: https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-")
     return AdbrixRm.startAdbrixSDK(appKey, secretKey);
 }
+// ******************** END v1 backward compatibility *************
+
+// 리스너 콜백
+AdbrixRmReact.setDeferredDeeplinkListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(DEFERRED_LINK_LISTENER_CALLBACK);
+    AdbrixRmCallBack.addListener(DEFERRED_LINK_LISTENER_CALLBACK, (deeplink) => {
+        AdbrixRmReact.emit(DEFERRED_LINK_LISTENER_CALLBACK, deeplink);
+    });
+
+    if (null != deferredDeeplinkListener) {
+        deferredDeeplinkListener.remove();
+        deferredDeeplinkListener = null;
+    }
+    if (functionName != null) {
+        deferredDeeplinkListener = AdbrixRmReact.addListener(DEFERRED_LINK_LISTENER_CALLBACK, functionName);
+    }
+}
+
 AdbrixRmReact.setDeeplinkListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(DEEP_LINK_LISTENER_CALLBACK);
+    AdbrixRmCallBack.addListener(DEEP_LINK_LISTENER_CALLBACK, (deeplink) => {
+        AdbrixRmReact.emit(DEEP_LINK_LISTENER_CALLBACK, deeplink);    
+    });
+    
     if (null != deeplinkListener) {
         deeplinkListener.remove();
         deeplinkListener = null;
     }
     if (functionName != null) {
-        deeplinkListener = AdbrixRmReact.addListener('AdbrixDeeplinkListener', functionName);
+        deeplinkListener = AdbrixRmReact.addListener(DEEP_LINK_LISTENER_CALLBACK, functionName);
     }
 }
-// ******************** END v1 backward compatibility *************
+
+AdbrixRmReact.setLocalPushMessageListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(LOCAL_PUSH_MESSAGE_CALLBACK);
+    AdbrixRmCallBack.addListener(LOCAL_PUSH_MESSAGE_CALLBACK, (callbackJsonString) => {
+        AdbrixRmReact.emit(LOCAL_PUSH_MESSAGE_CALLBACK, callbackJsonString);    
+    });
+
+    if (null != localPushMessageListener) {
+        localPushMessageListener.remove();
+        localPushMessageListener = null;
+    }
+    if (functionName != null) {
+        localPushMessageListener = AdbrixRmReact.addListener(LOCAL_PUSH_MESSAGE_CALLBACK, functionName);
+    }
+}
+
+AdbrixRmReact.setRemotePushMessageListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(REMOTE_PUSH_MESSAGE_CALLBACK)
+    AdbrixRmCallBack.addListener(REMOTE_PUSH_MESSAGE_CALLBACK, (callbackJsonString) => {
+        AdbrixRmReact.emit(REMOTE_PUSH_MESSAGE_CALLBACK, callbackJsonString);    
+    });
+
+    if (null != remoteMessageListener) {
+        remoteMessageListener.remove();
+        remoteMessageListener = null;
+    }
+
+    if (functionName != null) {
+        remoteMessageListener = AdbrixRmReact.addListener(REMOTE_PUSH_MESSAGE_CALLBACK, functionName);
+    }
+}
+
+AdbrixRmReact.setInAppMessageClickListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(IN_APP_MESSAGE_CLICK_CALLBACK);
+    AdbrixRmCallBack.addListener(IN_APP_MESSAGE_CLICK_CALLBACK, (callbackJsonString) => {
+        AdbrixRmReact.emit(IN_APP_MESSAGE_CLICK_CALLBACK, callbackJsonString);    
+    });
+
+    if (null != inAppMessageClickListener) {
+        inAppMessageClickListener.remove();
+        inAppMessageClickListener = null;
+    }
+
+    if (functionName != null) {
+        inAppMessageClickListener = AdbrixRmReact.addListener(IN_APP_MESSAGE_CLICK_CALLBACK, functionName);
+    }
+}
+
+AdbrixRmReact.setDfnInAppMessageAutoFetchListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK);
+    AdbrixRmCallBack.addListener(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, (callbackJsonString) => {
+        AdbrixRmReact.emit(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, callbackJsonString);    
+    });
+
+    if (null != dfnInAppMessageAutoFetchListener) {
+        dfnInAppMessageAutoFetchListener.remove();
+        dfnInAppMessageAutoFetchListener = null;
+    }
+
+    if (functionName != null) {
+        dfnInAppMessageAutoFetchListener = AdbrixRmReact.addListener(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, functionName);
+    }
+}
+
+AdbrixRmReact.setLogListener = (functionName) => {
+    AdbrixRmCallBack.removeAllListeners(LOG_LISTENER_CALLBACK);
+    AdbrixRmCallBack.addListener(LOG_LISTENER_CALLBACK, (callbackJsonString) => {
+        AdbrixRmReact.emit(LOG_LISTENER_CALLBACK, callbackJsonString);    
+    });
+    
+    if (null != logListener) {
+        logListener.remove();
+        logListener = null;
+    }
+
+    if (functionName != null) {
+        logListener = AdbrixRmReact.addListener("DfnLogListener", functionName);
+    }
+}
 
 export default AdbrixRmReact;
