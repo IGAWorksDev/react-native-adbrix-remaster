@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -19,7 +20,6 @@ import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.google.firebase.messaging.RemoteMessage;
 import com.igaworks.v2.core.AbxCommerce;
 import com.igaworks.v2.core.AdBrixRm;
-import com.igaworks.v2.core.application.AbxActivityHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -185,6 +185,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.flushAllEvents(new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -312,6 +315,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         } catch (JSONException e) {
             AbxLog.e("setBigPictureClientPushEvent() parse error: ",e, false);
         }
+
         AdBrixRm.setBigPictureClientPushEvent(reactApplicationContext, AdBrixRm.BigPicturePushProperties.fromJSONObject(jsonObject), alwaysIsShown);
     }
 
@@ -321,8 +325,24 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void cancelLocalPushNotification(int[] eventId) {
-        AdBrixRm.cancelLocalPushNotification(reactApplicationContext, eventId);
+    public void cancelLocalPushNotification(ReadableArray readableArrayOfEventId) {
+        if (readableArrayOfEventId == null || readableArrayOfEventId.size() == 0) {
+            AbxLog.e("cancelLocalPushNotification : given parameter is null or empty", false);
+            return;
+        }
+
+        List<Integer> listOfEventId = new ArrayList<>();
+        for (int i = 0; i < readableArrayOfEventId.size(); i++) {
+            int eventId = readableArrayOfEventId.getInt(i);
+            listOfEventId.add(eventId);
+        }
+
+        int[] eventIds = new int[listOfEventId.size()];
+        for (int i = 0; i < eventIds.length; i++) {
+            eventIds[i] = listOfEventId.get(i);
+        }
+
+        AdBrixRm.cancelLocalPushNotification(reactApplicationContext, eventIds);
     }
     @ReactMethod
     public void cancelLocalPushNotificationAll() {
@@ -336,7 +356,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public String getRegisteredLocalPushNotification() {
-        // todo : Readable Array로 반환해서 스크립트 단에서 사용하기 편하게 만들어야 할 수도.
         return AdBrixRm.getRegisteredLocalPushNotification().toString();
     }
 
@@ -347,7 +366,19 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setNotificationOption(int priority, int visibility) {
-        AdBrixRm.setNotificationOption(reactApplicationContext, priority, visibility);
+        int resultPriority = priority;
+        int resultVisibility = visibility;
+
+        if (resultPriority < -2 || resultPriority > 2) {
+            AbxLog.w("setNotificationOption() : priority has to between -2 to 2. setting default priority(0).", false);
+            resultPriority = NotificationCompat.PRIORITY_DEFAULT;
+        }
+        if (resultVisibility < -1 || resultVisibility > 1) {
+            AbxLog.w("setNotificationOption() : visibility has to between -1 to 1. setting default visibility(0).", false);
+            resultVisibility = NotificationCompat.VISIBILITY_PRIVATE;
+        }
+
+        AdBrixRm.setNotificationOption(reactApplicationContext, resultPriority, resultPriority);
     }
     @ReactMethod
     public void setNotificationChannel(String channelName, String channelDescription, int importance, boolean vibrateEnable) {
@@ -355,7 +386,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setKakaoId(final  String kakaoId) {
+    public void setKakaoId(final String kakaoId) {
         AdBrixRm.setKakaoId(kakaoId);
     }
 
@@ -397,7 +428,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AdBrixRm.AbxRemotePushModel abxRemotePushModel = AdbrixUtils.makeAbxRemotePushModel(pushJsonObject);
             AdBrixRm.openPush(abxRemotePushModel);
         } catch (Exception e) {
-            Log.d("abxrm", "AdbrixModule::openPush - Adbrix push tracking parameters don't exist!");
+            AbxLog.e("openPush() - Adbrix push tracking parameters don't exist! ", false);
         }
     }
 
@@ -406,6 +437,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         Runnable onSuccessRunnable = new Runnable() {
             @Override
             public void run() {
+                if (onSuccessCallback == null) {
+                    return;
+                }
                 onSuccessCallback.invoke("delete User Data And Stpo SDK Success");
             }
         };
@@ -413,6 +447,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         Runnable onFailRunnable = new Runnable() {
             @Override
             public void run() {
+                if (onFailCallback == null) {
+                    return;
+                }
                 onFailCallback.invoke("Fail to delete User Data And Stop SDK");
             }
         };
@@ -425,12 +462,18 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         Runnable onSuccessRunnable = new Runnable() {
             @Override
             public void run() {
+                if (onSuccessCallback == null) {
+                    return;
+                }
                 onSuccessCallback.invoke("restartSDK() onSuccess");
             }
         };
         Runnable onFailRunnable = new Runnable() {
             @Override
             public void run() {
+                if (onFailCallback == null) {
+                    return;
+                }
                 onFailCallback.invoke("restartSDK() onFail");
             }
         };
@@ -449,6 +492,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.getUserId(new Completion<Result<String>>() {
             @Override
             public void handle(Result<String> stringResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(stringResult);
             }
         });
@@ -613,13 +659,16 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         try {
             time = Long.parseLong(timestamp);
         } catch (NumberFormatException e) {
-            AbxLog.e("Given time stamp can not covert to Long.", false);
+            AbxLog.e("deleteActionHistory : Given time stamp can not covert to Long.", false);
             return;
         }
 
         AdBrixRm.deleteActionHistory(token, historyId, time, new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -630,6 +679,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.deleteAllActionHistoryByUserId(token, new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -640,6 +692,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.deleteAllActionHistoryByAdid(token, new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -650,6 +705,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.clearSyncedActionHistoryInLocalDB(new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {
+                if (callback == null) {
+                    return;
+                }
                 callback.invoke(emptyResult.toString());
             }
         });
@@ -723,7 +781,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void openInAppMessage(String campaignId, Callback callback) {
-        AbxLog.d("campaignId : "+campaignId, false);
         AdBrixRm.openInAppMessage(campaignId, new Completion<Result<Empty>>() {
             @Override
             public void handle(Result<Empty> emptyResult) {

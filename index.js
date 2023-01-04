@@ -1,7 +1,7 @@
 /**
  * @format
  */
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 const AdbrixRmReact = new EventEmitter();
@@ -39,6 +39,7 @@ AdbrixRmReact.AttrModel = class {
     setAttrs = (key, value) => {
         this.obj[key] = value;
     }
+
     getAttrs = () => {
         return this.obj;
     }
@@ -150,17 +151,83 @@ AdbrixRmReact.AbxPushModel = class {
     }
 }
 
+AdbrixRmReact.PushPropertiesModel = class PushPropertiesModel {
+    constructor() {
+        this.obj = {};
+    }
+
+    setSecond = (second) => {
+        this.obj['second'] = second;
+    }
+
+    setEventId = (eventId) => {
+        this.obj['eventId'] = eventId;
+    }
+
+    setContentText = (contentText) => {
+        this.obj['contentText'] = contentText;
+    }
+
+    setSummaryText = (summaryText) => {
+        this.obj['summaryText'] = summaryText;
+    }
+
+    setBigContentTitle = (bigContentTitle) => {
+        this.obj['bigContentTitle'] = bigContentTitle;
+    }
+
+    setTitle = (title) => {
+        this.obj['title'] = title;
+    }
+
+    setDeepLinkUri = (deepLinkUri) => {
+        this.obj['deepLinkUri'] = deepLinkUri;
+    }
+
+    getPushProperties = () => {
+        return this.obj;
+    }
+}
+
+AdbrixRmReact.BigTextPushPropertiesModel = class BigTextPushPropertiesModel extends AdbrixRmReact.PushPropertiesModel {
+    constructor() {
+        super();
+    }
+    
+    setBigText = (bigText) => {
+        this.obj['bigText'] = bigText;
+    }
+
+    getBigTextPushPropertiesModel = () => {
+        return this.obj;
+    }
+}
+
+AdbrixRmReact.BigPicturePushPropertiesModel = class BigPicturePushPropertiesModel extends AdbrixRmReact.PushPropertiesModel {
+    constructor() {
+        super();
+    }
+
+    setBigPictureUrl = (bigPictureUrl) => {
+        this.obj['bigPictureUrl'] = bigPictureUrl;
+    }
+
+    setResourceId = (resourceId) => {
+        this.obj['resourceId'] = resourceId;
+    }
+    
+    getBigPicturePushPropertiesModel = () => {
+        return this.obj;
+    }
+}
+
 AdbrixRmReact.testDictionary = (attr) => {
     AdbrixRm.testDictionary(assignAttrModel(attr));
 }
 
 //V2 API
-
 AdbrixRmReact.gdprForgetMe = () => {
     return AdbrixRm.gdprForgetMe();
-}
-AdbrixRmReact.setDeviceId = (deviceId) => {
-    //  return AdbrixRm.setDeviceId(deviceId)
 }
 AdbrixRmReact.setAge = (age) => {
     return AdbrixRm.setAge(age);
@@ -204,11 +271,9 @@ AdbrixRmReact.commerceViewHome = (attrs) => {
 }
 //array, jsonArray, json
 AdbrixRmReact.commerceCategoryView = (category, productList, extraAttrs) => {
-    console.log(assignProductModelList(productList));
     return AdbrixRm.commerceCategoryView(assignCategoryModel(category), assignProductModelList(productList), assignAttrModel(extraAttrs));
 }
 AdbrixRmReact.commerceProductView = (product, extraAttrs) => {
-    console.log(assignProductModel(product));
     return AdbrixRm.commerceProductView(assignProductModel(product), assignAttrModel(extraAttrs));
 }
 AdbrixRmReact.commerceAddToCart = (productList, extraAttrs) => {
@@ -273,6 +338,78 @@ AdbrixRmReact.setRegistrationId = (token) => {
     return AdbrixRm.setRegistrationId(token);
 }
 
+// [s] local Push
+// aos only
+AdbrixRmReact.setBigTextClientPushEvent = (bigTextPushProperties, alwaysIsShown) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setBigTextClientPushEvent(assignBigTextPushProperties(bigTextPushProperties), alwaysIsShown);
+    }
+}
+// aos only
+AdbrixRmReact.setBigPictureClientPushEvent = (bigPicturePushProperties, alwaysIsShown) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setBigPictureClientPushEvent(assignBigPicturePushProperties(bigPicturePushProperties), alwaysIsShown);
+    }
+}
+
+// ios only
+AdbrixRmReact.registerLocalPushNotification = () => {
+    if (Platform.OS == 'ios') {
+        AdbrixRm.registerLocalPushNotification();
+    }
+}
+
+// aos only
+AdbrixRmReact.cancelClientPushEvent = (eventId) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.cancelClientPushEvent(eventId);
+    }
+}
+
+// both
+AdbrixRmReact.cancelLocalPushNotification = (eventId) => {
+    AdbrixRm.cancelLocalPushNotification(eventId);
+}
+
+// both
+AdbrixRmReact.cancelLocalPushNotificationAll = () => {
+    AdbrixRm.cancelLocalPushNotificationAll();
+}
+
+// aos only
+AdbrixRmReact.getPushEventList = () => {
+    if (Platform.OS == 'android') {
+        return AdbrixRm.getPushEventList();
+    }
+}
+
+// both
+AdbrixRmReact.getRegisteredLocalPushNotification = () => {
+    return AdbrixRm.getRegisteredLocalPushNotification();
+}
+
+// Aos Only
+AdbrixRmReact.setPushIconStyle = (smallIconName, largeIconName, argb) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setPushIconStyle(smallIconName, largeIconName, argb);
+    }
+}
+
+// Aos only
+AdbrixRmReact.setNotificationOption = (priority, visibility) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setNotificationOption(priority, visibility);
+    }
+}
+
+// Aos Only
+AdbrixRmReact.setNotificationChannel = (channelName, channelDescription, importance, vibrateEnable) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setNotificationChannel(channelName, channelDescription, importance, vibrateEnable);    
+    }
+}
+// [e] local push
+
 AdbrixRmReact.setUserProperties = (userProperties) => {
     return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
@@ -300,7 +437,6 @@ AdbrixRmReact.getSDKVersion = () => {
 }
 
 AdbrixRmReact.fetchActionHistoryByUserId = (userId, actionType, callback) => {
-    console.log("index.js fetchActionHistoryByUserId called")
     AdbrixRm.fetchActionHistoryByUserId(userId, actionType, callback);
 }
 
@@ -309,7 +445,6 @@ AdbrixRmReact.fetchActionHistoryByAdid = (token, actionType, callback) => {
 }
 
 AdbrixRmReact.insertPushData = (data) => {
-    console.log("insert push data");
     AdbrixRm.insertPushData(data);
 }
 
@@ -392,6 +527,22 @@ function assignCategoryModel(categoryModel) {
     else {
         let categories = Object.assign(AdbrixRmReact.CategoryModel, categoryModel);
         return JSON.stringify(categories.getCategory());
+    }
+}
+
+function assignBigTextPushProperties(bigTextPushPropertiesModel) {
+    if (bigTextPushPropertiesModel == null) return null;
+    else {
+        let bigTextPushProperties = Object.assign(AdbrixRmReact.BigTextPushPropertiesModel, bigTextPushPropertiesModel);
+        return JSON.stringify(bigTextPushProperties.getBigTextPushPropertiesModel());
+    }
+}
+
+function assignBigPicturePushProperties(bigPicturePushPropertiesModel) {
+    if (bigPicturePushPropertiesModel == null) return;
+    else {
+        let bigPicturePushProperties = Object.assign(AdbrixRmReact.BigPicturePushPropertiesModel, bigPicturePushPropertiesModel);
+        return JSON.stringify(bigPicturePushProperties.getBigPicturePushPropertiesModel());
     }
 }
 
