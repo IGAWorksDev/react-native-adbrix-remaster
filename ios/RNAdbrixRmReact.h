@@ -6,10 +6,9 @@
 #endif
 
 #import <React/RCTEventEmitter.h>
-//#import <AdBrixRM/AdBrixRM-Swift.h>
-#import <AdBrixRM_XC/AdBrixRM_XC-Swift.h>
+#import <AdSupport/AdSupport.h>
+#import <AdBrixRmKit/AdBrixRmKit.h>
 
-@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate, AdBrixRMDeeplinkDelegate>
-
+@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate,AdBrixRMDeeplinkDelegate,AdBrixRMLogDelegate>
 @end
 

@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => pkg["repository"]["url"] }
   s.source_files = 'ios/**/*.{h,m}'
   s.platform     = :ios, "9.0"
-  s.dependency 'AdBrixRemastered_XC', '1.6.5803'
+  s.dependency 'AdBrixRmKit', '2.3.0.6'
   s.dependency 'React'
 end

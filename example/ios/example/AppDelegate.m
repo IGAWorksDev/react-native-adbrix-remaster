@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 #import <AdSupport/AdSupport.h>
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import <AdBrixRM_XC/AdBrixRM_XC-Swift.h> // We use AdBrixRM_XC module name instead of AdBrixRM
+#import <AdBrixRmKit/AdBrixRmKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 // iOS 9.x or newer
@@ -39,7 +39,6 @@ static void InitializeFlipper(UIApplication *application) {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
-
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"example"
@@ -97,7 +96,9 @@ static void InitializeFlipper(UIApplication *application) {
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
     
     if(granted){
-      [[UIApplication sharedApplication] registerForRemoteNotifications];
+      dispatch_async(dispatch_get_main_queue(), ^{
+           [[UIApplication sharedApplication] registerForRemoteNotifications];
+       });
       AdBrixRM * adBrix = [AdBrixRM sharedInstance];
       [adBrix setPushEnableToPushEnable:true];
     }
@@ -115,7 +116,7 @@ static void InitializeFlipper(UIApplication *application) {
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
