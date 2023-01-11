@@ -1033,8 +1033,7 @@ RCT_EXPORT_METHOD(insertPushData:(NSString*) data)
 RCT_EXPORT_METHOD(getActionHistory:(NSInteger) skip limit:(NSInteger)limit actionType:(NSArray*)actionType callback:(RCTResponseSenderBlock) callback)
 {
     void (^completion)(ActionHistoryResult*) = ^(ActionHistoryResult* result) {
-        NSString* resultCode = [NSString stringWithFormat:@"%ld",(long)result];
-        NSArray *nsArray = [NSArray arrayWithObject: resultCode];
+        NSArray *nsArray = result.getData;
         if (callback == NULL)
         {
             NSLog(@"abxrm : callback is NULL");

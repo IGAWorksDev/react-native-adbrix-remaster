@@ -66,15 +66,11 @@ const App: () => Node = () => {
     });
 
     AdbrixRm.setLogListener((result) => {
-      console.log("App.js setLogListener called result : "+result);
+      console.log("App.js setLogListener called result : "+result); 
     });
-
-    // ios에 존재하지 않는 리스너다.
   }
 
-  useEffect(() => {
-    setListeners();
-  }, []);
+  useEffect(setListeners, []);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -556,7 +552,7 @@ const App: () => Node = () => {
               userProperties.setProperty('height', 180);
               userProperties.setProperty('married', false);
 
-              AdbrixRm.setUserProperties(userProperties);
+              AdbrixRm.saveUserProperties(userProperties);
             }}>
             <Text style={styles.button_text}>set-user-property</Text>
           </TouchableOpacity>

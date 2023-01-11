@@ -44,6 +44,7 @@ AdbrixRmReact.AttrModel = class {
         return this.obj;
     }
 }
+
 AdbrixRmReact.CategoryModel = class {
     constructor() {
         this.categories = [];
@@ -56,6 +57,7 @@ AdbrixRmReact.CategoryModel = class {
         return this.categories;
     }
 }
+
 AdbrixRmReact.ProductModel = class {
     constructor() {
         this.obj = {};
@@ -86,7 +88,6 @@ AdbrixRmReact.ProductModel = class {
     getProductModel = () => {
         return this.obj;
     }
-
 }
 
 AdbrixRmReact.ProductModelList = class {
@@ -102,6 +103,7 @@ AdbrixRmReact.ProductModelList = class {
         return this.list;
     }
 }
+
 AdbrixRmReact.AbxPushModel = class {
     constructor() {
         this.obj = {};
@@ -151,80 +153,6 @@ AdbrixRmReact.AbxPushModel = class {
     }
 }
 
-AdbrixRmReact.PushPropertiesModel = class PushPropertiesModel {
-    constructor() {
-        this.obj = {};
-    }
-
-    setSecond = (second) => {
-        this.obj['second'] = second;
-    }
-
-    setEventId = (eventId) => {
-        this.obj['eventId'] = eventId;
-    }
-
-    setContentText = (contentText) => {
-        this.obj['contentText'] = contentText;
-    }
-
-    setSummaryText = (summaryText) => {
-        this.obj['summaryText'] = summaryText;
-    }
-
-    setBigContentTitle = (bigContentTitle) => {
-        this.obj['bigContentTitle'] = bigContentTitle;
-    }
-
-    setTitle = (title) => {
-        this.obj['title'] = title;
-    }
-
-    setDeepLinkUri = (deepLinkUri) => {
-        this.obj['deepLinkUri'] = deepLinkUri;
-    }
-
-    getPushProperties = () => {
-        return this.obj;
-    }
-}
-
-AdbrixRmReact.BigTextPushPropertiesModel = class BigTextPushPropertiesModel extends AdbrixRmReact.PushPropertiesModel {
-    constructor() {
-        super();
-    }
-    
-    setBigText = (bigText) => {
-        this.obj['bigText'] = bigText;
-    }
-
-    getBigTextPushPropertiesModel = () => {
-        return this.obj;
-    }
-}
-
-AdbrixRmReact.BigPicturePushPropertiesModel = class BigPicturePushPropertiesModel extends AdbrixRmReact.PushPropertiesModel {
-    constructor() {
-        super();
-    }
-
-    setBigPictureUrl = (bigPictureUrl) => {
-        this.obj['bigPictureUrl'] = bigPictureUrl;
-    }
-
-    setResourceId = (resourceId) => {
-        this.obj['resourceId'] = resourceId;
-    }
-    
-    getBigPicturePushPropertiesModel = () => {
-        return this.obj;
-    }
-}
-
-AdbrixRmReact.testDictionary = (attr) => {
-    AdbrixRm.testDictionary(assignAttrModel(attr));
-}
-
 //V2 API
 AdbrixRmReact.gdprForgetMe = () => {
     return AdbrixRm.gdprForgetMe();
@@ -252,18 +180,16 @@ AdbrixRmReact.setEnableLocationListening = (option) => {
 AdbrixRmReact.setLocation = (lat, lon) => {
     return AdbrixRm.setLocation(lat, lon);
 }
-AdbrixRmReact.setUserProperties = (userProperties) => {
-    return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
+AdbrixRmReact.saveUserProperties = (userProperties) => {
+    return AdbrixRm.saveUserProperties(assignUserProperties(userProperties));
 }
 AdbrixRmReact.clearUserProperties = () => {
     return AdbrixRm.clearUserProperties();
 }
 AdbrixRmReact.event = (eventName, attrs) => {
-    console.log("customeEvent : attrs : "+attrs);
     AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
 AdbrixRmReact.login = (userId) => {
-    console.log(userId);
     return AdbrixRm.login(userId);
 }
 AdbrixRmReact.logout = () => {
@@ -348,61 +274,6 @@ AdbrixRmReact.setRegistrationId = (token) => {
     return AdbrixRm.setRegistrationId(token);
 }
 
-// [s] local Push
-// aos only
-// AdbrixRmReact.setBigTextClientPushEvent = (bigTextPushProperties, alwaysIsShown) => {
-//     if (Platform.OS == 'android') {
-//         AdbrixRm.setBigTextClientPushEvent(assignBigTextPushProperties(bigTextPushProperties), alwaysIsShown);
-//     }
-// }
-// // aos only
-// AdbrixRmReact.setBigPictureClientPushEvent = (bigPicturePushProperties, alwaysIsShown) => {
-//     if (Platform.OS == 'android') {
-//         AdbrixRm.setBigPictureClientPushEvent(assignBigPicturePushProperties(bigPicturePushProperties), alwaysIsShown);
-//     }
-// }
-
-// // ios only
-// AdbrixRmReact.registerLocalPushNotification = () => {
-//     if (Platform.OS == 'ios') {
-//         AdbrixRm.registerLocalPushNotification();
-//     }
-// }
-
-// // aos only
-// AdbrixRmReact.cancelClientPushEvent = (eventId) => {
-//     if (Platform.OS == 'android') {
-//         AdbrixRm.cancelClientPushEvent(eventId);
-//     }
-// }
-
-// // both
-// AdbrixRmReact.cancelLocalPushNotification = (eventId) => {
-//     if (Platform.OS == 'android') {
-
-//     }
-//     AdbrixRm.cancelLocalPushNotification(eventId);
-// }
-
-// // both
-// AdbrixRmReact.cancelLocalPushNotificationAll = () => {
-//     AdbrixRm.cancelLocalPushNotificationAll();
-// }
-
-// // aos only
-// AdbrixRmReact.getPushEventList = () => {
-//     if (Platform.OS == 'android') {
-//         return AdbrixRm.getPushEventList();
-//     }
-// }
-
-// // both
-// AdbrixRmReact.getRegisteredLocalPushNotification = () => {
-//     if (Platform.OS == 'android') {
-//         AdbrixRm.getRegisteredLocalPushNotification();
-//     }
-// }
-
 // // Aos Only
 AdbrixRmReact.setPushIconStyle = (smallIconName, largeIconName, argb) => {
     if (Platform.OS == 'android') {
@@ -436,7 +307,6 @@ AdbrixRmReact.setUserProperties = (userProperties) => {
 
 // 현재 추가 중인 메소드들
 AdbrixRmReact.openPush = (pushModel) => {
-    console.log("indexjs : open push")
     return AdbrixRm.openPush(assignAbxRemotePushModel(pushModel));
 }
 
