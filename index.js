@@ -245,7 +245,9 @@ AdbrixRmReact.setEventUploadTimeInterval = (interval) => {
     return AdbrixRm.setEventUploadCountInterval(interval);
 }
 AdbrixRmReact.setEnableLocationListening = (option) => {
-    return AdbrixRm.setEnableLocationListening(option);
+    if (Platform.OS == 'android') {
+        return AdbrixRm.setEnableLocationListening(option);
+    }
 }
 AdbrixRmReact.setLocation = (lat, lon) => {
     return AdbrixRm.setLocation(lat, lon);
@@ -257,18 +259,26 @@ AdbrixRmReact.clearUserProperties = () => {
     return AdbrixRm.clearUserProperties();
 }
 AdbrixRmReact.event = (eventName, attrs) => {
+    console.log("customeEvent : attrs : "+attrs);
     AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
 AdbrixRmReact.login = (userId) => {
+    console.log(userId);
     return AdbrixRm.login(userId);
 }
 AdbrixRmReact.logout = () => {
     return AdbrixRm.logout();
 }
+
+AdbrixRmReact.commerceViewHome = () => {
+    AdbrixRm.commerceViewHome()
+}
+
 AdbrixRmReact.commerceViewHome = (attrs) => {
     if (attrs == null) return AdbrixRm.commerceViewHome(null);
     else return AdbrixRm.commerceViewHome(JSON.stringify(attrs));
 }
+
 //array, jsonArray, json
 AdbrixRmReact.commerceCategoryView = (category, productList, extraAttrs) => {
     return AdbrixRm.commerceCategoryView(assignCategoryModel(category), assignProductModelList(productList), assignAttrModel(extraAttrs));
@@ -340,55 +350,60 @@ AdbrixRmReact.setRegistrationId = (token) => {
 
 // [s] local Push
 // aos only
-AdbrixRmReact.setBigTextClientPushEvent = (bigTextPushProperties, alwaysIsShown) => {
-    if (Platform.OS == 'android') {
-        AdbrixRm.setBigTextClientPushEvent(assignBigTextPushProperties(bigTextPushProperties), alwaysIsShown);
-    }
-}
-// aos only
-AdbrixRmReact.setBigPictureClientPushEvent = (bigPicturePushProperties, alwaysIsShown) => {
-    if (Platform.OS == 'android') {
-        AdbrixRm.setBigPictureClientPushEvent(assignBigPicturePushProperties(bigPicturePushProperties), alwaysIsShown);
-    }
-}
+// AdbrixRmReact.setBigTextClientPushEvent = (bigTextPushProperties, alwaysIsShown) => {
+//     if (Platform.OS == 'android') {
+//         AdbrixRm.setBigTextClientPushEvent(assignBigTextPushProperties(bigTextPushProperties), alwaysIsShown);
+//     }
+// }
+// // aos only
+// AdbrixRmReact.setBigPictureClientPushEvent = (bigPicturePushProperties, alwaysIsShown) => {
+//     if (Platform.OS == 'android') {
+//         AdbrixRm.setBigPictureClientPushEvent(assignBigPicturePushProperties(bigPicturePushProperties), alwaysIsShown);
+//     }
+// }
 
-// ios only
-AdbrixRmReact.registerLocalPushNotification = () => {
-    if (Platform.OS == 'ios') {
-        AdbrixRm.registerLocalPushNotification();
-    }
-}
+// // ios only
+// AdbrixRmReact.registerLocalPushNotification = () => {
+//     if (Platform.OS == 'ios') {
+//         AdbrixRm.registerLocalPushNotification();
+//     }
+// }
 
-// aos only
-AdbrixRmReact.cancelClientPushEvent = (eventId) => {
-    if (Platform.OS == 'android') {
-        AdbrixRm.cancelClientPushEvent(eventId);
-    }
-}
+// // aos only
+// AdbrixRmReact.cancelClientPushEvent = (eventId) => {
+//     if (Platform.OS == 'android') {
+//         AdbrixRm.cancelClientPushEvent(eventId);
+//     }
+// }
 
-// both
-AdbrixRmReact.cancelLocalPushNotification = (eventId) => {
-    AdbrixRm.cancelLocalPushNotification(eventId);
-}
+// // both
+// AdbrixRmReact.cancelLocalPushNotification = (eventId) => {
+//     if (Platform.OS == 'android') {
 
-// both
-AdbrixRmReact.cancelLocalPushNotificationAll = () => {
-    AdbrixRm.cancelLocalPushNotificationAll();
-}
+//     }
+//     AdbrixRm.cancelLocalPushNotification(eventId);
+// }
 
-// aos only
-AdbrixRmReact.getPushEventList = () => {
-    if (Platform.OS == 'android') {
-        return AdbrixRm.getPushEventList();
-    }
-}
+// // both
+// AdbrixRmReact.cancelLocalPushNotificationAll = () => {
+//     AdbrixRm.cancelLocalPushNotificationAll();
+// }
 
-// both
-AdbrixRmReact.getRegisteredLocalPushNotification = () => {
-    return AdbrixRm.getRegisteredLocalPushNotification();
-}
+// // aos only
+// AdbrixRmReact.getPushEventList = () => {
+//     if (Platform.OS == 'android') {
+//         return AdbrixRm.getPushEventList();
+//     }
+// }
 
-// Aos Only
+// // both
+// AdbrixRmReact.getRegisteredLocalPushNotification = () => {
+//     if (Platform.OS == 'android') {
+//         AdbrixRm.getRegisteredLocalPushNotification();
+//     }
+// }
+
+// // Aos Only
 AdbrixRmReact.setPushIconStyle = (smallIconName, largeIconName, argb) => {
     if (Platform.OS == 'android') {
         AdbrixRm.setPushIconStyle(smallIconName, largeIconName, argb);
@@ -414,6 +429,11 @@ AdbrixRmReact.setUserProperties = (userProperties) => {
     return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
 
+// ios에 존재하지 않는 메소드
+// AdbrixRmReact.saveCiProperties = (key, value) => {
+//     // AdbrixRm.saveCiProperties(key, value);
+// }
+
 // 현재 추가 중인 메소드들
 AdbrixRmReact.openPush = (pushModel) => {
     console.log("indexjs : open push")
@@ -421,7 +441,11 @@ AdbrixRmReact.openPush = (pushModel) => {
 }
 
 AdbrixRmReact.deleteUserDataAndStopSDK = (userId, onSuccessCallbak, onFailCallback) => {
-    AdbrixRm.deleteUserDataAndStopSDK(userId, onSuccessCallbak, onFailCallback);
+    if (Platform.OS == 'ios') {
+        AdbrixRm.deleteUserDataAndStopSDK(userId, onSuccessCallbak);
+    } else if (Platform.OS == 'android') {
+        AdbrixRm.deleteUserDataAndStopSDK(userId, onSuccessCallbak, onFailCallback);
+    }
 }
 
 AdbrixRmReact.restartSDK = (userId, onSuccessCallbak, onFailCallback) => {
@@ -429,11 +453,17 @@ AdbrixRmReact.restartSDK = (userId, onSuccessCallbak, onFailCallback) => {
 }
 
 AdbrixRmReact.disableSDK = (disableReason) => {
-    AdbrixRm.disableSDK(disableReason);
+    if (Platform.OS == 'android') {
+        AdbrixRm.disableSDK(disableReason);
+    }
 }
 
 AdbrixRmReact.getSDKVersion = () => {
     return AdbrixRm.getSDKVersion();
+}
+
+AdbrixRmReact.getUserId = (functionName) => {
+    AdbrixRm.getUserId(functionName);   
 }
 
 AdbrixRmReact.fetchActionHistoryByUserId = (userId, actionType, callback) => {
@@ -488,14 +518,37 @@ AdbrixRmReact.flushAllEvents = (callback) => {
     AdbrixRm.flushAllEvents(callback);
 }
 
+// ios only
+AdbrixRmReact.deepLinkOpenWithUrlStr = (urlString) => {
+    if (Platform.OS == 'ios') {
+        AdbrixRm.deepLinkOpenWithUrlStr(urlString);
+        return;
+    }
+}
+AdbrixRmReact.setUserCiWithAttr = (attrJsonString) => {
+    if (Platform.OS == 'ios') {
+        AdbrixRm.setUserCiWithAttr(attrJsonString);
+        return;
+    }
+}
+
 /*
  Android Only
  */
 AdbrixRmReact.setAppScanEnable = (enable) => {
-    return AdbrixRm.setAppScanEnable(enable);
+    if (Platform.OS == 'android') {
+        AdbrixRm.setAppScanEnable(enable);
+    }
 }
 AdbrixRmReact.deepLinkEvent = () => {
-    return AdbrixRm.deepLinkEvent();
+    if (Platform.OS == 'android') {
+        return AdbrixRm.deepLinkEvent();
+    }
+}
+AdbrixRmReact.deepLinkOpenWithUrlStr = (urlString) => {
+    if (Platform.OS == 'IOS') {
+        return AdbrixRm.deepLinkOpenWithUrlStr(urlString);
+    }
 }
 
 function isDouble(value) {

@@ -9,6 +9,7 @@
 #import <AdSupport/AdSupport.h>
 #import <AdBrixRmKit/AdBrixRmKit.h>
 
-@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate,AdBrixRMDeeplinkDelegate,AdBrixRMLogDelegate>
+@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate,AdBrixRMDeeplinkDelegate,AdBrixRmPushRemoteDelegate,  AdBrixRMInAppMessageClickDelegate, DfnInAppMessageAutoFetchDelegate, AdBrixRMLogDelegate> {
+}
 @end
 

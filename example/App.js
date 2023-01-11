@@ -29,7 +29,7 @@ import {
 import Separator from './components/Seperator';
 import Section from './components/Section';
 
-import AdbrixRm from 'react-native-adbrix-remaster'
+import AdbrixRm from 'react-native-adbrix-remaster';
 
 const win = Dimensions.get('window');
 const header_img_ratio = win.width / 1200;
@@ -44,22 +44,32 @@ const App: () => Node = () => {
     AdbrixRm.setDeferredDeeplinkListener((result) => {
       console.log("setDeferredDeepLinkListener callback is called result : "+result);
     });
+
     AdbrixRm.setDeeplinkListener((deeplink) => {
       console.log("setDeeplinkListener callback is called. deeplink : "+deeplink);
     });
-    AdbrixRm.setLocalPushMessageListener((result) => {
-      console.log("setLocalPushListener callback is called result : "+result);
-    });
+
     AdbrixRm.setRemotePushMessageListener((result) => {
       console.log("setRemotePushMessageListener callback is called : "+result);
-    });
-    AdbrixRm.setInAppMessageClickListener((result) => {
-      console.log("setInAppMessageClickListener callback is called result : "+result);
     });
 
     AdbrixRm.setDfnInAppMessageAutoFetchListener((result) => {
       console.log("setDfnInAppMessageAutoFetchListener callback is called result : "+result);
     });
+
+    AdbrixRm.setInAppMessageClickListener((result) => {
+      console.log("setInAppMessageClickListener callback is called result : "+result);
+    });
+    
+    AdbrixRm.setDfnInAppMessageAutoFetchListener((result) => {
+      console.log("App.js setDfnInAppMessageAutoFetchListener called result : "+ result);
+    });
+
+    AdbrixRm.setLogListener((result) => {
+      console.log("App.js setLogListener called result : "+result);
+    });
+
+    // ios에 존재하지 않는 리스너다.
   }
 
   useEffect(() => {
@@ -97,6 +107,13 @@ const App: () => Node = () => {
               AdbrixRm.login('adbrix_demo_userid');
             }}>
             <Text style={styles.button_text}>Log-in</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.deepLinkOpenWithUrlStr("adbrixexample://home");
+            }}>
+            <Text style={styles.button_text}>IOS : deep-link-open-with-url-str</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
@@ -218,9 +235,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('home', 'my home');
-              AdbrixRm.commerceViewHome(eventAttr)
+              AdbrixRm.commerceViewHome();
             }}>
             <Text style={styles.button_text}>commerce-view-home</Text>
           </TouchableOpacity>
@@ -257,16 +272,16 @@ const App: () => Node = () => {
               product2.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
               product2.setCategory(category2);
 
-              // productlist setup
-              var productList = new AdbrixRm.ProductModelList();
-              productList.setProduct(product1);
-              productList.setProduct(product2);
-
               // Addtional event parameter
               var eventAttr = new AdbrixRm.AttrModel();
               eventAttr.setAttrs('address', 'New York');
               eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
+              eventAttr.setAttrs('firsttime', false);
+
+              // productlist setup
+              var productList = new AdbrixRm.ProductModelList();
+              productList.setProduct(product1);
+              productList.setProduct(product2);
               AdbrixRm.commerceCategoryView(category2, productList, eventAttr);
             }}>
             <Text style={styles.button_text}>category-view</Text>
@@ -469,7 +484,11 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.gameLevelAchieved(15, "extra string");
+              var eventAttr = new AdbrixRm.AttrModel();
+              eventAttr.setAttrs('address', 'New York');
+              eventAttr.setAttrs('age', 27);
+              eventAttr.setAttrs('firsttime', true);
+              AdbrixRm.gameLevelAchieved(15, eventAttr);
             }}>
             <Text style={styles.button_text}>level-achieved</Text>
           </TouchableOpacity>
@@ -488,112 +507,7 @@ const App: () => Node = () => {
             onPress={() => {
               AdbrixRm.setPushIconStyle("test1", "test2", 0x1000FF00);
             }}>
-            <Text style={styles.button_text}>set-push-icon-style</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              const pushProperties = new AdbrixRm.BigTextPushPropertiesModel();
-              const html = "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "<body>\n" +
-                "\n" +
-                "<p>Big Text</p>\n" +
-                "<p style=\"color:red;\">Big Text</p>\n" +
-                "<p style=\"color:blue;\">Big Text</p>\n" +
-                "<p style=\"font-size:50px;\">Big Text</p>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>\n" +
-                "\n";
-              pushProperties.setTitle("텍스트 푸시");
-              pushProperties.setContentText("contentText");
-              pushProperties.setContentText("contentText")
-              pushProperties.setBigText("bigContentTitle")
-              pushProperties.setSummaryText("summaryText")
-              pushProperties.setBigText(html)
-              pushProperties.setDeepLinkUri("https://xMeRtnm5n0CiTfZcPMAxtg.adtouch-qa.adbrix.io/api/v1/click/PKajcmG9YEyIAFVheuYFZA")
-              pushProperties.setSecond(10)
-              pushProperties.setEventId(1546);
-              AdbrixRm.setBigTextClientPushEvent(pushProperties, true);
-            }}>
-            <Text style={styles.button_text}>aos : set-big-text-client-push</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              const pushProperties = new AdbrixRm.BigPicturePushPropertiesModel();
-              pushProperties.setTitle("Big Picture push Title");
-              pushProperties.setContentText("contentText");
-              pushProperties.setSummaryText("summaryText");
-              pushProperties.setBigPictureUrl("https://velog.velcdn.com/images/dear_jjwim/post/e27d8adc-ab59-416a-904f-290724118407/image.jpeg");
-              pushProperties.setDeepLinkUri("https://xMeRtnm5n0CiTfZcPMAxtg.adtouch-qa.adbrix.io/api/v1/click/PKajcmG9YEyIAFVheuYFZA");
-              pushProperties.setSecond(10);
-              pushProperties.setEventId(1546);
-              pushProperties.setResourceId(0);
-              AdbrixRm.setBigPictureClientPushEvent(pushProperties, true);
-            }}>
-            <Text style={styles.button_text}>aos : big-picture-push</Text>
-          </TouchableOpacity>
-
-          {
-            /* 
-              IOS : registerLocalPushNotification, 
-              AOS : cancelClientPushEvent, 
-              Both : cancelLocalPushNotification, 
-              Both : cancelLocalPushNotifiactionAll,
-              AOS : getPushEventList,
-              Both : getRegisteredLocalPushNotification,
-              AOS : setPushIconStyle,
-              AOS : setNotificationOption,
-              AOS : setNotificationChannel
-            */
-          }
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.registerLocalPushNotification(1546);
-            }}>
-            <Text style={styles.button_text}>ios : register-Local-Push-Notification</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.cancelClientPushEvent(1546)
-            }}>
-            <Text style={styles.button_text}>AOS : cancel-Client-Push-Event</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              let arrrayOfEventIds = [1, 2, 3, 4, 1546];
-              AdbrixRm.cancelLocalPushNotification(arrrayOfEventIds);
-            }}>
-            <Text style={styles.button_text}>BOTH : cancel-local-push-notification</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.cancelLocalPushNotificationAll();
-            }}>
-            <Text style={styles.button_text}>both : cancel-local-push-notification-all</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              // 콜백으로 비동기로 처리해야 하지 않나?
-              var pushEventList = AdbrixRm.getPushEventList();
-              console.log("getPushEventList : "+pushEventList);
-            }}>
-            <Text style={styles.button_text}>AOS : get-push-event-list</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              var registerdLocalPushNotification = AdbrixRm.getRegisteredLocalPushNotification();
-              console.log("registerdLocalPushNotification : "+registerdLocalPushNotification);
-            }}>
-            <Text style={styles.button_text}>both : get-Registered-Local-Push-Notification</Text>
+            <Text style={styles.button_text}>AOS : set-push-icon-style</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
@@ -647,17 +561,6 @@ const App: () => Node = () => {
             <Text style={styles.button_text}>set-user-property</Text>
           </TouchableOpacity>
           <Separator/>
-
-          {/* localServerPush, priorityPush, stackingPush */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.setNotificationOption(this, 1, -1);
-            }}>
-            <Text style={styles.button_text}>priority-push</Text>
-          </TouchableOpacity>
-          <Separator/>
-
           {/* restart, fetchHistoryUserId */}
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
@@ -699,7 +602,7 @@ const App: () => Node = () => {
             onPress={() => {
               const arrOfAction = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];
               AdbrixRm.fetchActionHistoryByAdid(null, arrOfAction, (array) => {
-                console.log("fetchActionHistoryByUserId Callback : " + array);
+                console.log("fetchActionHistoryByAdid Callback : " + array);
               });
             }}>
             <Text style={styles.button_text}>fetch-history-ad-id</Text>
@@ -720,26 +623,19 @@ const App: () => Node = () => {
             onPress={() => {
               AdbrixRm.deepLinkEvent();
             }}>
-            <Text style={styles.button_text}>deep link event</Text>
+            <Text style={styles.button_text}>AOS : deep link event</Text>
           </TouchableOpacity>
-
-
-          <Section title="Ecommerce Demo (Advanced)">
-            For more advanced adbrix dfinery demo, you can see how adbrix API
-            can be used in ecommerce app. Please check the link belows.
-          </Section>
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#797EF6' }]}
+            style={styles.button}
             onPress={() => {
-              Linking.openURL(
-                'https://github.com/yen-igaw/reactnative_dfinery_ecommerce_demo',
-              );
+              AdbrixRm.deepLinkOpenWithUrlStr("adbrixrm://main");
             }}>
-            <Text style={styles.button_text}>Ecommerce App Demo</Text>
+            <Text style={styles.button_text}>IOS : deep link event</Text>
           </TouchableOpacity>
-          <Separator />
 
-          {/* openPush, getSDKVersion, insertPushData */}
+          
+
+          {/* openPush, getSDKVersion, getUserId, insertPushData */}
           <Section title="Added Method test Buttons">
             You can test the sdk by click buttons.
           </Section>
@@ -774,7 +670,16 @@ const App: () => Node = () => {
               );
             }}>
             <Text style={styles.button_text}>Get sdk version</Text>
-          </TouchableOpacity>          
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.getUserId((result) => {
+                console.log("getUserId result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>get-user-id</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
             onPress={() => {
@@ -916,6 +821,21 @@ const App: () => Node = () => {
             }}>
             <Text style={styles.button_text}>Help center</Text>
           </TouchableOpacity>
+          <Section title="Ecommerce Demo (Advanced)">
+            For more advanced adbrix dfinery demo, you can see how adbrix API
+            can be used in ecommerce app. Please check the link belows.
+          </Section>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#797EF6' }]}
+            onPress={() => {
+              Linking.openURL(
+                'https://github.com/yen-igaw/reactnative_dfinery_ecommerce_demo',
+              );
+            }}>
+            <Text style={styles.button_text}>Ecommerce App Demo</Text>
+          </TouchableOpacity>
+          
+          <Separator />
 
           <View style={{ height: 30 }}></View>
 

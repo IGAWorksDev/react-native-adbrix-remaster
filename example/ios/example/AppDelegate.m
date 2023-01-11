@@ -18,7 +18,7 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-
+#import <RNAdbrixRmReact.h>
 
 
 static void InitializeFlipper(UIApplication *application) {
@@ -58,14 +58,10 @@ static void InitializeFlipper(UIApplication *application) {
   
   // Create AdBrixRM Instance, Only need with Adbrix RN Plugin V2
   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
-  [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
-
-//  if ((NSClassFromString(@"ASIdentifierManager")) != nil) {
-//     NSUUID *ifa =[[ASIdentifierManager sharedManager]advertisingIdentifier];
-//     // Get IDFA from a Device and Set it in SDK
-//     [adBrix setAppleAdvertisingIdentifier:[ifa UUIDString]];
-//  }
-  
+      
+  // Tokyo InAppMessage Test API KEY
+  [adBrix initAdBrixWithAppKey:@"IqDU25JtZkaTEoy0VquaAw" secretKey:@"HiZeD4ZdCU6TVRwS4QPHQg"];
+//  [adBrix initAdBrixWithAppKey:@"bccpaGIxvUGEcITGOVMoUQ" secretKey:@"qdQHZrbtuEm8YDSnsOGJfQ"];
   
   if (@available(iOS 14, *)) {
     [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
@@ -88,13 +84,11 @@ static void InitializeFlipper(UIApplication *application) {
       }
     }];
   }
-  
+    
   // Push notification service
-  
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
-    
     if(granted){
       dispatch_async(dispatch_get_main_queue(), ^{
            [[UIApplication sharedApplication] registerForRemoteNotifications];
@@ -107,7 +101,6 @@ static void InitializeFlipper(UIApplication *application) {
       AdBrixRM * adBrix = [AdBrixRM sharedInstance];
       [adBrix setPushEnableToPushEnable:false];
     }
-    
   }];
   
   return YES;
@@ -165,6 +158,5 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 
-
-
 @end
+
