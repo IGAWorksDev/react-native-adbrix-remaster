@@ -8,6 +8,7 @@
 #import <React/RCTEventEmitter.h>
 #import <AdSupport/AdSupport.h>
 #import <AdBrixRmKit/AdBrixRmKit.h>
+#import <RNAdbrixRmUtil.h>
 
 // 콜백 상수 처리
 extern NSString *const DEFERRED_LINK_LISTENER_CALLBACK;
