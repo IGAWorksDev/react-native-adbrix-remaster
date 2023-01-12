@@ -5,6 +5,14 @@ static RNAdbrixRmReact *_sharedInstance = nil;
 
 @implementation RNAdbrixRmReact
 
+NSString *const DEFERRED_LINK_LISTENER_CALLBACK = @"DfnDeferredDeeplinkListener";
+NSString *const DEEP_LINK_LISTENER_CALLBACK = @"DfnDeeplinkListener";
+NSString *const LOCAL_PUSH_MESSAGE_CALLBACK = @"DfnLocalPushMessageListener";
+NSString *const REMOTE_PUSH_MESSAGE_CALLBACK = @"DfnRemotePushMessageListener";
+NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"DfnInAppMessageClickListener";
+NSString *const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK = @"DfnInAppMessageAutoFetchListener";
+NSString *const LOG_LISTENER_CALLBACK = @"DfnLogListener";
+
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
@@ -137,7 +145,7 @@ RCT_EXPORT_MODULE(AdbrixRm)
         [self sendEventWithName:IN_APP_MESSAGE_AUTO_FETCH_CALLBACK body:result];
     }
     @catch ( NSException *e ) {
-        NSLog(@"%@ Exception: %@", LOG_LISTENER_CALLBACK, e);
+        NSLog(@"%@ Exception: %@", IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, e);
     }
 }
 
@@ -461,14 +469,7 @@ RCT_EXPORT_MODULE(AdbrixRm)
     return productListArray;
 }
 //+(NSDictionary )
-// 콜백 상수 처리
-NSString *const DEFERRED_LINK_LISTENER_CALLBACK = @"DfnDeferredDeeplinkListener";
-NSString *const DEEP_LINK_LISTENER_CALLBACK = @"DfnDeeplinkListener";
-NSString *const LOCAL_PUSH_MESSAGE_CALLBACK = @"DfnLocalPushMessageListener";
-NSString *const REMOTE_PUSH_MESSAGE_CALLBACK = @"DfnRemotePushMessageListener";
-NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"DfnInAppMessageClickListener";
-NSString *const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK = @"DfnInAppMessageAutoFetchListener";
-NSString *const LOG_LISTENER_CALLBACK = @"DfnLogListener";
+
 
 
 RCT_EXPORT_METHOD(initRNPlugin)
@@ -1132,12 +1133,14 @@ RCT_EXPORT_METHOD(fetchInAppMessage:(RCTResponseSenderBlock) callback)
 RCT_EXPORT_METHOD(getAllInAppMessage:(RCTResponseSenderBlock) callback)
 {
     void (^completion)(DfnInAppMessageResult*) = ^(DfnInAppMessageResult* result) {
+        NSLog(@"getAllInAppMessage result.getData : %@", result.getData);
         if (callback == NULL)
         {
             NSLog(@"abxrm : callback is NULL");
             return;
         }
-        callback(@[result]);
+        
+        callback(result.getData);
     };
     [[AdBrixRM sharedInstance] getAllInAppMessageWithCompletion:completion];
 }
@@ -1145,14 +1148,13 @@ RCT_EXPORT_METHOD(getAllInAppMessage:(RCTResponseSenderBlock) callback)
 RCT_EXPORT_METHOD(openInAppMessage:(NSString*) campaignId callback:(RCTResponseSenderBlock) callback)
 {
     void (^completion)(enum Completion) = ^(enum Completion result) {
-        NSString* resultString = [NSString stringWithFormat:@"%ld", result];
-        if (callback == NULL)
-        {
-            NSLog(@"abxrm : callback is NULL");
-            return;
+        if (result == CompletionSuccess) {
+            callback(@[@YES]);
+        } else {
+            callback(@[@NO]);
         }
-        callback(@[resultString]);
     };
+    
     [[AdBrixRM sharedInstance] openInAppMessageWithCampaignId:campaignId completion:completion];
 }
 
