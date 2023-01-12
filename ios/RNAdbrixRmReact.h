@@ -18,7 +18,14 @@ extern NSString *const IN_APP_MESSAGE_CLICK_CALLBACK;
 extern NSString *const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK;
 extern NSString *const LOG_LISTENER_CALLBACK;
 
-@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate,AdBrixRMDeeplinkDelegate,AdBrixRmPushRemoteDelegate,  AdBrixRMInAppMessageClickDelegate, DfnInAppMessageAutoFetchDelegate, AdBrixRMLogDelegate> {
-}
+@interface RNAdbrixRmReact : RCTEventEmitter <RCTBridgeModule,AdBrixRMDeferredDeeplinkDelegate,AdBrixRMDeeplinkDelegate,AdBrixRmPushRemoteDelegate,  AdBrixRMInAppMessageClickDelegate, DfnInAppMessageAutoFetchDelegate, AdBrixRMLogDelegate>
+
+- (void)setDeferredDeeplinkListener;
+- (void)setAdBrixDeeplinkDelegate;
+- (void)setAdBrixPushRemoteDelegate;
+- (void)setInAppMessageFetchDelegateWithDelegate;
+- (void)setInAppMessageClickDelegate;
+- (void)setLogDelegate;
+
 @end
 

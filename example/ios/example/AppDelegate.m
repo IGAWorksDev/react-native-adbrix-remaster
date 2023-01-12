@@ -18,8 +18,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-#import <RNAdbrixRmReact.h>
-
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -59,10 +57,18 @@ static void InitializeFlipper(UIApplication *application) {
   // Create AdBrixRM Instance, Only need with Adbrix RN Plugin V2
   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
       
-  // Tokyo InAppMessage Test API KEY
+  // Tokyo InAppMessage Test API KEY set server mode 1
   [adBrix initAdBrixWithAppKey:@"IqDU25JtZkaTEoy0VquaAw" secretKey:@"HiZeD4ZdCU6TVRwS4QPHQg"];
-//  [adBrix initAdBrixWithAppKey:@"bccpaGIxvUGEcITGOVMoUQ" secretKey:@"qdQHZrbtuEm8YDSnsOGJfQ"];
-  
+  // [adBrix initAdBrixWithAppKey:@"bccpaGIxvUGEcITGOVMoUQ" secretKey:@"qdQHZrbtuEm8YDSnsOGJfQ"];
+  // 리스너 설정
+  RNAdbrixRmReact* rnAdbrixRmReact = [RNAdbrixRmReact new];
+  [rnAdbrixRmReact setDeferredDeeplinkListener];
+  [rnAdbrixRmReact setAdBrixDeeplinkDelegate];
+  [rnAdbrixRmReact setAdBrixPushRemoteDelegate];
+  [rnAdbrixRmReact setInAppMessageFetchDelegateWithDelegate];
+  [rnAdbrixRmReact setInAppMessageClickDelegate];
+  [rnAdbrixRmReact setLogDelegate];
+
   if (@available(iOS 14, *)) {
     [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
       switch (status) {

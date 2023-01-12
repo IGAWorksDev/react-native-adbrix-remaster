@@ -40,14 +40,8 @@ RCT_EXPORT_MODULE(AdbrixRm)
     {
         _sharedInstance = [[self alloc] init];
     }
-    
-    [[RNAdbrixRmReact sharedInstance]setDeferredDeeplinkListener];
-    [[RNAdbrixRmReact sharedInstance]setAdBrixDeeplinkDelegate];
-    [[RNAdbrixRmReact sharedInstance]setAdBrixPushRemoteDelegate];
-    [[RNAdbrixRmReact sharedInstance]setInAppMessageFetchDelegateWithDelegate];
-    [[RNAdbrixRmReact sharedInstance]setInAppMessageClickDelegate];
-    [[RNAdbrixRmReact sharedInstance]setLogDelegate];
 }
+
 + (RNAdbrixRmReact *)sharedInstance
 {
     return _sharedInstance;
