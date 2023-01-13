@@ -228,12 +228,6 @@ RCT_EXPORT_MODULE(AdbrixRm)
     return productListArray;
 }
 
-RCT_EXPORT_METHOD(initRNPlugin)
-{
-   // Do nothing (Used by android to set Deferred Deeplink Listener)
-    NSLog(@"Start Adbrix Dfinery React Native Plugin - JS Part");
-}
-
 RCT_EXPORT_METHOD(login:(NSString *)userId)
 {
     [[AdBrixRM sharedInstance] loginWithUserId:userId];
@@ -257,7 +251,7 @@ RCT_EXPORT_METHOD(setGender:(int)gender)
 {
     [[AdBrixRM sharedInstance] setGenderWithAdBrixGenderType:[[AdBrixRM sharedInstance] convertGender:gender]];
 }
-RCT_EXPORT_METHOD(setUserProperties:(NSString *)dictionaryString)
+RCT_EXPORT_METHOD(saveUserProperties:(NSString *)dictionaryString)
 {
     AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
     if(dictionaryString != NULL){
@@ -275,18 +269,14 @@ RCT_EXPORT_METHOD(setLocation:(double)latitude longitude:(double)longitude )
     [[AdBrixRM sharedInstance] setLocationWithLatitude:latitude longitude:longitude];
 }
 
-RCT_EXPORT_METHOD(event:(NSString *)eventName)
-{
-    [[AdBrixRM sharedInstance] eventWithEventName:eventName];
-}
-
 RCT_EXPORT_METHOD(event:(NSString *)eventName attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel;
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString:attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]){
+        [[AdBrixRM sharedInstance] eventWithEventName:eventName];
+        return;
     }
     
+    AdBrixRmAttrModel* attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString:attrs];
     [[AdBrixRM sharedInstance] eventWithAttrWithEventName:eventName value:attrModel];
 }
 
@@ -613,391 +603,284 @@ RCT_EXPORT_METHOD(commerceViewHome)
 {
     [[AdBrixRM sharedInstance] commerceViewHome];
 }
+
+
 RCT_EXPORT_METHOD(commerceViewHome:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if ([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceViewHome];
+        return;
     }
     
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceViewHomeWithAttrWithOrderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commerceCategoryView:(NSString *)categoryArray productList:(NSString *)productList)
-{
-    NSArray *categoryList = [RNAdbrixRmUtil getArrayFromString:categoryArray];
-    AdBrixRmCommerceProductCategoryModel *cate = [[RNAdbrixRmReact sharedInstance]getCategoryModel:categoryList];
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceCategoryViewWithCategory:cate productInfo:productArray];
 }
 
 RCT_EXPORT_METHOD(commerceCategoryView:(NSString *)categoryArray productList:(NSString *)productList attrs:(NSString *)attrs)
 {
-    NSDictionary *extraAttrs = @{};
-    if (attrs != NULL) {
-        extraAttrs = [RNAdbrixRmUtil getDictionaryFromAttrs : attrs];
-    }
-    
     NSArray *categoryList = [RNAdbrixRmUtil getArrayFromString:categoryArray];
     AdBrixRmCommerceProductCategoryModel *cate = [[RNAdbrixRmReact sharedInstance]getCategoryModel:categoryList];
     NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    if ([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceCategoryViewWithCategory:cate productInfo:productArray];
+        return;
+    }
+    
     AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString:attrs];
     [[AdBrixRM sharedInstance] commerceCategoryViewWithAttrWithCategory:cate productInfo:productArray orderAttr:attrModel];
 }
 
-RCT_EXPORT_METHOD(commerceProductView:(NSString *)product)
-{
-    if (product == NULL)
-    {
-        NSLog(@"abxrm : product is NULL");
-        return;
-    }
-    
-    AdBrixRmCommerceProductModel* productModel = [[RNAdbrixRmReact sharedInstance]getProductModel:[RNAdbrixRmUtil getDictionaryFromAttrs:product]];
-    [[AdBrixRM sharedInstance] commerceProductViewWithProductInfo:productModel];
-}
-
 RCT_EXPORT_METHOD(commerceProductView:(NSString *)product attrs:(NSString *)attrs)
 {
-    if (product == NULL)
-    {
+    if ([RNAdbrixRmUtil isNullString:product]) {
         NSLog(@"abxrm : product is NULL");
         return;
     }
     
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
-    }
     AdBrixRmCommerceProductModel *productModel = [[RNAdbrixRmReact sharedInstance]getProductModel:[RNAdbrixRmUtil getDictionaryFromAttrs:product]];
-    [[AdBrixRM sharedInstance] commerceProductViewWithAttrWithProductInfo:productModel orderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commerceAddToCart:(NSString *)productList)
-{
-    if (productList == NULL)
-    {
-        NSLog(@"abxrm : productList is NULL");
+    if ([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceProductViewWithProductInfo:productModel];
         return;
     }
-
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceAddToCartWithProductInfo:productArray];
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    [[AdBrixRM sharedInstance] commerceProductViewWithAttrWithProductInfo:productModel orderAttr:attrModel];
 }
 
 RCT_EXPORT_METHOD(commerceAddToCart:(NSString *)productList attrs:(NSString *)attrs)
 {
-    NSLog(@"attrs : %@", attrs);
-    if (productList == NULL)
-    {
+    if ([RNAdbrixRmUtil isNullString:productList]) {
         NSLog(@"abxrm : productList is NULL");
         return;
     }
     
-    
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
-    }
     NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    if ([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceAddToCartWithProductInfo:productArray];
+        return;
+    }
+    
+    AdBrixRmAttrModel* attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceAddToCartWithAttrWithProductInfo:productArray orderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commerceAddToWishList:(NSString *)product)
-{
-    AdBrixRmCommerceProductModel *productModel = [self getProductModel:[RNAdbrixRmUtil getDictionaryFromAttrs:product]];
-    [[AdBrixRM sharedInstance] commerceAddToWishListWithProductInfo:productModel];
 }
 
 RCT_EXPORT_METHOD(commerceAddToWishList:(NSString *)product attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    AdBrixRmCommerceProductModel *productModel = [self getProductModel:[RNAdbrixRmUtil getDictionaryFromAttrs:product]];
+    if([RNAdbrixRmUtil isNullString:attrs]){
+        [[AdBrixRM sharedInstance] commerceAddToWishListWithProductInfo:productModel];
+        return;
     }
-    AdBrixRmCommerceProductModel *productModel = [[RNAdbrixRmReact sharedInstance]getProductModel:[RNAdbrixRmUtil getDictionaryFromAttrs:product]];
-    [[AdBrixRM sharedInstance] commerceAddToWishListWithAttrWithProductInfo:productModel orderAttr:attrModel];
-}
 
-RCT_EXPORT_METHOD(commerceReviewOrder:(NSString *)orderId productList:(NSString *)productList discount:(double)discount deliveryCharge:(double)deliveryCharge)
-{
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceReviewOrderWithOrderId:orderId productInfo:productArray discount:discount deliveryCharge:deliveryCharge];
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    [[AdBrixRM sharedInstance] commerceAddToWishListWithAttrWithProductInfo:productModel orderAttr:attrModel];
 }
 
 RCT_EXPORT_METHOD(commerceReviewOrder:(NSString *)orderId productList:(NSString *)productList discount:(double)discount deliveryCharge:(double)deliveryCharge attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    NSArray<AdBrixRmCommerceProductModel*>* productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    if([RNAdbrixRmUtil isNullString:attrs]){
+        [[AdBrixRM sharedInstance] commerceReviewOrderWithOrderId:orderId productInfo:productArray discount:discount deliveryCharge:deliveryCharge];
+        return;
     }
     
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceReviewOrderWithAttrWithOrderId:orderId productInfo:productArray discount:discount deliveryCharge:deliveryCharge orderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commerceRefund:(NSString *)orderId productList:(NSString *)productList penaltyCharge:(double)penaltyCharge)
-{
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceRefundWithOrderId:orderId productInfo:productArray penaltyCharge:penaltyCharge];
 }
 
 RCT_EXPORT_METHOD(commerceRefund:(NSString *)orderId productList:(NSString *)productList penaltyCharge:(double)penaltyCharge attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceRefundWithOrderId:orderId productInfo:productArray penaltyCharge:penaltyCharge];
+        return;
     }
     
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceRefundWithAttrWithOrderId:orderId productInfo:productArray penaltyCharge:penaltyCharge orderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commerceSearch:(NSString *)keyWord productList:(NSString *)productList)
-{
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceSearchWithProductInfo:productArray keyword:keyWord];
 }
 
 RCT_EXPORT_METHOD(commerceSearch:(NSString *)keyWord productList:(NSString *)productList attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceSearchWithProductInfo:productArray keyword:keyWord];
+        return;
     }
     
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    AdBrixRmAttrModel* attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceSearchWithAttrWithProductInfo:productArray keyword:keyWord orderAttr: attrModel];
 }
-RCT_EXPORT_METHOD(commerceShare:(NSString *)sharingChannel product:(NSString *)product)
-{
-    NSDictionary* productDictionary = [RNAdbrixRmUtil getDictionaryFromAttrs:product];
-    AdBrixRmCommerceProductModel *productModel = [[RNAdbrixRmReact sharedInstance] getProductModel:productDictionary];
-    
-    NSInteger channelInt = [RNAdbrixRmUtil getCodeFromSharingChannel:sharingChannel];
-    AdBrixRmSharingChannel channel = [[AdBrixRM sharedInstance] convertChannel:channelInt];
-    
-    [[AdBrixRM sharedInstance] commerceShareWithChannel:channel productInfo:productModel];
-}
+
 RCT_EXPORT_METHOD(commerceShare:(NSString *)sharingChannel product:(NSString *)product attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
-    }
-    
     NSDictionary* productDictionary = [RNAdbrixRmUtil getDictionaryFromAttrs:product];
     AdBrixRmCommerceProductModel *productModel = [[RNAdbrixRmReact sharedInstance] getProductModel:productDictionary];
-    
     NSInteger channelInt = [RNAdbrixRmUtil getCodeFromSharingChannel:sharingChannel];
     AdBrixRmSharingChannel channel = [[AdBrixRM sharedInstance] convertChannel:channelInt];
-
+    
+    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceShareWithChannel:channel productInfo:productModel];
+        return;
+    }
     
     [[AdBrixRM sharedInstance] commerceShareWithAttrWithChannel:channel productInfo:productModel orderAttr:attrModel];
 }
 
-RCT_EXPORT_METHOD(commerceListView:(NSString *)productList)
-{
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceListViewWithProductInfo:productArray];
-}
-
 RCT_EXPORT_METHOD(commerceListView:(NSString *)productList attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceListViewWithProductInfo:productArray];
+        return;
     }
     
-    NSArray<AdBrixRmCommerceProductModel*> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceListViewWithAttrWithProductInfo:productArray orderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commerceCartView:(NSString *)productList )
-{
-    NSArray<AdBrixRmCommerceProductModel*>* productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    [[AdBrixRM sharedInstance] commerceCartViewWithProductInfo:productArray];
 }
 
 RCT_EXPORT_METHOD(commerceCartView:(NSString *)productList attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    NSArray* productInfo = [[RNAdbrixRmReact sharedInstance] getProductList:productList];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commerceCartViewWithProductInfo:productInfo];
+        return;
     }
     
-    NSArray* productInfo = [[RNAdbrixRmReact sharedInstance] getProductList:productList];
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commerceCartViewWithAttrWithProductInfo:productInfo orderAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(commercePaymentInfoAdded)
-{
-    [[AdBrixRM sharedInstance] commercePaymentInfoAdded];
 }
 
 RCT_EXPORT_METHOD(commercePaymentInfoAdded:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commercePaymentInfoAdded];
+        return;
     }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commercePaymentInfoAddedWithAttrWithPaymentInfoAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(gameTutorialCompleted:(BOOL)isSkip)
-{
-    [[AdBrixRM sharedInstance] gameTutorialCompletedWithIsSkip:isSkip];
 }
 
 RCT_EXPORT_METHOD(gameTutorialCompleted:(BOOL)isSkip attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] gameTutorialCompletedWithIsSkip:isSkip];
+        return;
     }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] gameTutorialCompletedWithAttrWithIsSkip:isSkip gameInfoAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(gameLevelAchieved:(int)level)
-{
-    [[AdBrixRM sharedInstance] gameLevelAchievedWithLevel:level];
 }
 
 RCT_EXPORT_METHOD(gameLevelAchieved:(int)level attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] gameLevelAchievedWithLevel:level];
+        return;
     }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] gameLevelAchievedWithAttrWithLevel:level gameInfoAttr:attrModel];
-}
-
-RCT_EXPORT_METHOD(gameCharacterCreated)
-{
-    [[AdBrixRM sharedInstance] gameCharacterCreated];
 }
 
 RCT_EXPORT_METHOD(gameCharacterCreated:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] gameCharacterCreated];
+        return;
     }
-    [[AdBrixRM sharedInstance] gameCharacterCreatedWithAttrWithGameInfoAttr:attrModel];
     
-}
-
-RCT_EXPORT_METHOD(gameStageCleared:(NSString *)stageName)
-{
-    [[AdBrixRM sharedInstance] gameStageClearedWithStageName:stageName];
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    [[AdBrixRM sharedInstance] gameCharacterCreatedWithAttrWithGameInfoAttr:attrModel];
 }
 
 RCT_EXPORT_METHOD(gameStageCleared:(NSString *)stageName attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] gameStageClearedWithStageName:stageName];
+        return;
     }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] gameStageClearedWithAttrWithStageName:stageName gameInfoAttr:attrModel];
 }
 
-RCT_EXPORT_METHOD(commonPurchase:(NSString *)orderId productList:(NSString *)productList discount:(double)discount deliveryCharge:(double)deliveryCharge paymentMethod:(NSString *)paymentMethod)
-{
-    NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
-    NSInteger paymentInt = [RNAdbrixRmUtil getCodeFromPaymentMethod:paymentMethod];
-    AdbrixRmPaymentMethod paymentEnum = [[AdBrixRM sharedInstance] convertPayment:paymentInt];
-    [[AdBrixRM sharedInstance] commonPurchaseWithOrderId:orderId productInfo:productArray orderSales:0.0 discount:discount deliveryCharge:deliveryCharge paymentMethod:paymentEnum];
-}
 RCT_EXPORT_METHOD(commonPurchase:(NSString *)orderId productList:(NSString *)productList discount:(double)discount deliveryCharge:(double)deliveryCharge paymentMethod:(NSString *)paymentMethod attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
-    }
-    
     NSArray<AdBrixRmCommerceProductModel *> *productArray = [[RNAdbrixRmReact sharedInstance]getProductList:productList];
     NSInteger paymentInt = [RNAdbrixRmUtil getCodeFromPaymentMethod:paymentMethod];
     AdbrixRmPaymentMethod paymentEnum = [[AdBrixRM sharedInstance] convertPayment:paymentInt];
+    
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commonPurchaseWithOrderId:orderId productInfo:productArray orderSales:0.0 discount:discount deliveryCharge:deliveryCharge paymentMethod:paymentEnum];
+        return;
+    }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commonPurchaseWithAttrWithOrderId:orderId productInfo:productArray orderSales:0.0 discount:discount deliveryCharge:deliveryCharge paymentMethod:paymentEnum orderAttr:attrModel];
 }
 
-RCT_EXPORT_METHOD(commonSignUp:(NSString *)channelName)
-{
-    NSInteger channelCode = [RNAdbrixRmUtil getCodeFromSignUpChannel:channelName];
-    AdBrixRmSignUpChannel signUpChannel =[[AdBrixRM sharedInstance] convertSignUpChannel:channelCode];
-    [[AdBrixRM sharedInstance] commonSignUpWithChannel:signUpChannel];
-}
 RCT_EXPORT_METHOD(commonSignUp:(NSString *)channelName attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
-    }
-    
     NSInteger channelCode = [RNAdbrixRmUtil getCodeFromSignUpChannel:channelName];
     AdBrixRmSignUpChannel signUpChannel =[[AdBrixRM sharedInstance] convertSignUpChannel:channelCode];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commonSignUpWithChannel:signUpChannel];
+        return;
+    }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commonSignUpWithAttrWithChannel:signUpChannel commonAttr:attrModel];
 }
-RCT_EXPORT_METHOD(commonUseCredit)
-{
-    [[AdBrixRM sharedInstance]commonUseCredit];
-}
+
 RCT_EXPORT_METHOD(commonUseCredit:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance]commonUseCredit];
+        return;
     }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance]commonUseCreditWithAttrWithCommonAttr:attrModel];
-}
-RCT_EXPORT_METHOD(commonAppUpdate:(NSString *)prevVer currentVer:(NSString *)currentVer)
-{
-    [[AdBrixRM sharedInstance] commonAppUpdateWithPrev_ver:prevVer curr_ver:currentVer];
 }
 
 RCT_EXPORT_METHOD(commonAppUpdate:(NSString *)prevVer currentVer:(NSString *)currentVer attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL)
-    {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commonAppUpdateWithPrev_ver:prevVer curr_ver:currentVer];
+        return;
     }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commonAppUpdateWithAttrWithPrev_ver:prevVer curr_ver:currentVer commonAttr:attrModel];
 }
+
 RCT_EXPORT_METHOD(commonInvite:(NSString *)channelName)
 {
     NSInteger channelCode = [RNAdbrixRmUtil getCodeFromInviteChannel:channelName];
     AdBrixRmInviteChannel channelEnum = [[AdBrixRM sharedInstance] convertInviteChannel:channelCode];
     [[AdBrixRM sharedInstance] commonInviteWithChannel:channelEnum];
 }
+
 RCT_EXPORT_METHOD(commonInvite:(NSString *)channelName attrs:(NSString *)attrs)
 {
-    AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
-    if(attrs != NULL){
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
-    }
-    
     NSInteger channelCode = [RNAdbrixRmUtil getCodeFromInviteChannel:channelName];
     AdBrixRmInviteChannel channelEnum = [[AdBrixRM sharedInstance] convertInviteChannel:channelCode];
+    if([RNAdbrixRmUtil isNullString:attrs]) {
+        [[AdBrixRM sharedInstance] commonInviteWithChannel:channelEnum];
+        return;
+    }
+    
+    AdBrixRmAttrModel *attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString: attrs];
     [[AdBrixRM sharedInstance] commonInviteWithAttrWithChannel:channelEnum commonAttr:attrModel];
 }
 
 // ******************** For v1 backward compatibility only. Please use new API *********************
 RCT_EXPORT_METHOD(startAdbrixSDK:(NSString *)appKey secretKey :(NSString *)secretKey)
 {
-    NSLog(@"startAdbrixSDK is deprecated.");
+    NSLog(@"startAdbrixSDK is deprecated. you should not have to call the initializing method.");
 }
 // ***************** END v1 backward compatibility *************
 @end

@@ -2,8 +2,13 @@
 @implementation RNAdbrixRmUtil
 
 +(Boolean)isNullString:(NSString *)string {
-    return true;
+    if (string == NULL || [string isEqualToString:@""]) {
+        return true;
+    }
+    
+    return false;
 }
+
 + (NSString *)checkNilToBlankString:(id)target {
     NSString *returnString = @"";
     if (!([target isEqual:[NSNull null]] || target == nil))
