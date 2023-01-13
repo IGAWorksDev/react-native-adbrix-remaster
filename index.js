@@ -10,15 +10,6 @@ const { AdbrixRm } = NativeModules;
 
 const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
 
-// model
-var deferredDeeplinkListener = null;
-var deeplinkListener = null;
-var localPushMessageListener = null;
-var remoteMessageListener = null;
-var inAppMessageClickListener = null;
-var dfnInAppMessageAutoFetchListener = null;
-var logListener = null;
-
 AdbrixRmReact.UserProperties = class {
     constructor() {
         this.obj = {};
@@ -155,126 +146,141 @@ AdbrixRmReact.AbxPushModel = class {
 
 //V2 API
 AdbrixRmReact.gdprForgetMe = () => {
-    return AdbrixRm.gdprForgetMe();
+    AdbrixRm.gdprForgetMe();
 }
 AdbrixRmReact.setAge = (age) => {
-    return AdbrixRm.setAge(age);
+    AdbrixRm.setAge(age);
 }
 AdbrixRmReact.setGender = (gender) => {
-    return AdbrixRm.setGender(gender);
+    AdbrixRm.setGender(gender);
 }
 AdbrixRmReact.setLogLevel = (logLevel) => {
-    return AdbrixRm.setLogLevel(logLevel);
+    AdbrixRm.setLogLevel(logLevel);
 }
 AdbrixRmReact.setEventUploadCountInterval = (interval) => {
-    return AdbrixRm.setEventUploadCountInterval(interval);
+    AdbrixRm.setEventUploadCountInterval(interval);
 }
 AdbrixRmReact.setEventUploadTimeInterval = (interval) => {
-    return AdbrixRm.setEventUploadCountInterval(interval);
+    AdbrixRm.setEventUploadCountInterval(interval);
 }
 AdbrixRmReact.setEnableLocationListening = (option) => {
     if (Platform.OS == 'android') {
-        return AdbrixRm.setEnableLocationListening(option);
+        AdbrixRm.setEnableLocationListening(option);
     }
 }
 AdbrixRmReact.setLocation = (lat, lon) => {
-    return AdbrixRm.setLocation(lat, lon);
+    AdbrixRm.setLocation(lat, lon);
 }
 AdbrixRmReact.saveUserProperties = (userProperties) => {
-    return AdbrixRm.saveUserProperties(assignUserProperties(userProperties));
+    AdbrixRm.saveUserProperties(assignUserProperties(userProperties));
 }
 AdbrixRmReact.clearUserProperties = () => {
-    return AdbrixRm.clearUserProperties();
+    AdbrixRm.clearUserProperties();
 }
+
 AdbrixRmReact.event = (eventName, attrs) => {
     AdbrixRm.event(eventName, assignAttrModel(attrs));
 }
 AdbrixRmReact.login = (userId) => {
-    return AdbrixRm.login(userId);
+    AdbrixRm.login(userId);
 }
 AdbrixRmReact.logout = () => {
-    return AdbrixRm.logout();
-}
-
-AdbrixRmReact.commerceViewHome = () => {
-    AdbrixRm.commerceViewHome()
-}
-
-AdbrixRmReact.commerceViewHome = (attrs) => {
-    if (attrs == null) return AdbrixRm.commerceViewHome(null);
-    else return AdbrixRm.commerceViewHome(JSON.stringify(attrs));
+    AdbrixRm.logout();
 }
 
 //array, jsonArray, json
-AdbrixRmReact.commerceCategoryView = (category, productList, extraAttrs) => {
-    return AdbrixRm.commerceCategoryView(assignCategoryModel(category), assignProductModelList(productList), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceProductView = (product, extraAttrs) => {
-    return AdbrixRm.commerceProductView(assignProductModel(product), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceAddToCart = (productList, extraAttrs) => {
-    return AdbrixRm.commerceAddToCart(assignProductModelList(productList), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceAddToWishList = (product, extraAttrs) => {
-    return AdbrixRm.commerceAddToWishList(assignProductModel(product), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceReviewOrder = (orderId, productList, discount, deliveryCharge, extraAttrs) => {
-    return AdbrixRm.commerceReviewOrder(orderId, assignProductModelList(productList), discount, deliveryCharge, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceRefund = (orderId, productList, penaltyCharge, extraAttrs) => {
-    return AdbrixRm.commerceRefund(orderId, assignProductModelList(productList), penaltyCharge, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceSearch = (keyWord, productList, extraAttrs) => {
-    return AdbrixRm.commerceSearch(keyWord, assignProductModelList(productList), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceShare = (sharingChannel, productModel, extraAttrs) => {
-    return AdbrixRm.commerceShare(sharingChannel, assignProductModel(productModel), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commerceListView = (productList, extratAttrs) => {
-    return AdbrixRm.commerceListView(assignProductModelList(productList), assignAttrModel(extratAttrs));
-}
-AdbrixRmReact.commerceCartView = (productList, extraAttrs) => {
-    return AdbrixRm.commerceCartView(assignProductModelList(productList), assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commercePaymentInfoAdded = (extraAttrs) => {
-    return AdbrixRm.commercePaymentInfoAdded(assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.gameTutorialCompleted = (isSkip, extraAttrs) => {
-    return AdbrixRm.gameTutorialCompleted(isSkip, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.gameLevelAchieved = (level, extraAttrs) => {
-    return AdbrixRm.gameLevelAchieved(level, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.gameCharacterCreated = (extraAttrs) => {
-    return AdbrixRm.gameCharacterCreated(assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.gameStageCleared = (stageName, extraAttrs) => {
-    return AdbrixRm.gameStageCleared(stageName, assignAttrModel(extraAttrs));
-}
-//string, string, double, double, string, string
-AdbrixRmReact.commonPurchase = (orderId, productList, discount, deliveryCharge, paymentMethod, extraAttrs) => {
-    return AdbrixRm.commonPurchase(orderId, assignProductModelList(productList), discount, deliveryCharge, paymentMethod, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commonSignUp = (channelName, extraAttrs) => {
-    return AdbrixRm.commonSignUp(channelName, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commonUseCredit = (extraAttrs) => {
-    return AdbrixRm.commonUseCredit(assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commonAppUpdate = (prevVer, currentVer, extraAttrs) => {
-    return AdbrixRm.commonAppUpdate(prevVer, currentVer, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.commonInvite = (channelName, extraAttrs) => {
-    return AdbrixRm.commonInvite(channelName, assignAttrModel(extraAttrs));
-}
-AdbrixRmReact.setPushEnable = (enable) => {
-    return AdbrixRm.setPushEnable(enable);
-}
-AdbrixRmReact.setRegistrationId = (token) => {
-    return AdbrixRm.setRegistrationId(token);
+// 오버로딩 지원안함. 따라서, 동일한 이름을 가진 가장 밑에 선언된 메소드가 무조건 불린다.
+// 따라서, 메소드 하나만 작성하면 됨. 
+
+AdbrixRmReact.commerceViewHome = (attrs) => {
+    AdbrixRm.commerceViewHome(assignAttrModel(attrs));
 }
 
-// // Aos Only
+AdbrixRmReact.commerceCategoryView = (category, productList, extraAttrs) => {
+    AdbrixRm.commerceCategoryView(assignCategoryModel(category), assignProductModelList(productList), assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceProductView = (product, extraAttrs) => {
+    AdbrixRm.commerceProductView(assignProductModel(product), assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceAddToCart = (productList, extraAttrs) => {
+    AdbrixRm.commerceAddToCart(assignProductModelList(productList), assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceAddToWishList = (product, extraAttrs) => {
+    AdbrixRm.commerceAddToWishList(assignProductModel(product), assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceReviewOrder = (orderId, productList, discount, deliveryCharge, extraAttrs) => {
+    AdbrixRm.commerceReviewOrder(orderId, assignProductModelList(productList), discount, deliveryCharge, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceRefund = (orderId, productList, penaltyCharge, extraAttrs) => {
+    AdbrixRm.commerceRefund(orderId, assignProductModelList(productList), penaltyCharge, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceSearch = (keyWord, productList, extraAttrs) => {
+    AdbrixRm.commerceSearch(keyWord, assignProductModelList(productList), assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commerceShare = (sharingChannel, productModel, extraAttrs) => {
+    AdbrixRm.commerceShare(sharingChannel, assignProductModel(productModel), assignAttrModel(extraAttrs));
+}
+AdbrixRmReact.commerceListView = (productList, extraAttrs) => {
+    AdbrixRm.commerceListView(assignProductModelList(productList), assignAttrModel(extraAttrs));
+}
+AdbrixRmReact.commerceCartView = (productList, extraAttrs) => {
+    AdbrixRm.commerceCartView(assignProductModelList(productList), assignAttrModel(extraAttrs));
+}
+AdbrixRmReact.commercePaymentInfoAdded = (extraAttrs) => {
+    AdbrixRm.commercePaymentInfoAdded(assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.gameTutorialCompleted = (isSkip, extraAttrs) => {
+    AdbrixRm.gameTutorialCompleted(isSkip, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.gameLevelAchieved = (level, extraAttrs) => {
+    AdbrixRm.gameLevelAchieved(level, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.gameCharacterCreated = (extraAttrs) => {
+    AdbrixRm.gameCharacterCreated(assignAttrModel(extraAttrs));
+}
+AdbrixRmReact.gameStageCleared = (stageName, extraAttrs) => {
+    AdbrixRm.gameStageCleared(stageName, assignAttrModel(extraAttrs));
+}
+
+//string, string, double, double, string, string
+AdbrixRmReact.commonPurchase = (orderId, productList, discount, deliveryCharge, paymentMethod, extraAttrs) => {
+    AdbrixRm.commonPurchase(orderId, assignProductModelList(productList), discount, deliveryCharge, paymentMethod, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commonSignUp = (channelName, extraAttrs) => {
+    AdbrixRm.commonSignUp(channelName, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commonUseCredit = (extraAttrs) => {
+    AdbrixRm.commonUseCredit(assignAttrModel(extraAttrs));
+}
+AdbrixRmReact.commonAppUpdate = (prevVer, currentVer, extraAttrs) => {
+    AdbrixRm.commonAppUpdate(prevVer, currentVer, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.commonInvite = (channelName, extraAttrs) => {
+    AdbrixRm.commonInvite(channelName, assignAttrModel(extraAttrs));
+}
+
+AdbrixRmReact.setPushEnable = (enable) => {
+    AdbrixRm.setPushEnable(enable);
+}
+
+AdbrixRmReact.setRegistrationId = (token) => {
+    AdbrixRm.setRegistrationId(token);
+}
+
+// Aos Only
 AdbrixRmReact.setPushIconStyle = (smallIconName, largeIconName, argb) => {
     if (Platform.OS == 'android') {
         AdbrixRm.setPushIconStyle(smallIconName, largeIconName, argb);
@@ -294,20 +300,9 @@ AdbrixRmReact.setNotificationChannel = (channelName, channelDescription, importa
         AdbrixRm.setNotificationChannel(channelName, channelDescription, importance, vibrateEnable);    
     }
 }
-// [e] local push
 
-AdbrixRmReact.setUserProperties = (userProperties) => {
-    return AdbrixRm.setUserProperties(assignUserProperties(userProperties));
-}
-
-// ios에 존재하지 않는 메소드
-// AdbrixRmReact.saveCiProperties = (key, value) => {
-//     // AdbrixRm.saveCiProperties(key, value);
-// }
-
-// 현재 추가 중인 메소드들
 AdbrixRmReact.openPush = (pushModel) => {
-    return AdbrixRm.openPush(assignAbxRemotePushModel(pushModel));
+    AdbrixRm.openPush(assignAbxRemotePushModel(pushModel));
 }
 
 AdbrixRmReact.deleteUserDataAndStopSDK = (userId, onSuccessCallbak, onFailCallback) => {
@@ -415,11 +410,6 @@ AdbrixRmReact.deepLinkEvent = () => {
         return AdbrixRm.deepLinkEvent();
     }
 }
-AdbrixRmReact.deepLinkOpenWithUrlStr = (urlString) => {
-    if (Platform.OS == 'IOS') {
-        return AdbrixRm.deepLinkOpenWithUrlStr(urlString);
-    }
-}
 
 function isDouble(value) {
     var temp = value.toString();
@@ -432,68 +422,45 @@ function isDouble(value) {
 
 function assignUserProperties(userProperties) {
     if (userProperties == null) return null;
-    else {
-        let userPropertyObject = Object.assign(AdbrixRmReact.UserProperties, userProperties);
-        return JSON.stringify(userPropertyObject.getProperties());
-    }
+
+    let userPropertyObject = Object.assign(AdbrixRmReact.UserProperties, userProperties);
+    return JSON.stringify(userPropertyObject.getProperties());
 }
 function assignAttrModel(attrs) {
     if (attrs == null) return null;
-    else {
-        let attrModel = Object.assign(AdbrixRmReact.AttrModel, attrs);
-        return JSON.stringify(attrModel.getAttrs());
-    }
+    
+    let attrModel = Object.assign(AdbrixRmReact.AttrModel, attrs);
+    return JSON.stringify(attrModel.getAttrs());
 }
 
 function assignCategoryModel(categoryModel) {
     if (categoryModel == null) return null;
-    else {
-        let categories = Object.assign(AdbrixRmReact.CategoryModel, categoryModel);
-        return JSON.stringify(categories.getCategory());
-    }
-}
 
-function assignBigTextPushProperties(bigTextPushPropertiesModel) {
-    if (bigTextPushPropertiesModel == null) return null;
-    else {
-        let bigTextPushProperties = Object.assign(AdbrixRmReact.BigTextPushPropertiesModel, bigTextPushPropertiesModel);
-        return JSON.stringify(bigTextPushProperties.getBigTextPushPropertiesModel());
-    }
-}
-
-function assignBigPicturePushProperties(bigPicturePushPropertiesModel) {
-    if (bigPicturePushPropertiesModel == null) return;
-    else {
-        let bigPicturePushProperties = Object.assign(AdbrixRmReact.BigPicturePushPropertiesModel, bigPicturePushPropertiesModel);
-        return JSON.stringify(bigPicturePushProperties.getBigPicturePushPropertiesModel());
-    }
+    let categories = Object.assign(AdbrixRmReact.CategoryModel, categoryModel);
+    return JSON.stringify(categories.getCategory());
 }
 
 function assignProductModel(productModel) {
     if (productModel == null) return null;
-    else {
-        let product = Object.assign(AdbrixRmReact.ProductModel, productModel);
-        return JSON.stringify(product.getProductModel());
-    }
+
+    let product = Object.assign(AdbrixRmReact.ProductModel, productModel);
+    return JSON.stringify(product.getProductModel());
 }
 
 function assignProductModelList(productList) {
     if (productList == null) return null;
-    else {
-        let products = Object.assign(AdbrixRmReact.ProductModelList, productList);
-        return JSON.stringify(products.getProductList());
-    }
+
+    let products = Object.assign(AdbrixRmReact.ProductModelList, productList);
+    return JSON.stringify(products.getProductList());
 }
 
 function assignAbxRemotePushModel(pushModel) {
     if (pushModel == null) return null;
+    
     let push = Object.assign(AdbrixRmReact.AbxPushModel, pushModel);
     return JSON.stringify(push.getAbxPushModel());
 }
 
-
-
-//constant
 AdbrixRmReact.INVITE_CHANNEL_KAKAO = "Kakao";
 AdbrixRmReact.INVITE_CHANNEL_NAVER = "Naver";
 AdbrixRmReact.INVITE_CHANNEL_LINE = "Line";
@@ -505,6 +472,7 @@ AdbrixRmReact.INVITE_CHANNEL_QQ = "QQ";
 AdbrixRmReact.INVITE_CHANNEL_WECHAT = "WeChat";
 AdbrixRmReact.INVITE_CHANNEL_ETC = "ETC";
 
+AdbrixRmReact.SHARING_CHANNEL_FACEBOOK = "Facebook";
 AdbrixRmReact.SHARING_CHANNEL_KAKAO = "Kakao";
 AdbrixRmReact.SHARING_CHANNEL_KAKAOSTORY = "KakaoStory";
 AdbrixRmReact.SHARING_CHANNEL_LINE = "Line";
@@ -528,6 +496,8 @@ AdbrixRmReact.SIGNUP_CHANNEL_QQ = "QQ";
 AdbrixRmReact.SIGNUP_CHANNEL_WECHAT = "WeChat";
 AdbrixRmReact.SIGNUP_CHANNEL_USERID = "UserId";
 AdbrixRmReact.SIGNUP_CHANNEL_ETC = "ETC";
+AdbrixRmReact.SIGNUP_CHANNEL_SKTID = "SkTid";
+AdbrixRmReact.SIGNUP_CHANNEL_APPLEID = "AppleId"; 
 
 AdbrixRmReact.PAYMENT_METHOD_CREDIT_CARD = "CreditCard";
 AdbrixRmReact.PAYMENT_METHOD_BANK_TRASNFER = "BankTransfer";
@@ -563,7 +533,6 @@ AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
 
 const DEFERRED_LINK_LISTENER_CALLBACK = "DfnDeferredDeeplinkListener";
 const DEEP_LINK_LISTENER_CALLBACK = "DfnDeeplinkListener";
-const LOCAL_PUSH_MESSAGE_CALLBACK = "DfnLocalPushMessageListener";
 const REMOTE_PUSH_MESSAGE_CALLBACK = "DfnRemotePushMessageListener";
 const IN_APP_MESSAGE_CLICK_CALLBACK = "DfnInAppMessageClickListener";
 const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK = "DfnInAppMessageAutoFetchListener";
@@ -573,118 +542,98 @@ const LOG_LISTENER_CALLBACK = "DfnLogListener";
 // Depreciated: Should implement on native side
 AdbrixRmReact.startAdbrixSDK = (appKey, secretKey) => {
     console.log("startAdbrixSDK was removed from plugin version 2. Please use initRNPlugin. Check new integration guide at: https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-")
-    return AdbrixRm.startAdbrixSDK(appKey, secretKey);
 }
 // ******************** END v1 backward compatibility *************
 
 // 리스너 콜백
 AdbrixRmReact.setDeferredDeeplinkListener = (functionName) => {
+    if (functionName == null) {
+        console.log("abxrm : setDeferredDeeplinkListener : callback is null");
+        return;
+    }
+
     AdbrixRmCallBack.removeAllListeners(DEFERRED_LINK_LISTENER_CALLBACK);
     AdbrixRmCallBack.addListener(DEFERRED_LINK_LISTENER_CALLBACK, (deeplink) => {
         AdbrixRmReact.emit(DEFERRED_LINK_LISTENER_CALLBACK, deeplink);
     });
 
-    if (null != deferredDeeplinkListener) {
-        deferredDeeplinkListener.remove();
-        deferredDeeplinkListener = null;
-    }
-    if (functionName != null) {
-        deferredDeeplinkListener = AdbrixRmReact.addListener(DEFERRED_LINK_LISTENER_CALLBACK, functionName);
-    }
+    AdbrixRmReact.removeAllListeners(DEFERRED_LINK_LISTENER_CALLBACK);
+    AdbrixRmReact.addListener(DEFERRED_LINK_LISTENER_CALLBACK, functionName);
 }
 
 AdbrixRmReact.setDeeplinkListener = (functionName) => {
+    if (functionName == null) {
+        console.log("abxrm : setDeeplinkListener : callback is null");
+        return;
+    }
+
     AdbrixRmCallBack.removeAllListeners(DEEP_LINK_LISTENER_CALLBACK);
     AdbrixRmCallBack.addListener(DEEP_LINK_LISTENER_CALLBACK, (deeplink) => {
         AdbrixRmReact.emit(DEEP_LINK_LISTENER_CALLBACK, deeplink);    
     });
-    
-    if (null != deeplinkListener) {
-        deeplinkListener.remove();
-        deeplinkListener = null;
-    }
-    if (functionName != null) {
-        deeplinkListener = AdbrixRmReact.addListener(DEEP_LINK_LISTENER_CALLBACK, functionName);
-    }
-}
 
-AdbrixRmReact.setLocalPushMessageListener = (functionName) => {
-    AdbrixRmCallBack.removeAllListeners(LOCAL_PUSH_MESSAGE_CALLBACK);
-    AdbrixRmCallBack.addListener(LOCAL_PUSH_MESSAGE_CALLBACK, (callbackJsonString) => {
-        AdbrixRmReact.emit(LOCAL_PUSH_MESSAGE_CALLBACK, callbackJsonString);    
-    });
-
-    if (null != localPushMessageListener) {
-        localPushMessageListener.remove();
-        localPushMessageListener = null;
-    }
-    if (functionName != null) {
-        localPushMessageListener = AdbrixRmReact.addListener(LOCAL_PUSH_MESSAGE_CALLBACK, functionName);
-    }
+    AdbrixRmReact.removeAllListeners(DEEP_LINK_LISTENER_CALLBACK);
+    AdbrixRmReact.addListener(DEEP_LINK_LISTENER_CALLBACK, functionName);
 }
 
 AdbrixRmReact.setRemotePushMessageListener = (functionName) => {
+    if (functionName == null) {
+        console.log("abxrm : setRemotePushMessageListener : callback is null");
+        return;
+    }
+
     AdbrixRmCallBack.removeAllListeners(REMOTE_PUSH_MESSAGE_CALLBACK)
     AdbrixRmCallBack.addListener(REMOTE_PUSH_MESSAGE_CALLBACK, (callbackJsonString) => {
         AdbrixRmReact.emit(REMOTE_PUSH_MESSAGE_CALLBACK, callbackJsonString);    
     });
 
-    if (null != remoteMessageListener) {
-        remoteMessageListener.remove();
-        remoteMessageListener = null;
-    }
-
-    if (functionName != null) {
-        remoteMessageListener = AdbrixRmReact.addListener(REMOTE_PUSH_MESSAGE_CALLBACK, functionName);
-    }
+    AdbrixRmReact.removeAllListeners(REMOTE_PUSH_MESSAGE_CALLBACK);
+    AdbrixRmReact.addListener(REMOTE_PUSH_MESSAGE_CALLBACK, functionName);
 }
 
 AdbrixRmReact.setInAppMessageClickListener = (functionName) => {
+    if (functionName == null) {
+        console.log("abxrm : setInAppMessageClickListener : callback is null");
+        return;
+    }
+
     AdbrixRmCallBack.removeAllListeners(IN_APP_MESSAGE_CLICK_CALLBACK);
     AdbrixRmCallBack.addListener(IN_APP_MESSAGE_CLICK_CALLBACK, (callbackJsonString) => {
         AdbrixRmReact.emit(IN_APP_MESSAGE_CLICK_CALLBACK, callbackJsonString);    
     });
 
-    if (null != inAppMessageClickListener) {
-        inAppMessageClickListener.remove();
-        inAppMessageClickListener = null;
-    }
-
-    if (functionName != null) {
-        inAppMessageClickListener = AdbrixRmReact.addListener(IN_APP_MESSAGE_CLICK_CALLBACK, functionName);
-    }
+    AdbrixRmReact.removeAllListeners(IN_APP_MESSAGE_CLICK_CALLBACK);
+    AdbrixRmReact.addListener(IN_APP_MESSAGE_CLICK_CALLBACK, functionName);
 }
 
 AdbrixRmReact.setDfnInAppMessageAutoFetchListener = (functionName) => {
+    if (functionName == null) {
+        console.log("abxrm : setDfnInAppMessageAutoFetchListener : callback is null");
+        return;
+    }
+
     AdbrixRmCallBack.removeAllListeners(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK);
     AdbrixRmCallBack.addListener(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, (callbackJsonString) => {
         AdbrixRmReact.emit(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, callbackJsonString);    
     });
 
-    if (null != dfnInAppMessageAutoFetchListener) {
-        dfnInAppMessageAutoFetchListener.remove();
-        dfnInAppMessageAutoFetchListener = null;
-    }
-
-    if (functionName != null) {
-        dfnInAppMessageAutoFetchListener = AdbrixRmReact.addListener(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, functionName);
-    }
+    AdbrixRmReact.removeAllListeners(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK);
+    AdbrixRmReact.addListener(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, functionName);
 }
 
 AdbrixRmReact.setLogListener = (functionName) => {
+    if (functionName == null) {
+        console.log("abxrm : setLogListener : callback is null");
+        return;
+    }
+
     AdbrixRmCallBack.removeAllListeners(LOG_LISTENER_CALLBACK);
     AdbrixRmCallBack.addListener(LOG_LISTENER_CALLBACK, (callbackJsonString) => {
         AdbrixRmReact.emit(LOG_LISTENER_CALLBACK, callbackJsonString);    
     });
     
-    if (null != logListener) {
-        logListener.remove();
-        logListener = null;
-    }
-
-    if (functionName != null) {
-        logListener = AdbrixRmReact.addListener("DfnLogListener", functionName);
-    }
+    AdbrixRmReact.removeAllListeners(LOG_LISTENER_CALLBACK);
+    AdbrixRmReact.addListener(LOG_LISTENER_CALLBACK, functionName);
 }
 
 export default AdbrixRmReact;
