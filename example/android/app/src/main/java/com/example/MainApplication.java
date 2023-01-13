@@ -59,6 +59,7 @@ public class MainApplication extends AbxReactApplication {
         super.onCreate();
         initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
         AdBrixRm.setPushEnable(true);
+        refreshToken();
         AdBrixRm.setInAppMessageFetchMode(DfnInAppMessageFetchMode.ADID);
         AdBrixRm.setNotificationChannel(this,"myPushChannelName", "my Channel description", NotificationManager.IMPORTANCE_HIGH, true);
         registerListener();

@@ -7,11 +7,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.facebook.soloader.SoLoader;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.igaworks.v2.core.AdBrixRm;
 import com.igaworks.v2.core.application.AbxActivityHelper;
 
@@ -227,5 +232,18 @@ public abstract class AbxReactApplication extends Application implements ReactAp
         unregisterInAppMessageClickListener();
         unregisterDfnInAppMessageAutoFetchListener();
         unregisterLogListener();
+    }
+
+    public void refreshToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+
+                AdBrixRm.setRegistrationId(task.getResult());
+            }
+        });
     }
 }

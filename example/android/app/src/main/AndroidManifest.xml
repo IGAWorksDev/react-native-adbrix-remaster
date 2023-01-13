@@ -15,30 +15,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <!-- TK live -->
-<!--        <meta-data android:name="8mPklqxVCUOkZGLfJHYbTA" android:value="AxVdx3sPE0yS8CUpfl6I0Q" />-->
-        <!-- TK dev -->
-        <meta-data android:name="ZxJkfJSUF0uKoPM7n27lGg" android:value="tlx8RxlHLESd3367ACM41g" />
-        <!-- TK in app message -->
-<!--        <meta-data android:name="IqDU25JtZkaTEoy0VquaAw" android:value="HiZeD4ZdCU6TVRwS4QPHQg" />-->
-        <!-- SL live -->
-<!--        <meta-data android:name="ns1zKiRK40OPiZkYsAJbbg" android:value="fyxxBJPdzkydcuuiXQgVtw" />-->
-        <!-- SL dev-->
-<!--        <meta-data android:name= "bccpaGIxvUGEcITGOVMoUQ" android:value="qdQHZrbtuEm8YDSnsOGJfQ" />-->
-<!--        <meta-data android:name="AdBrixRmAppKey" android:value="gBnARKsxTEG3RDSJRhl5LQ" />-->
-<!--        <meta-data android:name="AdBrixRmSecretKey" android:value="BOfAI2wQV0mMa34SUPBPzw" />-->
-
         <meta-data android:name="AdBrixRmAppKey" android:value="IqDU25JtZkaTEoy0VquaAw" />
-        <meta-data android:name="AdBrixRmSecretKey" android:value="tlx8RxlHLESd3367ACM41g" />
-
+        <meta-data android:name="AdBrixRmSecretKey" android:value="HiZeD4ZdCU6TVRwS4QPHQg" />
+        <!-- live : 0, dev : 1, stage : 2-->
         <meta-data
             android:name="AdbrixServerMode"
             android:value="1" />
-        <!-- live : 0, dev : 1, stage : 2-->
-
         <meta-data
             android:name="DfnRegion"
-            android:value="1" />
+            android:value="ap2" />
 
         <meta-data
             android:name="AdBrixCustomLogicFlag"
