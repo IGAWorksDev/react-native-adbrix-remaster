@@ -103,35 +103,8 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         }
     }
 
-    // Yen 20210709
-//     @ReactMetho   public void setLogLevel(int logLevel) {
-//        switch (logLevel) {
-//            case 0:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.NONE);
-//                break;
-//            case 1:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.VERBOSE);
-//                break;
-//            case 2:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.DEBUG);
-//                break;
-//            case 3:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.INFO);
-//                break;
-//            case 4:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.WARNING);
-//                break;
-//            case 5:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.ERROR);
-//                break;
-//            default:
-//                AdBrixRm.setLogLevel(AdBrixRm.AdBrixLogLevel.VERBOSE);
-//                break;
-//
-//        }
-//    }
     @ReactMethod
-    public void setUserProperties(String jsonString) {
+    public void saveUserProperties(String jsonString) {
         JSONObject userPropertiesJSON = new JSONObject();
         try {
             if (!AdbrixUtils.isNullString(jsonString)) {
@@ -160,12 +133,8 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void event(String eventName) {
-        AdBrixRm.event(eventName);
-    }
-
-    @ReactMethod
     public void event(String eventName, String paramJson) {
+        AbxLog.d("abxrm : event with param2", true);
         if (AdbrixUtils.isNullString(paramJson)) {
             AdBrixRm.event(eventName);
             return;
@@ -236,7 +205,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setEventUploadTimeInterval(int interval) {
         switch (interval) {
-
             case 30:
                 AdBrixRm.setEventUploadTimeInterval(AdBrixRm.AdBrixEventUploadTimeInterval.MIN);
                 break;
@@ -249,7 +217,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             default:
                 AdBrixRm.setEventUploadTimeInterval(AdBrixRm.AdBrixEventUploadTimeInterval.NORMAL);
                 break;
-
         }
     }
 
@@ -309,6 +276,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
         AdBrixRm.setNotificationOption(reactApplicationContext, resultPriority, resultPriority);
     }
+
     @ReactMethod
     public void setNotificationChannel(String channelName, String channelDescription, int importance, boolean vibrateEnable) {
         AdBrixRm.setNotificationChannel(reactApplicationContext, channelName, channelDescription, importance, vibrateEnable);
@@ -324,18 +292,18 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.saveCiProperties(key, value);
     }
 
-   
-   public AdBrixRm.AbxRemotePushModel parsePushData(ReadableMap pushDataMap) {
-       Map<String, String> map = new HashMap<>();
-       ReadableMapKeySetIterator iterator = pushDataMap.keySetIterator();
-       while (iterator.hasNextKey()) {
+    @ReactMethod
+    public AdBrixRm.AbxRemotePushModel parsePushData(ReadableMap pushDataMap) {
+        Map<String, String> map = new HashMap<>();
+        ReadableMapKeySetIterator iterator = pushDataMap.keySetIterator();
+        while (iterator.hasNextKey()) {
            String key = iterator.nextKey();
            String value = pushDataMap.getString(key);
            map.put(key, value);
-       }
+        }
 
-       return AdBrixRm.parsePushData(map);
-   }
+        return AdBrixRm.parsePushData(map);
+    }
 
    public AdBrixRm.AbxRemotePushModel parsePushData(RemoteMessage remoteMessage) {
        return AdBrixRm.parsePushData(remoteMessage);
@@ -424,7 +392,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                 if (callback == null) {
                     return;
                 }
-                callback.invoke(stringResult);
+                callback.invoke(stringResult.getOrNull());
             }
         });
     }
@@ -801,7 +769,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
             AdBrixRm.Commerce.addToCart(products, AdbrixUtils.makeEventProperties(extraAttrs));
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

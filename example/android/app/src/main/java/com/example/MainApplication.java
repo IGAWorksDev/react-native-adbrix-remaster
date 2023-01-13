@@ -72,9 +72,10 @@ public class MainApplication extends AbxReactApplication {
          setInAppMessageClickListener();
          setLocalPushMessageListener();
          setDfnInAppMessageAutoFetchListener();
+         setLogListener();
     }
 
-    /**
+    /**xw
      * Loads Flipper in React Native templates. Call this in the onCreate method with something like
      * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
      *

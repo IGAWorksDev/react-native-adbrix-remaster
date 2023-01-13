@@ -38,7 +38,7 @@
 
         <meta-data
             android:name="DfnRegion"
-            android:value="TK" />
+            android:value="1" />
 
         <meta-data
             android:name="AdBrixCustomLogicFlag"
@@ -61,7 +61,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="adbrixexample" android:host="here"/>
+                <data android:scheme="abxrm" android:host="here"/>
             </intent-filter>
 
         </activity>
