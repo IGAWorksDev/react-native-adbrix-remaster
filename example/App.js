@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow strict-local
+ * @flow strict local
  */
 
 import React, { useState, useEffect, version } from 'react';
@@ -34,6 +34,61 @@ import AdbrixRm from 'react-native-adbrix-remaster';
 const win = Dimensions.get('window');
 const header_img_ratio = win.width / 1200;
 
+// Other user properties
+var userProperties = new AdbrixRm.UserProperties();
+userProperties.setProperty('user_nick', 'peterPark');
+userProperties.setProperty('place', 'Seoul');
+userProperties.setProperty('height', 180);
+userProperties.setProperty('married', false);
+
+var eventAttr = new AdbrixRm.AttrModel();
+eventAttr.setAttrs('address', 'New York');
+eventAttr.setAttrs('age', 27);
+eventAttr.setAttrs('firsttime', true);
+
+// product and category setup (can be set maximum 5 categories)
+var category1 = new AdbrixRm.CategoryModel();
+category1.setCategory('cloth');
+category1.setCategory('panth');
+category1.setCategory('short');
+category1.setCategory('summer');
+category1.setCategory('Nike');
+
+var category2 = new AdbrixRm.CategoryModel();
+category2.setCategory('electronic');
+category2.setCategory('small');
+category2.setCategory('samsung');
+category2.setCategory('phone');
+category2.setCategory('galaxybrand');
+
+var product1 = new AdbrixRm.ProductModel();
+product1.setProductId('3029102');
+product1.setProductName('Gray top');
+product1.setPrice(50000);
+product1.setDiscount(10000);
+product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
+product1.setCategory(category1);
+
+var product2 = new AdbrixRm.ProductModel();
+product2.setProductId('12324');
+product2.setProductName('Galaxy S10');
+product2.setPrice(50000);
+product2.setDiscount(10000);
+product2.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
+product2.setCategory(category2);
+
+// productlist setup
+var productList = new AdbrixRm.ProductModelList();
+productList.setProduct(product1);
+productList.setProduct(product2);
+
+var pushModel = new AdbrixRm.AbxPushModel();
+pushModel.setCampaignId("string:12345");
+pushModel.setCycleTime("string:2019092008");
+pushModel.setDeepLinkUrl("deepLinkUrl");
+pushModel.setCampaignRevisionNo("2");
+pushModel.setStepId("string:stepId");
+
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
@@ -42,23 +97,23 @@ const App: () => Node = () => {
 
   function setListeners() {
     AdbrixRm.setDeferredDeeplinkListener((result) => {
-      console.log("setDeferredDeepLinkListener callback is called result : "+result);
+      console.log("App.js setDeferredDeepLinkListener callback is called result : "+result);
     });
 
     AdbrixRm.setDeeplinkListener((deeplink) => {
-      console.log("setDeeplinkListener callback is called. deeplink : "+deeplink);
+      console.log("App.js setDeeplinkListener callback is called. deeplink : "+deeplink);
     });
 
     AdbrixRm.setRemotePushMessageListener((result) => {
-      console.log("setRemotePushMessageListener callback is called : "+result);
+      console.log("App.js setRemotePushMessageListener callback is called : "+result);
     });
 
     AdbrixRm.setDfnInAppMessageAutoFetchListener((result) => {
-      console.log("setDfnInAppMessageAutoFetchListener callback is called result : "+result);
+      console.log("App.js setDfnInAppMessageAutoFetchListener callback is called result : "+result);
     });
 
     AdbrixRm.setInAppMessageClickListener((result) => {
-      console.log("setInAppMessageClickListener callback is called result : "+result);
+      console.log("App.js setInAppMessageClickListener callback is called result : "+result);
     });
     
     AdbrixRm.setDfnInAppMessageAutoFetchListener((result) => {
@@ -74,7 +129,7 @@ const App: () => Node = () => {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={isDarkMode ? 'light content' : 'dark content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -91,115 +146,26 @@ const App: () => Node = () => {
             analytics and enngament automation, customer explorer features.
           </Section>
           <Separator />
+
           <Section title="React Native SDK Example">
-            The main purpose of this example project is to get-started with
+            The main purpose of this example project is to get started with
             adbrix RN native plugin and to illustrates how to use adbrix React
             Native SDK in your app.
           </Section>
-          {/* login, commonSignUp, commonAppUpdate */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.login('adbrix_demo_userid');
+              // AdbrixRm.event("eventName", null);
             }}>
-            <Text style={styles.button_text}>Log-in</Text>
+            <Text style={styles.button_text}>Test Instance Button</Text>
           </TouchableOpacity>
+          
+          <Separator/>
+          <Section title="Common">
+          </Section>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.deepLinkOpenWithUrlStr("adbrixexample://home");
-            }}>
-            <Text style={styles.button_text}>IOS : deep-link-open-with-url-str</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              // Addtional event parameter
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              AdbrixRm.commonSignUp(AdbrixRm.SIGNUP_CHANNEL_KAKAO, eventAttr);
-            }}>
-            <Text style={styles.button_text}>Sign-up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              const eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('userid', 'my_user_id');
-              AdbrixRm.commonAppUpdate("1.0.0", "1.0.1", eventAttr);
-            }}>
-            <Text style={styles.button_text}>APP-UPDATE</Text>
-          </TouchableOpacity>
-          <Separator />
-
-          {/* commonInvite, commonUseCredit, commonPurchase */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              const eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('userid', 'my_user_id');
-              AdbrixRm.commonInvite(AdbrixRm.INVITE_CHANNEL_KAKAO, eventAttr)
-            }}>
-            <Text style={styles.button_text}>COMMON-INVITE</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              const eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('userid', 'my_user_id');
-              AdbrixRm.commonUseCredit(eventAttr);
-            }}>
-            <Text style={styles.button_text}>COMMON-USE-CREDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              // product and category setup (can be set maximum 5 categories)
-              var category1 = new AdbrixRm.CategoryModel();
-              category1.setCategory('cloth');
-              category1.setCategory('panth');
-              category1.setCategory('short');
-              category1.setCategory('summer');
-              category1.setCategory('Nike');
-
-              var product1 = new AdbrixRm.ProductModel();
-              product1.setProductId('3029102');
-              product1.setProductName('Gray top');
-              product1.setPrice(50000);
-              product1.setDiscount(10000);
-              product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              product1.setCategory(category1);
-
-              var category2 = new AdbrixRm.CategoryModel();
-              category2.setCategory('electronic');
-              category2.setCategory('small');
-              category2.setCategory('samsung');
-              category2.setCategory('phone');
-              category2.setCategory('galaxybrand');
-
-              var product2 = new AdbrixRm.ProductModel();
-              product2.setProductId('12324');
-              product2.setProductName('Galaxy S10');
-              product2.setPrice(50000);
-              product2.setDiscount(10000);
-              product2.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              product2.setCategory(category2);
-
-              // productlist setup
-              var productList = new AdbrixRm.ProductModelList();
-              productList.setProduct(product1);
-              productList.setProduct(product2);
-
-              // Addtional event parameter
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              //purchase API
               AdbrixRm.commonPurchase(
                 'OrderID_12341',
                 productList,
@@ -209,106 +175,72 @@ const App: () => Node = () => {
                 eventAttr,
               );
             }}>
-            <Text style={styles.button_text}>COMMON-PURCHASE</Text>
+            <Text style={styles.button_text}>PURCHASE</Text>
           </TouchableOpacity>
-          <Separator/>
-          
-          {/* customEvent,  view-home, category-view*/}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              // Addtional event parameter
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              // Click a button "Invite a friend"
-              AdbrixRm.event('invite_button_click', eventAttr);
+              AdbrixRm.commonSignUp(AdbrixRm.SIGNUP_CHANNEL_APPLEID);
+              AdbrixRm.commonSignUp(AdbrixRm.SIGNUP_CHANNEL_APPLEID, eventAttr);
             }}>
-            <Text style={styles.button_text}>CUSTOM-EVENT</Text>
+            <Text style={styles.button_text}>Sign up</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.commonAppUpdate("1.0.0", "1.0.1");
+              AdbrixRm.commonAppUpdate("1.0.0", "1.0.1", eventAttr);
+            }}>
+            <Text style={styles.button_text}>APP UPDATE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.commonInvite(AdbrixRm.INVITE_CHANNEL_WHATSAPP);
+              AdbrixRm.commonInvite(AdbrixRm.INVITE_CHANNEL_WHATSAPP, eventAttr)
+            }}>
+            <Text style={styles.button_text}>INVITE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.commonUseCredit();
+              AdbrixRm.commonUseCredit(eventAttr);
+            }}>
+            <Text style={styles.button_text}>USE CREDIT</Text>
+          </TouchableOpacity>
+          
+          <Separator/>
+          <Section title="Commerce"/>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
               AdbrixRm.commerceViewHome();
+              AdbrixRm.commerceViewHome(eventAttr);
             }}>
-            <Text style={styles.button_text}>commerce-view-home</Text>
+            <Text style={styles.button_text}>view home</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var category1 = new AdbrixRm.CategoryModel();
-              category1.setCategory('my category');
-              category1.setCategory('big');
-              category1.setCategory('apple');
-              category1.setCategory('tv');
-              category1.setCategory('apple tv');
-
-              var category2 = new AdbrixRm.CategoryModel();
-              category2.setCategory('electronic');
-              category2.setCategory('small');
-              category2.setCategory('samsung');
-              category2.setCategory('phone');
-              category2.setCategory('galaxybrand');
-
-              var product1 = new AdbrixRm.ProductModel();
-              product1.setProductId('3029102');
-              product1.setProductName('Gray top');
-              product1.setPrice(50000);
-              product1.setDiscount(10000);
-              product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              product1.setCategory(category1);
-
-              var product2 = new AdbrixRm.ProductModel();
-              product2.setProductId('12324');
-              product2.setProductName('Galaxy S10');
-              product2.setPrice(50000);
-              product2.setDiscount(10000);
-              product2.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              product2.setCategory(category2);
-
-              // Addtional event parameter
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', false);
-
-              // productlist setup
-              var productList = new AdbrixRm.ProductModelList();
-              productList.setProduct(product1);
-              productList.setProduct(product2);
+              AdbrixRm.commerceCategoryView(category2, productList);
               AdbrixRm.commerceCategoryView(category2, productList, eventAttr);
             }}>
-            <Text style={styles.button_text}>category-view</Text>
+            <Text style={styles.button_text}>category view</Text>
           </TouchableOpacity>
-          <Separator/>
-          
-          {/* productView, refund, search */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              // Addtional event parameter
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              var product1 = new AdbrixRm.ProductModel();
-              product1.setProductId('3029102');
-              product1.setProductName('Gray top');
-              product1.setPrice(50000);
-              product1.setDiscount(10000);
-              product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-
               AdbrixRm.commerceProductView(product1, eventAttr);
+              AdbrixRm.commerceProductView(product1);
             }}>
-            <Text style={styles.button_text}>product-view</Text>
+            <Text style={styles.button_text}>product view</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
               AdbrixRm.commerceRefund("orderId", "prductString", 10.0, "extraString");
+              AdbrixRm.commerceRefund("orderId", "prductString", 10.0);
             }}>
             <Text style={styles.button_text}>refund</Text>
           </TouchableOpacity>
@@ -319,174 +251,106 @@ const App: () => Node = () => {
             }}>
             <Text style={styles.button_text}>search</Text>
           </TouchableOpacity>
-          <Separator/>
-
-          {/* share, listview, cartview */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var product1 = new AdbrixRm.ProductModel();
-              product1.setProductId('3029102');
-              product1.setProductName('Gray top');
-              product1.setPrice(50000);
-              product1.setDiscount(10000);
-              product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              AdbrixRm.commerceShare(AdbrixRm.SHARING_CHANNEL_LINE, product1, eventAttr);
+              AdbrixRm.commerceShare(AdbrixRm.SHARING_CHANNEL_FACEBOOK, product1, eventAttr);
+              AdbrixRm.commerceShare(AdbrixRm.SHARING_CHANNEL_FACEBOOK, product1);
             }}>
             <Text style={styles.button_text}>share</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              var category1 = new AdbrixRm.CategoryModel();
-              category1.setCategory('cloth');
-              category1.setCategory('panth');
-              category1.setCategory('short');
-              category1.setCategory('summer');
-              category1.setCategory('Nike');
-
-              var category2 = new AdbrixRm.CategoryModel();
-              category2.setCategory('electronic');
-              category2.setCategory('small');
-              category2.setCategory('samsung');
-              category2.setCategory('phone');
-              category2.setCategory('galaxybrand');
-
-              var product1 = new AdbrixRm.ProductModel();
-              product1.setProductId('3029102');
-              product1.setProductName('Gray top');
-              product1.setPrice(50000);
-              product1.setDiscount(10000);
-              product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-
-              var product2 = new AdbrixRm.ProductModel();
-              product2.setProductId('12324');
-              product2.setProductName('Galaxy S10');
-              product2.setPrice(50000);
-              product2.setDiscount(10000);
-              product2.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              product2.setCategory(category2);
-
-              // productlist setup
-              var productList = new AdbrixRm.ProductModelList();
-              productList.setProduct(product1);
-              productList.setProduct(product2);
+              AdbrixRm.commerceListView(productList);
               AdbrixRm.commerceListView(productList, eventAttr);
             }}>
-            <Text style={styles.button_text}>list-view</Text>
+            <Text style={styles.button_text}>list view</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-
-              var category1 = new AdbrixRm.CategoryModel();
-              category1.setCategory('cloth');
-              category1.setCategory('panth');
-              category1.setCategory('short');
-              category1.setCategory('summer');
-              category1.setCategory('Nike');
-
-              var category2 = new AdbrixRm.CategoryModel();
-              category2.setCategory('electronic');
-              category2.setCategory('small');
-              category2.setCategory('samsung');
-              category2.setCategory('phone');
-              category2.setCategory('galaxybrand');
-              
-              var product1 = new AdbrixRm.ProductModel();
-              product1.setProductId('3029102');
-              product1.setProductName('Gray top');
-              product1.setPrice(50000);
-              product1.setDiscount(10000);
-              product1.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-
-              var product2 = new AdbrixRm.ProductModel();
-              product2.setProductId('12324');
-              product2.setProductName('Galaxy S10');
-              product2.setPrice(50000);
-              product2.setDiscount(10000);
-              product2.setCurreny(AdbrixRm.CURRENCY_KR_KRW);
-              product2.setCategory(category2);
-
-              // productlist setup
-              var productList = new AdbrixRm.ProductModelList();
-              productList.setProduct(product1);
-              productList.setProduct(product2);
+              AdbrixRm.commerceCartView(productList);
               AdbrixRm.commerceCartView(productList, eventAttr);
             }}>
-            <Text style={styles.button_text}>cart-view</Text>
+            <Text style={styles.button_text}>cart view</Text>
           </TouchableOpacity>
-          <Separator/>
-
-
-          {/* paymentInFoadded, reviewTutorialComplete, characterCreated */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
+              AdbrixRm.commerceAddToCart(productList);
+              AdbrixRm.commerceAddToCart(productList, eventAttr);
+            }}>
+            <Text style={styles.button_text}>add to cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {             
+              AdbrixRm.commerceAddToWishList(productList);
+              AdbrixRm.commerceAddToWishList(productList, eventAttr);
+            }}>
+            <Text style={styles.button_text}>add to wish cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {             
+              const discount = 0.0;
+              const deliveryCharge = 0.0;
+              AdbrixRm.commerceReviewOrder("orderId", productList, discount, deliveryCharge);
+              AdbrixRm.commerceReviewOrder("orderId", productList, discount, deliveryCharge, eventAttr);
+            }}>
+            <Text style={styles.button_text}>review order</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.commercePaymentInfoAdded();
               AdbrixRm.commercePaymentInfoAdded(eventAttr);
             }}>
-            <Text style={styles.button_text}>payment-info-added</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-              AdbrixRm.gameTutorialCompleted(true, eventAttr);
-            }}>
-            <Text style={styles.button_text}>review-tutorial-complete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.gameCharacterCreated("extra string");
-            }}>
-            <Text style={styles.button_text}>character-created</Text>
+            <Text style={styles.button_text}>payment info added</Text>
           </TouchableOpacity>
           <Separator/>
-
-          {/* stageCleared, levelAchieved, logout */}
+          <Section title="Game"/>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-              AdbrixRm.gameStageCleared("stageName", eventAttr);
+              AdbrixRm.gameTutorialCompleted(true);
+              AdbrixRm.gameTutorialCompleted(true, eventAttr);
             }}>
-            <Text style={styles.button_text}>stage-cleared</Text>
+            <Text style={styles.button_text}>tutorial complete</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
+              AdbrixRm.gameCharacterCreated();
+              AdbrixRm.gameCharacterCreated("extra string");
+            }}>
+            <Text style={styles.button_text}>character created</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.gameStageCleared("stageName");
+              AdbrixRm.gameStageCleared("stageName", eventAttr);
+            }}>
+            <Text style={styles.button_text}>stage cleared</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.gameLevelAchieved(15);
               AdbrixRm.gameLevelAchieved(15, eventAttr);
             }}>
-            <Text style={styles.button_text}>level-achieved</Text>
+            <Text style={styles.button_text}>level achieved</Text>
+          </TouchableOpacity>
+          <Separator />
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.login('adbrix_demo_userid');
+            }}>
+            <Text style={styles.button_text}>Log in</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
@@ -497,156 +361,163 @@ const App: () => Node = () => {
           </TouchableOpacity>
           <Separator/>
 
-          {/* setPushIconStyle, localPush, bigPicturePush */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.setPushIconStyle("test1", "test2", 0x1000FF00);
-            }}>
-            <Text style={styles.button_text}>AOS : set-push-icon-style</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.setPushIconStyle("small icon name", "large icon name", 0xFF00FF00);
-            }}>
-            <Text style={styles.button_text}>AOS : set-push-icon-style</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              let priority = 1;
-              let visibility = -1;
-              AdbrixRm.setNotificationOption(priority, visibility);
-            }}>
-            <Text style={styles.button_text}>AOS : set-notification-option</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              let channelName = "test channel name";
-              let channelDescription = "channel Description";
-              let importance = 3;
-              let vibrateEnable = true;
-
-              AdbrixRm.setNotificationChannel(channelName, channelDescription, importance, vibrateEnable);
-            }}>
-            <Text style={styles.button_text}>AOS : set-notification-channel</Text>
-          </TouchableOpacity>
-
-          {/* user property */}
-          <Separator/>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              // Age
               AdbrixRm.setAge(30);
-
-              // Gender
+            }}>
+            <Text style={styles.button_text}>set age</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
               AdbrixRm.setGender(AdbrixRm.GENDER_MALE);
-
-              // Other user properties
-              var userProperties = new AdbrixRm.UserProperties();
-              userProperties.setProperty('user_nick', 'peterPark');
-              userProperties.setProperty('place', 'Seoul');
-              userProperties.setProperty('height', 180);
-              userProperties.setProperty('married', false);
-
+            }}>
+            <Text style={styles.button_text}>set Gender</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
               AdbrixRm.saveUserProperties(userProperties);
             }}>
-            <Text style={styles.button_text}>set-user-property</Text>
+            <Text style={styles.button_text}>save user property</Text>
           </TouchableOpacity>
           <Separator/>
-          {/* restart, fetchHistoryUserId */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              const arrOfAction = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];
+              AdbrixRm.fetchActionHistoryByUserId(null, arrOfAction, (result) => {
+                console.log("fetchActionHistoryByUserId Callback : " + result);
+              });
+            }}>
+            <Text style={styles.button_text}>fetch history user id</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              const arrOfAction = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];
+              AdbrixRm.fetchActionHistoryByAdid(null, arrOfAction, (result) => {
+                console.log("fetchActionHistoryByAdid Callback : " + result);
+              });
+            }}>
+            <Text style={styles.button_text}>fetch history ad id</Text>
+          </TouchableOpacity>
+          <Separator/>
+          
+          <Section title="Action"/>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
             onPress={() => {
-              AdbrixRm.restartSDK(
-                "adbrix_demo_userid", 
-                () => { console.log("restart onSuccess Callback called")},
-                (result) => { console.log("restart onFail Callback called. result : "+result)}
-              );
+              const actionType = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];;
+              AdbrixRm.getActionHistory(1,1,actionType, (array) => {
+                console.log("getActionHistory callback called : "+array);
+              });
             }}>
-            <Text style={styles.button_text}>restart</Text>
+            <Text style={styles.button_text}>get action history</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              const actionType = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];;
+              AdbrixRm.getAllActionHistory(actionType, (array) => {
+                console.log("getAllActionHistory callback called : "+array);
+              });
+            }}>
+            <Text style={styles.button_text}>get all action history</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              const arrOfAction = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];
-              AdbrixRm.fetchActionHistoryByUserId(null, arrOfAction, (array) => {
-                Alert.alert(
-                  "fetchActionHistoryByUserId",
-                  `array : `+array,
-                  [
-                    {
-                      text: "Cancel",
-                      onPress: () => console.log("Cancel Pressed"),
-                      style: "cancel"
-                    },
-                    { text: "OK", onPress: () => console.log("OK Pressed") }
-                  ]
-                );
-                console.log("fetchActionHistoryByUserId Callback : " + array);
+              AdbrixRm.deleteActionHistory(null, "historyid", '15000000', (result) => {
+                console.log("deleteActionHistory callback called result : "+result);
               });
             }}>
-            <Text style={styles.button_text}>fetch-history-user-id</Text>
+            <Text style={styles.button_text}>delete action history</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.deleteAllActionHistoryByUserId(null, (result) => {
+                console.log("deleteAllActionHistoryByUserId callback called result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>delete All Action History By User Id</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.deleteAllActionHistoryByAdid(null, (result) => {
+                console.log("deleteAllActionHistoryByAdid callback called result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>delete All Action History By Adid</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.clearSyncedActionHistoryInLocalDB((result) => {
+                console.log("clearSyncedActionHistoryInLocalDB callback called result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>clear Synced Action History In Local DB</Text>
           </TouchableOpacity>
           <Separator/>
-          {/* fetchHistoryAdid, getHistory, getAllHistory */}
+          <Section title="In App Message"/>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.fetchInAppMessage((result) => {
+                console.log("fetchInAppMessage callback is called result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>fetch In App Message</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.getAllInAppMessage((result) => {
+                console.log("getAllInAppMessage callback is called. result : "+result);
+              })
+            }}>
+            <Text style={styles.button_text}>get All In App Message</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.openInAppMessage("L5W8MfibEEO4PyRNxtSZ5Q", (result) => {
+                console.log("openInAppMessage callback is called result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>open In App Message</Text>
+          </TouchableOpacity>
+          <Section title="Event"/>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#17CC97' }]}
+            onPress={() => {
+              AdbrixRm.flushAllEvents((result) => {
+                console.log("flushAllEvents callback is called result : "+result);
+              });
+            }}>
+            <Text style={styles.button_text}>flush All Events</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              const arrOfAction = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];
-              AdbrixRm.fetchActionHistoryByAdid(null, arrOfAction, (array) => {
-                console.log("fetchActionHistoryByAdid Callback : " + array);
-              });
+              AdbrixRm.event('custom event with null attr')
+              AdbrixRm.event('custom event with event attr', eventAttr);
             }}>
-            <Text style={styles.button_text}>fetch-history-ad-id</Text>
+            <Text style={styles.button_text}>CUSTOM EVENT</Text>
           </TouchableOpacity>
           <Separator/>
-          {/* deleteHistory, deepLinkEvent */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.deleteActionHistory(null, "historyid", '15000000', () => {
-                console.log("deleteActionHistory callback called");
-              });
-            }}>
-            <Text style={styles.button_text}>delete-history</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.deepLinkEvent();
-            }}>
-            <Text style={styles.button_text}>AOS : deep link event</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.deepLinkOpenWithUrlStr("adbrixrm://main");
-            }}>
-            <Text style={styles.button_text}>IOS : deep link event</Text>
-          </TouchableOpacity>
-
-          
-
-          {/* openPush, getSDKVersion, getUserId, insertPushData */}
-          <Section title="Added Method test Buttons">
-            You can test the sdk by click buttons.
+          <Section title="ETC">
           </Section>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
             onPress={() => {
-              var pushModel = new AdbrixRm.AbxPushModel();
-              pushModel.setCampaignId("string:12345");
-              pushModel.setCycleTime("string:2019092008");
-              pushModel.setDeepLinkUrl("deepLinkUrl");
-              pushModel.setCampaignRevisionNo("2");
-              pushModel.setStepId("string:stepId");
               AdbrixRm.openPush(pushModel);
             }}>
-            <Text style={styles.button_text}>Open-Push</Text>
+            <Text style={styles.button_text}>Open Push</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
@@ -674,110 +545,14 @@ const App: () => Node = () => {
                 console.log("getUserId result : "+result);
               });
             }}>
-            <Text style={styles.button_text}>get-user-id</Text>
+            <Text style={styles.button_text}>get user id</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
             onPress={() => {
-              var eventAttr = new AdbrixRm.AttrModel();
-              eventAttr.setAttrs('address', 'New York');
-              eventAttr.setAttrs('age', 27);
-              eventAttr.setAttrs('firsttime', true);
-              
               AdbrixRm.insertPushData(JSON.stringify(eventAttr));
             }}>
             <Text style={styles.button_text}>insert Push Data</Text>
-          </TouchableOpacity>
-          <Separator/>
-
-          {/* getActionHistory, getAllActionHistory, deleteActionHistory */}
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              const actionType = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];;
-              AdbrixRm.getActionHistory(1,1,actionType, (array) => {
-                console.log("getActionHistory callback called : "+array);
-              });
-            }}>
-            <Text style={styles.button_text}>get-action-history</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              const actionType = ["PUSH_ANDROID","PUSH_IOS","TEXT_MESSAGE","KAKAOTALK"];;
-              AdbrixRm.getAllActionHistory(actionType, (array) => {
-                console.log("getAllActionHistory callback called : "+array);
-              });
-            }}>
-            <Text style={styles.button_text}>get-all-action-history</Text>
-          </TouchableOpacity>
-          <Separator/>
-        
-          {/* deleteAllActionHistoryByUserId,  deleteAllActionHistoryByAdId, clearSyncedActionHistoryInLocalDB*/}
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.deleteAllActionHistoryByUserId(null, () => {
-                console.log("deleteAllActionHistoryByUserId callback called");
-              });
-            }}>
-            <Text style={styles.button_text}>delete-All-Action-History-By-User-Id</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.deleteAllActionHistoryByAdid(null, () => {
-                console.log("deleteAllActionHistoryByAdid callback called");
-              });
-            }}>
-            <Text style={styles.button_text}>delete-All-Action-History-By-Adid</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.clearSyncedActionHistoryInLocalDB(() => {
-                console.log("clearSyncedActionHistoryInLocalDB callback called")
-              });
-            }}>
-            <Text style={styles.button_text}>clear-Synced-Action-History-In-Local-DB</Text>
-          </TouchableOpacity>
-          <Separator/>
-
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.fetchInAppMessage((result) => {
-                console.log("fetchInAppMessage callback is called result : "+result);
-              });
-            }}>
-            <Text style={styles.button_text}>fetch In App Message</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.getAllInAppMessage((result) => {
-                console.log("getAllInAppMessage callback is called. result : "+result);
-              })
-            }}>
-            <Text style={styles.button_text}>get All In App Message</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.openInAppMessage("L5W8MfibEEO4PyRNxtSZ5Q", (result) => {
-                console.log("openInAppMessage callback is called result : "+result);
-              });
-            }}>
-            <Text style={styles.button_text}>open-In-App-Message</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#17CC97' }]}
-            onPress={() => {
-              AdbrixRm.flushAllEvents((result) => {
-                console.log("flushAllEvents callback is called result : "+result);
-              });
-            }}>
-            <Text style={styles.button_text}>flush-All-Events</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
@@ -792,18 +567,83 @@ const App: () => Node = () => {
                 }
               )
             }}>
-            <Text style={styles.button_text}>delete-User-Data-And-Stop-SDK</Text>
+            <Text style={styles.button_text}>delete User Data And Stop SDK</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#17CC97' }]}
             onPress={() => {
-              AdbrixRm.disableSDK(
-                "disable Reason"
+              AdbrixRm.restartSDK(
+                "adbrix_demo_userid", 
+                (result) => { console.log("restart onSuccess Callback called. result : "+result)},
+                (result) => { console.log("restart onFail Callback called. result : "+result)}
               );
             }}>
-            <Text style={styles.button_text}>disable-SDK</Text>
+            <Text style={styles.button_text}>restart</Text>
           </TouchableOpacity>
           <Separator />
+
+          <Section title="Android Only"/>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.deepLinkEvent();
+            }}>
+            <Text style={styles.button_text}>AOS : deep link event</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.setPushIconStyle("test1", "test2", 0x1000FF00);
+            }}>
+            <Text style={styles.button_text}>AOS : set push icon style</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.setPushIconStyle("small icon name", "large icon name", 0xFF00FF00);
+            }}>
+            <Text style={styles.button_text}>AOS : set push icon style</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              let priority = 1;
+              let visibility =  1;
+              AdbrixRm.setNotificationOption(priority, visibility);
+            }}>
+            <Text style={styles.button_text}>AOS : set notification option</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              let channelName = "test channel name";
+              let channelDescription = "channel Description";
+              let importance = 3;
+              let vibrateEnable = true;
+
+              AdbrixRm.setNotificationChannel(channelName, channelDescription, importance, vibrateEnable);
+            }}>
+            <Text style={styles.button_text}>AOS : set notification channel</Text>
+          </TouchableOpacity>
+          <Separator />
+
+          <Section title="IOS Only"/>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.deepLinkOpenWithUrlStr("abxrm://main");
+            }}>
+            <Text style={styles.button_text}>IOS : deep link event</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.deepLinkOpenWithUrlStr("adbrixexample://home");
+            }}>
+            <Text style={styles.button_text}>IOS : deep link open with url str</Text>
+          </TouchableOpacity>
+          <Separator/>
+
           <Section title="More information">
             You can visit our help center to learn how to user adbrix dfinery
             and integrate SDK into your app.
@@ -812,7 +652,7 @@ const App: () => Node = () => {
             style={[styles.button, { backgroundColor: '#17CC97' }]}
             onPress={() => {
               Linking.openURL(
-                'https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-',
+                'https://help.dfinery.io/hc/en us/articles/360033981253 Adbrix Integration React Native ',
               );
             }}>
             <Text style={styles.button_text}>Help center</Text>
@@ -825,16 +665,13 @@ const App: () => Node = () => {
             style={[styles.button, { backgroundColor: '#797EF6' }]}
             onPress={() => {
               Linking.openURL(
-                'https://github.com/yen-igaw/reactnative_dfinery_ecommerce_demo',
+                'https://github.com/yen igaw/reactnative_dfinery_ecommerce_demo',
               );
             }}>
             <Text style={styles.button_text}>Ecommerce App Demo</Text>
           </TouchableOpacity>
-          
           <Separator />
-
           <View style={{ height: 30 }}></View>
-
           <Image
             style={styles.headerImage}
             source={require('./asset/adbrix_fraudkillchain.jpg')}
