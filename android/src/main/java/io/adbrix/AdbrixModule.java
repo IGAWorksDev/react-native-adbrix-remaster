@@ -19,6 +19,8 @@ import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.google.firebase.messaging.RemoteMessage;
 import com.igaworks.v2.core.AbxCommerce;
+import com.igaworks.v2.core.AbxCommon;
+import com.igaworks.v2.core.AbxGame;
 import com.igaworks.v2.core.AdBrixRm;
 
 import org.json.JSONArray;
@@ -134,7 +136,6 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void event(String eventName, String paramJson) {
-        AbxLog.d("abxrm : event with param2", true);
         if (AdbrixUtils.isNullString(paramJson)) {
             AdBrixRm.event(eventName);
             return;
@@ -692,7 +693,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void commerceViewHome(String extraAttrJsonString) {
         if (extraAttrJsonString == null) {
-            AdBrixRm.Commerce.viewHome();
+            AbxCommerce.viewHome();
             return;
         }
         JSONObject commerceExtraAttributes = null;
@@ -703,7 +704,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            AdBrixRm.Commerce.viewHome(AdbrixUtils.makeEventProperties(commerceExtraAttributes));
+            AbxCommerce.viewHome(AdbrixUtils.makeEventProperties(commerceExtraAttributes));
         }
     }
 
@@ -728,8 +729,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                 categories.setCategory(categoryArray.getString(i));
             }
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.categoryView(categories, products, AdbrixUtils.makeEventProperties(extraAttrs));
-
+            AbxCommerce.categoryView(categories, products, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -748,8 +748,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
-            AdBrixRm.Commerce.productView(productModel, AdbrixUtils.makeEventProperties(extraAttrs));
-
+            AbxCommerce.productView(productModel, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -768,7 +767,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.addToCart(products, AdbrixUtils.makeEventProperties(extraAttrs));
+            AbxCommerce.addToCart(products, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -787,8 +786,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
-            AdBrixRm.Commerce.addToWishList(productModel, AdbrixUtils.makeEventProperties(extraAttrs));
-
+            AbxCommerce.addToWishList(productModel, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -807,9 +805,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.reviewOrder(orderId, products, discount, deliveryCharge, AdbrixUtils.makeEventProperties(extraAttrs));
-
-
+            AbxCommerce.reviewOrder(orderId, products, discount, deliveryCharge, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -828,8 +824,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.refund(orderId, products, penaltyCharge, AdbrixUtils.makeEventProperties(extraAttrs));
-
+            AbxCommerce.refund(orderId, products, penaltyCharge, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -849,7 +844,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.search(keyword, products, AdbrixUtils.makeEventProperties(extraAttrs));
+            AbxCommerce.search(keyword, products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -869,7 +864,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
-            AdBrixRm.Commerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel), productModel, AdbrixUtils.makeEventProperties(extraAttrs));
+            AbxCommerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel), productModel, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -889,7 +884,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.listView(products, AdbrixUtils.makeEventProperties(extraAttrs));
+            AbxCommerce.listView(products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -909,7 +904,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
 
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
-            AdBrixRm.Commerce.cartView(products, AdbrixUtils.makeEventProperties(extraAttrs));
+            AbxCommerce.cartView(products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -925,7 +920,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             if (!AdbrixUtils.isNullString(extraString)) {
                 extraAttrs = new JSONObject(extraString);
             }
-            AdBrixRm.Commerce.paymentInfoAdded(AdbrixUtils.makeEventProperties(extraAttrs));
+            AbxCommerce.paymentInfoAdded(AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -941,7 +936,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
             AdBrixRm.GameProperties.TutorialComplete gameProperties = new AdBrixRm.GameProperties.TutorialComplete()
                     .setIsSkip(is_skip);
-            AdBrixRm.Game.tutorialComplete(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
+            AbxGame.tutorialComplete(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -956,7 +951,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.GameProperties.LevelAchieved gameProperties = new AdBrixRm.GameProperties.LevelAchieved().setLevel(level);
-            AdBrixRm.Game.levelAchieved(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
+            AbxGame.levelAchieved(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -971,7 +966,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                 extraAttrs = new JSONObject(extraString);
             }
             AdBrixRm.GameProperties.CharacterCreated gameProperties = new AdBrixRm.GameProperties.CharacterCreated();
-            AdBrixRm.Game.characterCreated(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
+            AbxGame.characterCreated(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -987,8 +982,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
             AdBrixRm.GameProperties.StageCleared gameProperties = new AdBrixRm.GameProperties.StageCleared()
                     .setStageName(stageName);
-            AdBrixRm.Game.stageCleared(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
-
+            AbxGame.stageCleared(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1012,7 +1006,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
             AdBrixRm.CommonProperties.Purchase purchaseEventProperties = new AdBrixRm.CommonProperties.Purchase()
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
-            AdBrixRm.Common.purchase(orderID, products, discount, deliveryCharge, AdBrixRm.CommercePaymentMethod.getMethodByMethodCode(paymentMethod), purchaseEventProperties);
+            AbxCommon.purchase(orderID, products, discount, deliveryCharge, AdBrixRm.CommercePaymentMethod.getMethodByMethodCode(paymentMethod), purchaseEventProperties);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1028,7 +1022,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
             AdBrixRm.CommonProperties.SignUp properties = new AdBrixRm.CommonProperties.SignUp()
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
-            AdBrixRm.Common.signUp(AdBrixRm.CommonSignUpChannel.getChannelByChannelCode(channelName), properties);
+            AbxCommon.signUp(AdBrixRm.CommonSignUpChannel.getChannelByChannelCode(channelName), properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1044,7 +1038,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AdBrixRm.CommonProperties.UseCredit properties = new AdBrixRm.CommonProperties.UseCredit()
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
 
-            AdBrixRm.Common.useCredit(properties);
+            AbxCommon.useCredit(properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1061,7 +1055,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                     .setPrevVersion(prev_ver)
                     .setCurrVersion(curr_ver)
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
-            AdBrixRm.Common.appUpdate(properties);
+            AbxCommon.appUpdate(properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1076,7 +1070,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
             AdBrixRm.CommonProperties.Invite properties = new AdBrixRm.CommonProperties.Invite()
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
-            AdBrixRm.Common.invite(AdBrixRm.CommonInviteChannel.getChannelByChannelCode(channelName), properties);
+            AbxCommon.invite(AdBrixRm.CommonInviteChannel.getChannelByChannelCode(channelName), properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
