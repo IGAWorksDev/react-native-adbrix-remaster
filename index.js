@@ -355,12 +355,20 @@ AdbrixRmReact.deleteActionHistory = (token, historyId, timestamp, callback) => {
     AdbrixRm.deleteActionHistory(token, historyId, timestamp, callback);
 }
 
-AdbrixRmReact.deleteAllActionHistoryByUserId = (token, callback) => {
-    AdbrixRm.deleteAllActionHistoryByUserId(token, callback);
+AdbrixRmReact.deleteAllActionHistoryByUserId = (userId, callback) => {
+    if (userId == null) {
+        console.log("abxrm : deleteAllActionHistoryByUserId : userId is null");
+        return;
+    }
+    AdbrixRm.deleteAllActionHistoryByUserId(userId, callback);
 }
 
-AdbrixRmReact.deleteAllActionHistoryByAdid = (token, callback) => {
-    AdbrixRm.deleteAllActionHistoryByAdid(token, callback);
+AdbrixRmReact.deleteAllActionHistoryByAdid = (adid, callback) => {
+    if (adid == null) {
+        console.log("abxrm : deleteAllActionHistoryByAdid : adid is null");
+        return;
+    }
+    AdbrixRm.deleteAllActionHistoryByAdid(adid, callback);
 }
 
 AdbrixRmReact.clearSyncedActionHistoryInLocalDB = (callback) => {
@@ -456,7 +464,7 @@ function assignProductModelList(productList) {
 
 function assignAbxRemotePushModel(pushModel) {
     if (pushModel == null) return null;
-    
+
     let push = Object.assign(AdbrixRmReact.AbxPushModel, pushModel);
     return JSON.stringify(push.getAbxPushModel());
 }

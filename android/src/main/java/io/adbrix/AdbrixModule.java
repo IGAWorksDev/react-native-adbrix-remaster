@@ -1099,18 +1099,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
         });
     }
-
-    @ReactMethod
-    public void reviewOrder(String orderId, String commerceProductModelListJson, double discount, double deliveryCharge) {
-        if(CommonUtils.isNullOrEmpty(commerceProductModelListJson)){
-            AbxLog.e("reviewOrder() commerceProductModelListJson is null or empty", false);
-            return;
-        }
-        List<AdBrixRm.CommerceProductModel> list = getCommerceProductModelListByJsonString(commerceProductModelListJson);
-        AbxCommerce.reviewOrder(orderId, list, discount, deliveryCharge);
-    }
-
-
+    
     private Map<String, String> getMapFromJSONObject(JSONObject object) {
         Map<String, String> map = new HashMap<>();
         Iterator<String> keysItr = object.keys();

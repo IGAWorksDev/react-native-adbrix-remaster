@@ -599,12 +599,6 @@ RCT_EXPORT_METHOD(openInAppMessage:(NSString*) campaignId callback:(RCTResponseS
     [[AdBrixRM sharedInstance] openInAppMessageWithCampaignId:campaignId completion:completion];
 }
 
-RCT_EXPORT_METHOD(commerceViewHome)
-{
-    [[AdBrixRM sharedInstance] commerceViewHome];
-}
-
-
 RCT_EXPORT_METHOD(commerceViewHome:(NSString *)attrs)
 {
     if ([RNAdbrixRmUtil isNullString:attrs]) {
