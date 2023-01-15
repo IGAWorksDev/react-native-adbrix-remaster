@@ -154,9 +154,6 @@ AdbrixRmReact.setAge = (age) => {
 AdbrixRmReact.setGender = (gender) => {
     AdbrixRm.setGender(gender);
 }
-AdbrixRmReact.setLogLevel = (logLevel) => {
-    AdbrixRm.setLogLevel(logLevel);
-}
 AdbrixRmReact.setEventUploadCountInterval = (interval) => {
     AdbrixRm.setEventUploadCountInterval(interval);
 }
@@ -272,12 +269,34 @@ AdbrixRmReact.commonInvite = (channelName, extraAttrs) => {
     AdbrixRm.commonInvite(channelName, assignAttrModel(extraAttrs));
 }
 
+AdbrixRmReact.getPushEnable = () => {
+    return AdbrixRm.getPushEnable();
+}
+
+AdbrixRmReact.getOsPushEnable = () => {
+    return AdbrixRm.getOsPushEnable();
+}
+
 AdbrixRmReact.setPushEnable = (enable) => {
     AdbrixRm.setPushEnable(enable);
 }
 
 AdbrixRmReact.setRegistrationId = (token) => {
     AdbrixRm.setRegistrationId(token);
+}
+
+// Aos Only
+AdbrixRmReact.setNotificationDoNotDisturbEnable = (enable) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setNotificationDoNotDisturbEnable(enable);
+    }
+}
+
+// Aos Only
+AdbrixRmReact.setNotificationDoNotDisturb = (startHour, startMinutes, endHour, endMinutes) => {
+    if (Platform.OS == 'android') {
+        AdbrixRm.setNotificationDoNotDisturb(startHour, startMinutes, endHour, endMinutes);
+    }
 }
 
 // Aos Only
@@ -301,6 +320,14 @@ AdbrixRmReact.setNotificationChannel = (channelName, channelDescription, importa
     }
 }
 
+AdbrixRmReact.setKakaoId = (kakaoId) => {
+    AdbrixRm.setKakaoId(kakaoId);
+}
+
+AdbrixRmReact.parsePushData = (pushMap) => {
+    return AdbrixRm.parsePushData(pushMap);
+}
+
 AdbrixRmReact.openPush = (pushModel) => {
     AdbrixRm.openPush(assignAbxRemotePushModel(pushModel));
 }
@@ -315,12 +342,6 @@ AdbrixRmReact.deleteUserDataAndStopSDK = (userId, onSuccessCallbak, onFailCallba
 
 AdbrixRmReact.restartSDK = (userId, onSuccessCallbak, onFailCallback) => {
     AdbrixRm.restartSDK(userId, onSuccessCallbak, onFailCallback);
-}
-
-AdbrixRmReact.disableSDK = (disableReason) => {
-    if (Platform.OS == 'android') {
-        AdbrixRm.disableSDK(disableReason);
-    }
 }
 
 AdbrixRmReact.getSDKVersion = () => {
@@ -375,6 +396,14 @@ AdbrixRmReact.clearSyncedActionHistoryInLocalDB = (callback) => {
     AdbrixRm.clearSyncedActionHistoryInLocalDB(callback);
 }
 
+AdbrixRmReact.setInAppMessageFetchMode = (mode) => {
+    AdbrixRm.setInAppMessageFetchMode(mode);
+}
+
+AdbrixRmReact.setInAppMessageToken = (token) => {
+    AdbrixRm.setInAppMessageToken(token);
+}
+
 AdbrixRmReact.fetchInAppMessage = (callback) => {
     AdbrixRm.fetchInAppMessage(callback);
 }
@@ -391,31 +420,12 @@ AdbrixRmReact.flushAllEvents = (callback) => {
     AdbrixRm.flushAllEvents(callback);
 }
 
-// ios only
-AdbrixRmReact.deepLinkOpenWithUrlStr = (urlString) => {
-    if (Platform.OS == 'ios') {
-        AdbrixRm.deepLinkOpenWithUrlStr(urlString);
-        return;
-    }
-}
-AdbrixRmReact.setUserCiWithAttr = (attrJsonString) => {
-    if (Platform.OS == 'ios') {
-        AdbrixRm.setUserCiWithAttr(attrJsonString);
-        return;
-    }
-}
-
 /*
  Android Only
  */
 AdbrixRmReact.setAppScanEnable = (enable) => {
     if (Platform.OS == 'android') {
         AdbrixRm.setAppScanEnable(enable);
-    }
-}
-AdbrixRmReact.deepLinkEvent = () => {
-    if (Platform.OS == 'android') {
-        return AdbrixRm.deepLinkEvent();
     }
 }
 

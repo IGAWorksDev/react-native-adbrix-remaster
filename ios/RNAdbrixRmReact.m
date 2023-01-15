@@ -289,11 +289,6 @@ RCT_EXPORT_METHOD(flushAllEvents:(RCTResponseSenderBlock) callback)
     [[AdBrixRM sharedInstance] flushAllEventsWithCompletion:completion];
 }
 
-RCT_EXPORT_METHOD(deepLinkOpenWithUrlStr:(NSString*) urlString)
-{
-    [[AdBrixRM sharedInstance] deepLinkOpenWithUrlStr:urlString];
-}
-
 RCT_EXPORT_METHOD(setEventUploadCountInterval:(int)countInterval)
 {
     [[AdBrixRM sharedInstance] setEventUploadCountInterval:[[AdBrixRM sharedInstance] convertCountInterval:countInterval]];
@@ -332,16 +327,6 @@ RCT_EXPORT_METHOD(setRegistrationId:(NSString *)token)
 RCT_EXPORT_METHOD(setKakaoId:(NSString*) kakaoId)
 {
     [[AdBrixRM sharedInstance] setKakaoIdWithKakaoId:kakaoId];
-}
-
-RCT_EXPORT_METHOD(setUserCiWithAttr:(NSString*) attrModelJsonString)
-{
-    AdBrixRmAttrModel* attrModel;
-    if (attrModelJsonString != NULL) {
-        attrModel = [RNAdbrixRmUtil getAttrModelFromAttrString:attrModelJsonString];
-    }
-    
-    [[AdBrixRM sharedInstance] setUserCiWithAttrWithAttrModel:attrModel];
 }
 
 RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(AbxRemotePushModel*, parsePushData:(NSDictionary*)pushDataMap)

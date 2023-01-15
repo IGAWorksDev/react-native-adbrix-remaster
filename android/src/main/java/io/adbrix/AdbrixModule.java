@@ -293,7 +293,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.saveCiProperties(key, value);
     }
 
-    @ReactMethod
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public AdBrixRm.AbxRemotePushModel parsePushData(ReadableMap pushDataMap) {
         Map<String, String> map = new HashMap<>();
         ReadableMapKeySetIterator iterator = pushDataMap.keySetIterator();
@@ -305,15 +305,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
         return AdBrixRm.parsePushData(map);
     }
-
-   public AdBrixRm.AbxRemotePushModel parsePushData(RemoteMessage remoteMessage) {
-       return AdBrixRm.parsePushData(remoteMessage);
-   }
-
-   public AdBrixRm.AbxRemotePushModel parsePushData(Bundle bundle) {
-       return AdBrixRm.parsePushData(bundle);
-   }
-
+    
     @ReactMethod
     public void openPush(String openPushParamJson) {
         if(CommonUtils.isNullOrEmpty(openPushParamJson)){
@@ -1099,7 +1091,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
         });
     }
-    
+
     private Map<String, String> getMapFromJSONObject(JSONObject object) {
         Map<String, String> map = new HashMap<>();
         Iterator<String> keysItr = object.keys();
