@@ -129,7 +129,7 @@ const App: () => Node = () => {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light content' : 'dark content'} />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -155,7 +155,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              // AdbrixRm.event("eventName", null);
+              AdbrixRm.event("eventName", null);
             }}>
             <Text style={styles.button_text}>Test Instance Button</Text>
           </TouchableOpacity>
@@ -180,7 +180,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commonSignUp(AdbrixRm.SIGNUP_CHANNEL_APPLEID);
+              // AdbrixRm.commonSignUp(AdbrixRm.SIGNUP_CHANNEL_APPLEID);
               AdbrixRm.commonSignUp(AdbrixRm.SIGNUP_CHANNEL_APPLEID, eventAttr);
             }}>
             <Text style={styles.button_text}>Sign up</Text>
@@ -188,7 +188,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commonAppUpdate("1.0.0", "1.0.1");
+              // AdbrixRm.commonAppUpdate("1.0.0", "1.0.1");
               AdbrixRm.commonAppUpdate("1.0.0", "1.0.1", eventAttr);
             }}>
             <Text style={styles.button_text}>APP UPDATE</Text>
@@ -196,7 +196,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commonInvite(AdbrixRm.INVITE_CHANNEL_WHATSAPP);
+              // AdbrixRm.commonInvite(AdbrixRm.INVITE_CHANNEL_WHATSAPP);
               AdbrixRm.commonInvite(AdbrixRm.INVITE_CHANNEL_WHATSAPP, eventAttr)
             }}>
             <Text style={styles.button_text}>INVITE</Text>
@@ -204,7 +204,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commonUseCredit();
+              // AdbrixRm.commonUseCredit();
               AdbrixRm.commonUseCredit(eventAttr);
             }}>
             <Text style={styles.button_text}>USE CREDIT</Text>
@@ -215,7 +215,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commerceViewHome();
+              // AdbrixRm.commerceViewHome();
               AdbrixRm.commerceViewHome(eventAttr);
             }}>
             <Text style={styles.button_text}>view home</Text>
@@ -223,7 +223,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commerceCategoryView(category2, productList);
+              // AdbrixRm.commerceCategoryView(category2, productList);
               AdbrixRm.commerceCategoryView(category2, productList, eventAttr);
             }}>
             <Text style={styles.button_text}>category view</Text>
@@ -232,7 +232,7 @@ const App: () => Node = () => {
             style={styles.button}
             onPress={() => {
               AdbrixRm.commerceProductView(product1, eventAttr);
-              AdbrixRm.commerceProductView(product1);
+              // AdbrixRm.commerceProductView(product1);
             }}>
             <Text style={styles.button_text}>product view</Text>
           </TouchableOpacity>
@@ -240,7 +240,7 @@ const App: () => Node = () => {
             style={styles.button}
             onPress={() => {
               AdbrixRm.commerceRefund("orderId", "prductString", 10.0, "extraString");
-              AdbrixRm.commerceRefund("orderId", "prductString", 10.0);
+              // AdbrixRm.commerceRefund("orderId", "prductString", 10.0);
             }}>
             <Text style={styles.button_text}>refund</Text>
           </TouchableOpacity>
@@ -255,14 +255,14 @@ const App: () => Node = () => {
             style={styles.button}
             onPress={() => {
               AdbrixRm.commerceShare(AdbrixRm.SHARING_CHANNEL_FACEBOOK, product1, eventAttr);
-              AdbrixRm.commerceShare(AdbrixRm.SHARING_CHANNEL_FACEBOOK, product1);
+              // AdbrixRm.commerceShare(AdbrixRm.SHARING_CHANNEL_FACEBOOK, product1);
             }}>
             <Text style={styles.button_text}>share</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commerceListView(productList);
+              // AdbrixRm.commerceListView(productList);
               AdbrixRm.commerceListView(productList, eventAttr);
             }}>
             <Text style={styles.button_text}>list view</Text>
@@ -270,7 +270,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commerceCartView(productList);
+              // AdbrixRm.commerceCartView(productList);
               AdbrixRm.commerceCartView(productList, eventAttr);
             }}>
             <Text style={styles.button_text}>cart view</Text>
@@ -278,7 +278,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commerceAddToCart(productList);
+              // AdbrixRm.commerceAddToCart(productList);
               AdbrixRm.commerceAddToCart(productList, eventAttr);
             }}>
             <Text style={styles.button_text}>add to cart</Text>
@@ -286,7 +286,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {             
-              AdbrixRm.commerceAddToWishList(productList);
+              // AdbrixRm.commerceAddToWishList(productList);
               AdbrixRm.commerceAddToWishList(productList, eventAttr);
             }}>
             <Text style={styles.button_text}>add to wish cart</Text>
@@ -296,7 +296,7 @@ const App: () => Node = () => {
             onPress={() => {             
               const discount = 0.0;
               const deliveryCharge = 0.0;
-              AdbrixRm.commerceReviewOrder("orderId", productList, discount, deliveryCharge);
+              // AdbrixRm.commerceReviewOrder("orderId", productList, discount, deliveryCharge);
               AdbrixRm.commerceReviewOrder("orderId", productList, discount, deliveryCharge, eventAttr);
             }}>
             <Text style={styles.button_text}>review order</Text>
@@ -304,7 +304,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.commercePaymentInfoAdded();
+              // AdbrixRm.commercePaymentInfoAdded();
               AdbrixRm.commercePaymentInfoAdded(eventAttr);
             }}>
             <Text style={styles.button_text}>payment info added</Text>
@@ -314,7 +314,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.gameTutorialCompleted(true);
+              // AdbrixRm.gameTutorialCompleted(true);
               AdbrixRm.gameTutorialCompleted(true, eventAttr);
             }}>
             <Text style={styles.button_text}>tutorial complete</Text>
@@ -322,15 +322,15 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.gameCharacterCreated();
-              AdbrixRm.gameCharacterCreated("extra string");
+              // AdbrixRm.gameCharacterCreated();
+              AdbrixRm.gameCharacterCreated(eventAttr);
             }}>
             <Text style={styles.button_text}>character created</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.gameStageCleared("stageName");
+              // AdbrixRm.gameStageCleared("stageName");
               AdbrixRm.gameStageCleared("stageName", eventAttr);
             }}>
             <Text style={styles.button_text}>stage cleared</Text>
@@ -338,7 +338,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.gameLevelAchieved(15);
+              // AdbrixRm.gameLevelAchieved(15);
               AdbrixRm.gameLevelAchieved(15, eventAttr);
             }}>
             <Text style={styles.button_text}>level achieved</Text>
@@ -504,7 +504,7 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.event('custom event with null attr')
+              // AdbrixRm.event('custom event with null attr')
               AdbrixRm.event('custom event with event attr', eventAttr);
             }}>
             <Text style={styles.button_text}>CUSTOM EVENT</Text>

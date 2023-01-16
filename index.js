@@ -651,10 +651,4 @@ function assignAbxRemotePushModel(pushModel) {
     return JSON.stringify(push.getAbxPushModel());
 }
 
-// ******************** For v1 backward compatibility only. Please use new API *********************
-// Depreciated: Should implement on native side
-AdbrixRmReact.startAdbrixSDK = (appKey, secretKey) => {
-    console.log("startAdbrixSDK was removed from plugin version 2. Please use initRNPlugin. Check new integration guide at: https://help.dfinery.io/hc/en-us/articles/360033981253-Adbrix-Integration-React-Native-")
-}
-// ******************** END v1 backward compatibility *************
 export default AdbrixRmReact;

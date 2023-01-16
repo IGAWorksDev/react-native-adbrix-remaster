@@ -329,10 +329,10 @@ RCT_EXPORT_METHOD(setKakaoId:(NSString*) kakaoId)
     [[AdBrixRM sharedInstance] setKakaoIdWithKakaoId:kakaoId];
 }
 
-RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(AbxRemotePushModel*, parsePushData:(NSDictionary*)pushDataMap)
+RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(NSString*, parsePushData:(NSDictionary*)pushDataMap)
 {
     NSError* error = [[NSError alloc] init];
-    return [[AdBrixRM sharedInstance] parsePushData:pushDataMap error:&error];
+    return [[[AdBrixRM sharedInstance] parsePushData:pushDataMap error:&error]toString];
 }
 
 RCT_EXPORT_METHOD(openPush:(NSString *)openPushParamJson)
