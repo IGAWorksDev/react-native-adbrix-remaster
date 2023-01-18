@@ -4,10 +4,9 @@ const path = require('path');
 module.exports = {
   dependency: {
     platforms: {
-      ios: { podspecPath: path.join(__dirname, 'react-native-adbrix-remaster.podspec') },
+      ios: { podspecPath: path.join(__dirname, 'react-native-adbrix-remaster-qa.podspec') },
       android: {
-        packageImportPath: 'import io.adbrix.AdbrixPackage;',
-        packageInstance: 'new AdbrixPackage()',
+        
       },
     },
   },

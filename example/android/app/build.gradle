@@ -195,9 +195,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    //noinspection GradleDynamicVersion
-    implementation project(":ReactAndroid")
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
@@ -220,11 +217,11 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':react-native-adbrix-remaster-develope')
-    implementation project(":ReactAndroid")
     // Note: This dependency will be overwriten with highest version
     implementation "com.google.android.gms:play-services-ads-identifier:17.0.1"
     implementation "com.android.installreferrer:installreferrer:2.2"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation project(':react-native-adbrix-remaster-qa')
     implementation "io.dfinery:android-sdk:+"
     implementation('com.google.firebase:firebase-bom:31.1.1')
     implementation('com.google.firebase:firebase-messaging:23.1.1')

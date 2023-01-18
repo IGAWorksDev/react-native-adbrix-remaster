@@ -29,7 +29,7 @@ import {
 import Separator from './components/Seperator';
 import Section from './components/Section';
 
-import AdbrixRm from 'react-native-adbrix-remaster';
+import AdbrixRm from 'react-native-adbrix-remaster-qa';
 
 const win = Dimensions.get('window');
 const header_img_ratio = win.width / 1200;
