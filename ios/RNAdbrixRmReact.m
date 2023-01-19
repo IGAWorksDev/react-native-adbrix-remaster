@@ -329,6 +329,19 @@ RCT_EXPORT_METHOD(setKakaoId:(NSString*) kakaoId)
     [[AdBrixRM sharedInstance] setKakaoIdWithKakaoId:kakaoId];
 }
 
+RCT_EXPORT_METHOD(saveUserCiProperties:(NSString*)userAttrJson)
+{
+    if ([RNAdbrixRmUtil isNullString:userAttrJson])
+    {
+        NSLog(@"abxrm : userAttrJson is NULL.");
+        return;
+    }
+    
+    AdBrixRmAttrModel* userAttrModel = [RNAdbrixRmUtil getAttrModelFromAttrString:userAttrJson];
+    [[AdBrixRM sharedInstance] setUserCiWithAttrWithAttrModel:userAttrModel];
+}
+
+
 RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(NSString*, parsePushData:(NSDictionary*)pushDataMap)
 {
     NSError* error = [[NSError alloc] init];

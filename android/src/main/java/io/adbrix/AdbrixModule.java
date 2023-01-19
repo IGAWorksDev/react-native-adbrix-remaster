@@ -289,8 +289,19 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveCiProperties(final String key, final String value) {
-        AdBrixRm.saveCiProperties(key, value);
+    public void  saveUserCiProperties(String userCiAttrJson) {
+        if (CommonUtils.isNullOrEmpty(userCiAttrJson)) {
+            AbxLog.e("saveUserCiWithAttr() userCiAttrJson is null or empty.", false);
+            return;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(userCiAttrJson);
+            AdBrixRm.CiProperties ciProperties = getCiProperties(jsonObject);
+            AdBrixRm.saveCiProperties(ciProperties);
+        } catch (JSONException e) {
+            AbxLog.e("saveUserCiWithAttr() - userCiAttrJson is not fit to jsonobject ", false);
+        }
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
@@ -1246,5 +1257,25 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
         }
         return result;
+    }
+
+    public AdBrixRm.CiProperties getCiProperties(JSONObject jsonObject) {
+        AdBrixRm.CiProperties ciProperties = new AdBrixRm.CiProperties();
+        if (jsonObject == null) {
+            return ciProperties;
+        }
+
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+
+            try {
+                ciProperties.setAttrs(key, jsonObject.get(key));
+            } catch (JSONException e) {
+
+            }
+        }
+
+        return ciProperties;
     }
 }

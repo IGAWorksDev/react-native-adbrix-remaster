@@ -426,6 +426,10 @@ AdbrixRmReact.setKakaoId = (kakaoId) => {
     AdbrixRm.setKakaoId(kakaoId);
 }
 
+AdbrixRmReact.saveUserCiProperties = (userCiProperties) => {
+    AdbrixRm.saveUserCiProperties(assignUserProperties(userCiProperties));
+}
+
 AdbrixRmReact.parsePushData = (pushMap) => {
     return AdbrixRm.parsePushData(pushMap);
 }
