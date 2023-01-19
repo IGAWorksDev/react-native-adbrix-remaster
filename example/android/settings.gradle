@@ -8,5 +8,5 @@ project(":ReactAndroid").projectDir = file('../node_modules/react-native/ReactAn
 include(":ReactAndroid:hermes-engine")
 project(":ReactAndroid:hermes-engine").projectDir = file('../node_modules/react-native/ReactAndroid/hermes-engine')
 
-include(":react-native-adbrix-remaster-qa")
-project(':react-native-adbrix-remaster-qa').projectDir = file('../node_modules/react-native-adbrix-remaster-qa/android')
+include(":react-native-adbrix-remaster")
+project(':react-native-adbrix-remaster').projectDir = file('../..//android')

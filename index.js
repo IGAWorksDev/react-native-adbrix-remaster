@@ -7,13 +7,14 @@ import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 const AdbrixRmReact = new EventEmitter();
 const { AdbrixRm } = NativeModules;
 const AdbrixRmCallBack = new NativeEventEmitter(NativeModules.AdbrixRm);
+const NativeConstants = AdbrixRm.getConstants();
 
-const DEFERRED_LINK_LISTENER_CALLBACK = "DfnDeferredDeeplinkListener";
-const DEEP_LINK_LISTENER_CALLBACK = "DfnDeeplinkListener";
-const REMOTE_PUSH_MESSAGE_CALLBACK = "DfnRemotePushMessageListener";
-const IN_APP_MESSAGE_CLICK_CALLBACK = "DfnInAppMessageClickListener";
-const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK = "DfnInAppMessageAutoFetchListener";
-const LOG_LISTENER_CALLBACK = "DfnLogListener";
+const DEFERRED_LINK_LISTENER_CALLBACK = NativeConstants.DfnDeferredDeeplinkListener;
+const DEEP_LINK_LISTENER_CALLBACK = NativeConstants.DfnDeeplinkListener;
+const REMOTE_PUSH_MESSAGE_CALLBACK = NativeConstants.DfnRemotePushMessageListener;
+const IN_APP_MESSAGE_CLICK_CALLBACK = NativeConstants.DfnInAppMessageClickListener;
+const IN_APP_MESSAGE_AUTO_FETCH_CALLBACK = NativeConstants.DfnInAppMessageAutoFetchListener;
+const LOG_LISTENER_CALLBACK = NativeConstants.DfnLogListener;
 
 AdbrixRmReact.INVITE_CHANNEL_KAKAO = "Kakao";
 AdbrixRmReact.INVITE_CHANNEL_NAVER = "Naver";
@@ -225,6 +226,10 @@ AdbrixRmReact.setDeferredDeeplinkListener = (functionName) => {
         console.log("abxrm : setDeferredDeeplinkListener : callback is null");
         return;
     }
+    if (DEFERRED_LINK_LISTENER_CALLBACK == null) {
+        console.log("abxrm : setDeferredDeeplinkListener : DEFERRED_LINK_LISTENER_CALLBACK");
+        return;
+    }
 
     AdbrixRmCallBack.removeAllListeners(DEFERRED_LINK_LISTENER_CALLBACK);
     AdbrixRmCallBack.addListener(DEFERRED_LINK_LISTENER_CALLBACK, (deeplink) => {
@@ -238,6 +243,10 @@ AdbrixRmReact.setDeferredDeeplinkListener = (functionName) => {
 AdbrixRmReact.setDeeplinkListener = (functionName) => {
     if (functionName == null) {
         console.log("abxrm : setDeeplinkListener : callback is null");
+        return;
+    }
+    if (DEEP_LINK_LISTENER_CALLBACK == null) {
+        console.log("abxrm : setDeeplinkListener : DEEP_LINK_LISTENER_CALLBACK is null");
         return;
     }
 
@@ -255,6 +264,10 @@ AdbrixRmReact.setRemotePushMessageListener = (functionName) => {
         console.log("abxrm : setRemotePushMessageListener : callback is null");
         return;
     }
+    if (REMOTE_PUSH_MESSAGE_CALLBACK == null) {
+        console.log("abxrm : setRemotePushMessageListener : REMOTE_PUSH_MESSAGE_CALLBACK is null");
+        return;
+    }
 
     AdbrixRmCallBack.removeAllListeners(REMOTE_PUSH_MESSAGE_CALLBACK)
     AdbrixRmCallBack.addListener(REMOTE_PUSH_MESSAGE_CALLBACK, (callbackJsonString) => {
@@ -268,6 +281,10 @@ AdbrixRmReact.setRemotePushMessageListener = (functionName) => {
 AdbrixRmReact.setInAppMessageClickListener = (functionName) => {
     if (functionName == null) {
         console.log("abxrm : setInAppMessageClickListener : callback is null");
+        return;
+    }
+    if (IN_APP_MESSAGE_CLICK_CALLBACK == null) {
+        console.log("abxrm : setInAppMessageClickListener : IN_APP_MESSAGE_CLICK_CALLBACK is null");
         return;
     }
 
@@ -285,6 +302,10 @@ AdbrixRmReact.setDfnInAppMessageAutoFetchListener = (functionName) => {
         console.log("abxrm : setDfnInAppMessageAutoFetchListener : callback is null");
         return;
     }
+    if (IN_APP_MESSAGE_AUTO_FETCH_CALLBACK == null) {
+        console.log("abxrm : setDfnInAppMessageAutoFetchListener : IN_APP_MESSAGE_AUTO_FETCH_CALLBACK is null");
+        return;
+    }
 
     AdbrixRmCallBack.removeAllListeners(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK);
     AdbrixRmCallBack.addListener(IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, (callbackJsonString) => {
@@ -298,6 +319,10 @@ AdbrixRmReact.setDfnInAppMessageAutoFetchListener = (functionName) => {
 AdbrixRmReact.setLogListener = (functionName) => {
     if (functionName == null) {
         console.log("abxrm : setLogListener : callback is null");
+        return;
+    }
+    if (LOG_LISTENER_CALLBACK == null) {
+        console.log("abxrm : setLogListener : LOG_LISTENER_CALLBACK is null");
         return;
     }
 

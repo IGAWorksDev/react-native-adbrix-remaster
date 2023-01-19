@@ -12,7 +12,7 @@ target 'example' do
     :hermes_enabled => false
   )
 
-  pod 'react-native-adbrix-remaster-qa', :path => '../node_modules/react-native-adbrix-remaster-qa'
+  pod 'react-native-adbrix-remaster', :path => '../../'
 
   target 'exampleTests' do
     inherit! :complete

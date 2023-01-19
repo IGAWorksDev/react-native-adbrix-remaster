@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.facebook.react.bridge.Callback;
@@ -1277,5 +1278,18 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         }
 
         return ciProperties;
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> map = new HashMap<>();
+        map.put(DfnCallbackConstants.DEEP_LINK_LISTENER_CALLBACK, DfnCallbackConstants.DEEP_LINK_LISTENER_CALLBACK);
+        map.put(DfnCallbackConstants.DEFERRED_LINK_LISTENER_CALLBACK, DfnCallbackConstants.DEFERRED_LINK_LISTENER_CALLBACK);
+        map.put(DfnCallbackConstants.REMOTE_PUSH_MESSAGE_CALLBACK, DfnCallbackConstants.REMOTE_PUSH_MESSAGE_CALLBACK);
+        map.put(DfnCallbackConstants.IN_APP_MESSAGE_CLICK_CALLBACK, DfnCallbackConstants.IN_APP_MESSAGE_CLICK_CALLBACK);
+        map.put(DfnCallbackConstants.IN_APP_MESSAGE_AUTO_FETCH_CALLBACK, DfnCallbackConstants.IN_APP_MESSAGE_AUTO_FETCH_CALLBACK);
+        map.put(DfnCallbackConstants.LOG_LISTENER_CALLBACK, DfnCallbackConstants.LOG_LISTENER_CALLBACK);
+        return map;
     }
 }
