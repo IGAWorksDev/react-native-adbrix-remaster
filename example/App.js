@@ -29,7 +29,7 @@ import {
 import Separator from './components/Seperator';
 import Section from './components/Section';
 
-import AdbrixRm from 'react-native-adbrix-remaster-qa';
+import AdbrixRm from 'react-native-adbrix-remaster';
 
 const win = Dimensions.get('window');
 const header_img_ratio = win.width / 1200;
@@ -375,12 +375,32 @@ const App: () => Node = () => {
             }}>
             <Text style={styles.button_text}>set Gender</Text>
           </TouchableOpacity>
+          <Section title="CI"/>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              AdbrixRm.setKakaoId("kakao id");
+            }}>
+            <Text style={styles.button_text}>set kakao id</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
               AdbrixRm.saveUserProperties(userProperties);
             }}>
             <Text style={styles.button_text}>save user property</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              const userCiProperties = new AdbrixRm.UserProperties();
+              userCiProperties.setProperty("secret_id", "secret");
+              userCiProperties.setProperty("user_phone", "010-0000-0000");
+              userCiProperties.setProperty("is_married", false);
+
+              AdbrixRm.saveUserCiProperties(userCiProperties);
+            }}>
+            <Text style={styles.button_text}>save user ci properties</Text>
           </TouchableOpacity>
           <Separator/>
           <TouchableOpacity
@@ -586,13 +606,6 @@ const App: () => Node = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              AdbrixRm.deepLinkEvent();
-            }}>
-            <Text style={styles.button_text}>AOS : deep link event</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
               AdbrixRm.setPushIconStyle("test1", "test2", 0x1000FF00);
             }}>
             <Text style={styles.button_text}>AOS : set push icon style</Text>
@@ -626,23 +639,6 @@ const App: () => Node = () => {
             <Text style={styles.button_text}>AOS : set notification channel</Text>
           </TouchableOpacity>
           <Separator />
-
-          <Section title="IOS Only"/>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.deepLinkOpenWithUrlStr("abxrm://main");
-            }}>
-            <Text style={styles.button_text}>IOS : deep link event</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              AdbrixRm.deepLinkOpenWithUrlStr("adbrixexample://home");
-            }}>
-            <Text style={styles.button_text}>IOS : deep link open with url str</Text>
-          </TouchableOpacity>
-          <Separator/>
 
           <Section title="More information">
             You can visit our help center to learn how to user adbrix dfinery
