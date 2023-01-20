@@ -70,7 +70,7 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
-    implementation project(":ReactAndroid")
+    implementation "com.facebook.react:react-native:+"
 
 //    implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
     implementation "com.google.android.gms:play-services-ads-identifier:${safeExtGet('installReferrerVersion', '17.0.1')}"

@@ -2,7 +2,6 @@ package io.adbrix;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
-import com.google.firebase.messaging.RemoteMessage;
 import com.igaworks.v2.core.AbxCommerce;
 import com.igaworks.v2.core.AbxCommon;
 import com.igaworks.v2.core.AbxGame;
@@ -114,7 +112,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                 userPropertiesJSON = new JSONObject(jsonString);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
         AdBrixRm.UserProperties userProperties = AdbrixUtils.makeUserProperties(userPropertiesJSON);
         AdBrixRm.saveUserProperties(userProperties);
@@ -147,7 +145,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
             AdBrixRm.event(eventName, AdbrixUtils.makeEventProperties(attrmodel));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -477,7 +475,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         try {
             jsonObject = new JSONObject(data);
         } catch (JSONException e) {
-
+            AbxLog.e(e, false);
         }
         if(jsonObject == null){
             AbxLog.e("insertPushData() parsing error", false);
@@ -706,7 +704,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                 commerceExtraAttributes = new JSONObject(extraAttrJsonString);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         } finally {
             AbxCommerce.viewHome(AdbrixUtils.makeEventProperties(commerceExtraAttributes));
         }
@@ -735,7 +733,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
             AbxCommerce.categoryView(categories, products, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -754,7 +752,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
             AbxCommerce.productView(productModel, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -773,7 +771,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
             AbxCommerce.addToCart(products, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -792,7 +790,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AdBrixRm.CommerceProductModel productModel = AdbrixUtils.makeProductModel(product);
             AbxCommerce.addToWishList(productModel, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -811,7 +809,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
             AbxCommerce.reviewOrder(orderId, products, discount, deliveryCharge, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -830,7 +828,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             List<AdBrixRm.CommerceProductModel> products = AdbrixUtils.makeProductList(items);
             AbxCommerce.refund(orderId, products, penaltyCharge, AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
 
     }
@@ -851,7 +849,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxCommerce.search(keyword, products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -871,7 +869,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxCommerce.share(AdBrixRm.CommerceSharingChannel.getChannelByChannelCode(sharingChannel), productModel, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -891,7 +889,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxCommerce.listView(products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -911,7 +909,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxCommerce.cartView(products, AdbrixUtils.makeEventProperties(extraAttrs));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
     //paymentinfo_added
@@ -926,7 +924,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
             AbxCommerce.paymentInfoAdded(AdbrixUtils.makeEventProperties(extraAttrs));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -943,7 +941,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxGame.tutorialComplete(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -958,7 +956,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxGame.levelAchieved(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -972,7 +970,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AdBrixRm.GameProperties.CharacterCreated gameProperties = new AdBrixRm.GameProperties.CharacterCreated();
             AbxGame.characterCreated(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -988,7 +986,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                     .setStageName(stageName);
             AbxGame.stageCleared(gameProperties.setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs)));
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -1013,7 +1011,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AbxCommon.purchase(orderID, products, discount, deliveryCharge, AdBrixRm.CommercePaymentMethod.getMethodByMethodCode(paymentMethod), purchaseEventProperties);
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -1028,7 +1026,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
             AbxCommon.signUp(AdBrixRm.CommonSignUpChannel.getChannelByChannelCode(channelName), properties);
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -1044,7 +1042,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
             AbxCommon.useCredit(properties);
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -1061,7 +1059,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
             AbxCommon.appUpdate(properties);
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -1076,7 +1074,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
                     .setAttrModel(AdbrixUtils.makeEventProperties(extraAttrs));
             AbxCommon.invite(AdBrixRm.CommonInviteChannel.getChannelByChannelCode(channelName), properties);
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
     }
 
@@ -1219,7 +1217,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             }
             return items;
         } catch (JSONException e) {
-            e.printStackTrace();
+            AbxLog.e(e, false);
         }
         return null;
     }
@@ -1273,7 +1271,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             try {
                 ciProperties.setAttrs(key, jsonObject.get(key));
             } catch (JSONException e) {
-
+                AbxLog.w(e, false);
             }
         }
 

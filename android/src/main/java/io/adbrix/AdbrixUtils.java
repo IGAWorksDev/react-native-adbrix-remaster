@@ -27,7 +27,7 @@ public class AdbrixUtils {
             return s == null || s.equals("null");
         }
         catch (Exception e){
-            e.printStackTrace();
+            AbxLog.e(e, false);
             return true;
         }
     }
@@ -43,7 +43,7 @@ public class AdbrixUtils {
             return products;
         }
         catch (Exception e){
-            e.printStackTrace();
+            AbxLog.e(e, false);
             return new ArrayList<AdBrixRm.CommerceProductModel>();
         }
     }
@@ -83,7 +83,7 @@ public class AdbrixUtils {
             }
             return productModel;
         }catch (Exception e){
-            e.printStackTrace();
+            AbxLog.e(e, false);
             return new AdBrixRm.CommerceProductModel();
         }
     }
@@ -112,7 +112,7 @@ public class AdbrixUtils {
                     userProperties.setAttrs(key,String.valueOf(value));
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                AbxLog.e(e, false);
             }
         }
         return userProperties;
@@ -143,7 +143,7 @@ public class AdbrixUtils {
                     eventProps.setAttrs(key,String.valueOf(value));
                 }
             } catch (JSONException e){
-                e.printStackTrace();
+                AbxLog.e(e, false);
             }
         }
         return eventProps;
