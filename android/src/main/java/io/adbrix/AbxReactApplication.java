@@ -56,12 +56,10 @@ public abstract class AbxReactApplication extends Application implements ReactAp
 
     private void sendMessageToReact(final String callbackMethodName, final String arguments) {
         if (reactApplicationContext == null) {
-            Log.i("abxrm : ","ReactApplication Context is Null");
             return;
         }
         Activity activity = reactApplicationContext.getCurrentActivity();
         if (activity == null) {
-            AbxLog.i("currentActivity is null", false);
             return;
         }
         activity.runOnUiThread(new Runnable() {

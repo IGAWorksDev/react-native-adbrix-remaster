@@ -1086,12 +1086,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
 
     private void sendMessageToReact(final String callbackMethodName, final String arguments) {
         if (reactApplicationContext == null) {
-            AbxLog.i("ReactApplicationContext is null", false);
             return;
         }
         Activity activity = reactApplicationContext.getCurrentActivity();
         if (activity == null) {
-            AbxLog.i("currentActivity is null", false);
             return;
         }
         activity.runOnUiThread(new Runnable() {
