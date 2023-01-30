@@ -263,7 +263,7 @@ RCT_EXPORT_METHOD(setGender:(int)gender)
 {
     [[AdBrixRM sharedInstance] setGenderWithAdBrixGenderType:[[AdBrixRM sharedInstance] convertGender:gender]];
 }
-RCT_EXPORT_METHOD(saveUserProperties:(NSString *)dictionaryString)
+RCT_EXPORT_METHOD(setUserProperties:(NSString *)dictionaryString)
 {
     AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
     if(dictionaryString != NULL){

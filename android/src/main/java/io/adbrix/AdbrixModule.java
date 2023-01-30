@@ -105,7 +105,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveUserProperties(String jsonString) {
+    public void setUserProperties(String jsonString) {
         JSONObject userPropertiesJSON = new JSONObject();
         try {
             if (!AdbrixUtils.isNullString(jsonString)) {

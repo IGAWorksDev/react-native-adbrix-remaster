@@ -355,8 +355,8 @@ AdbrixRmReact.setGender = (gender) => {
     AdbrixRm.setGender(gender);
 }
 
-AdbrixRmReact.saveUserProperties = (userProperties) => {
-    AdbrixRm.saveUserProperties(assignUserProperties(userProperties));
+AdbrixRmReact.setUserProperties = (userProperties) => {
+    AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
 
 AdbrixRmReact.clearUserProperties = () => {
