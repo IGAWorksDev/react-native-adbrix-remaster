@@ -82,7 +82,7 @@ AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MIN = 10;
 AdbrixRmReact.UPLOAD_COUNT_INTERVAL_NORMAL = 30;
 AdbrixRmReact.UPLOAD_COUNT_INTERVAL_MAX = 1000;
 
-AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 60;
+AdbrixRmReact.UPLOAD_TIME_INTERVAL_MIN = 30;
 AdbrixRmReact.UPLOAD_TIME_INTERVAL_NORMAL = 60;
 AdbrixRmReact.UPLOAD_TIME_INTERVAL_MAX = 120;
 
@@ -386,7 +386,7 @@ AdbrixRmReact.setEventUploadCountInterval = (interval) => {
 }
 
 AdbrixRmReact.setEventUploadTimeInterval = (interval) => {
-    AdbrixRm.setEventUploadCountInterval(interval);
+    AdbrixRm.setEventUploadTimeInterval(interval);
 }
 
 // Aos Only
