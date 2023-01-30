@@ -559,7 +559,11 @@ RCT_EXPORT_METHOD(clearSyncedActionHistoryInLocalDB:(RCTResponseSenderBlock) cal
 
 RCT_EXPORT_METHOD(setInAppMessageFetchMode:(NSInteger) mode)
 {
-    [[AdBrixRM sharedInstance] setInAppMessageFetchModeWithMode:mode];
+    if (mode == 1) {
+        [[AdBrixRM sharedInstance] setInAppMessageFetchModeWithMode:DfnInAppMessageFetchModeAdidMode];
+    } else {
+        [[AdBrixRM sharedInstance] setInAppMessageFetchModeWithMode:DfnInAppMessageFetchModeUserIdMode];
+    }
 }
 
 RCT_EXPORT_METHOD(setInAppMessageToken:(NSString*) token)
@@ -607,6 +611,11 @@ RCT_EXPORT_METHOD(openInAppMessage:(NSString*) campaignId callback:(RCTResponseS
     };
     
     [[AdBrixRM sharedInstance] openInAppMessageWithCampaignId:campaignId completion:completion];
+}
+
+RCT_EXPORT_METHOD(printSdkState)
+{
+    [[AdBrixRM sharedInstance] printSdkState];
 }
 
 RCT_EXPORT_METHOD(commerceViewHome:(NSString *)attrs)

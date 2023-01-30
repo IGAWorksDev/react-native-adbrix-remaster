@@ -27,6 +27,10 @@ AdbrixRmReact.INVITE_CHANNEL_QQ = "QQ";
 AdbrixRmReact.INVITE_CHANNEL_WECHAT = "WeChat";
 AdbrixRmReact.INVITE_CHANNEL_ETC = "ETC";
 
+AdbrixRmReact.DFN_IN_APP_FETCH_MODE_USER_ID = 0;
+AdbrixRmReact.DFN_IN_APP_FETCH_MODE_ADID = 1;
+
+
 AdbrixRmReact.SHARING_CHANNEL_FACEBOOK = "Facebook";
 AdbrixRmReact.SHARING_CHANNEL_KAKAO = "Kakao";
 AdbrixRmReact.SHARING_CHANNEL_KAKAOSTORY = "KakaoStory";
@@ -545,6 +549,10 @@ AdbrixRmReact.getAllInAppMessage = (callback) => {
 
 AdbrixRmReact.openInAppMessage = (campaignId, callback) => {
     AdbrixRm.openInAppMessage(campaignId, callback);
+}
+
+AdbrixRmReact.printSdkState = () => {
+    AdbrixRm.printSdkState();
 }
 
 // Commerce

@@ -692,6 +692,12 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         });
     }
 
+
+    @ReactMethod
+    public static void printSdkState(){
+        AdBrixRm.printSdkState();
+    }
+
     @ReactMethod
     public void commerceViewHome(String extraAttrJsonString) {
         if (extraAttrJsonString == null) {
