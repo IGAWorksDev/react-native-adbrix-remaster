@@ -1,4 +1,4 @@
-#import <RNAdbrixRmReact.h>
+#import "RNAdbrixRmReact.h"
 
 static RNAdbrixRmReact *_sharedInstance = nil;
 
