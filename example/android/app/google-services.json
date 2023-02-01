@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "67997909214",
-    "firebase_url": "https://yentest-12206.firebaseio.com",
-    "project_id": "yentest-12206",
-    "storage_bucket": "yentest-12206.appspot.com"
+    "project_number": "1022318115247",
+    "project_id": "dfinery-demo",
+    "storage_bucket": "dfinery-demo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:67997909214:android:248429e2bbf455807f824f",
+        "mobilesdk_app_id": "1:1022318115247:android:fef610c22a4f6446ed575a",
         "android_client_info": {
-          "package_name": "com.example"
+          "package_name": "com.aosTest.projectwtestapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "67997909214-8jsolnrquf3bsvfnmh3sfcju3vh6j787.apps.googleusercontent.com",
+          "client_id": "1022318115247-fi99p9nr2af981vfcpod0iucrvbu4k75.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJVMw14AnPN_GojPZjfgKKWCCRfslq6ME"
+          "current_key": "AIzaSyA3sFAaKsUJLXH3Vmq4uxCtc1K70EC59qM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "67997909214-8jsolnrquf3bsvfnmh3sfcju3vh6j787.apps.googleusercontent.com",
+              "client_id": "1022318115247-fi99p9nr2af981vfcpod0iucrvbu4k75.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "67997909214-8p4vo9pisclgl6u3u58b99474c0p9f4i.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "vn.ypworks.rn.demo"
-              }
             }
           ]
         }
@@ -44,43 +36,57 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:67997909214:android:7f41252358f95bc87f824f",
+        "mobilesdk_app_id": "1:1022318115247:android:bab5881f01fa5073ed575a",
         "android_client_info": {
-          "package_name": "vn.ypworks.rn.demo"
+          "package_name": "com.example"
         }
       },
       "oauth_client": [
         {
-          "client_id": "67997909214-mbhu286cp7kve3mekm63adf3d3q9vees.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "vn.ypworks.rn.demo",
-            "certificate_hash": "a1913a920d6a7bd0be7613f0538fe31982bc972f"
-          }
-        },
-        {
-          "client_id": "67997909214-8jsolnrquf3bsvfnmh3sfcju3vh6j787.apps.googleusercontent.com",
+          "client_id": "1022318115247-fi99p9nr2af981vfcpod0iucrvbu4k75.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJVMw14AnPN_GojPZjfgKKWCCRfslq6ME"
+          "current_key": "AIzaSyA3sFAaKsUJLXH3Vmq4uxCtc1K70EC59qM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "67997909214-8jsolnrquf3bsvfnmh3sfcju3vh6j787.apps.googleusercontent.com",
+              "client_id": "1022318115247-fi99p9nr2af981vfcpod0iucrvbu4k75.apps.googleusercontent.com",
               "client_type": 3
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022318115247:android:7ae7cb57bec86086ed575a",
+        "android_client_info": {
+          "package_name": "com.example.adbrix_test_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022318115247-fi99p9nr2af981vfcpod0iucrvbu4k75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3sFAaKsUJLXH3Vmq4uxCtc1K70EC59qM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
             {
-              "client_id": "67997909214-8p4vo9pisclgl6u3u58b99474c0p9f4i.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "vn.ypworks.rn.demo"
-              }
+              "client_id": "1022318115247-fi99p9nr2af981vfcpod0iucrvbu4k75.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         }

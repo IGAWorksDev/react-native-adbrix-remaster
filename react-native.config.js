@@ -5,10 +5,7 @@ module.exports = {
   dependency: {
     platforms: {
       ios: { podspecPath: path.join(__dirname, 'react-native-adbrix-remaster.podspec') },
-      android: {
-        packageImportPath: 'import io.adbrix.AdbrixPackage;',
-        packageInstance: 'new AdbrixPackage()',
-      },
+      android: null
     },
   },
 };

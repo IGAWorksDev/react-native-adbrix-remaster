@@ -6,6 +6,8 @@ import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.igaworks.v2.core.AdBrixRm;
 
+import io.adbrix.sdk.component.AbxLog;
+
 
 public class MainActivity extends ReactActivity {
 
@@ -21,7 +23,6 @@ public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    onNewIntent(MainActivity.this.getIntent());
   }
 
   @Override
@@ -30,5 +31,4 @@ public class MainActivity extends ReactActivity {
     setIntent(intent);
     AdBrixRm.deeplinkEvent(MainActivity.this);
   }
-
 }
