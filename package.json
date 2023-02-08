@@ -1,6 +1,6 @@
 {
   "name": "react-native-adbrix-remaster",
-  "version": "2.2.1.1",
+  "version": "2.3.0",
   "description": "Adbrix SDK for react-native",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "dfinery",
     "igaworks"
   ],
-  "author": "mike-han",
+  "author": "jonathan-igaw",
   "homepage": "https://www.adbrix.io",
   "license": "IGAWORKS",
   "repository": {

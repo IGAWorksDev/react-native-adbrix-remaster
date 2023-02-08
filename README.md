@@ -11,12 +11,12 @@ We try our best to support you to integrate our RN Plugin into your project, if 
 
 ### This plugin is built for
 
-- [Android SDK](https://help.dfinery.io/hc/ko/articles/360006568493-SDK-Release-Note-Android) **v2.1.0.1** released on 2021.06.24
-- [iOS SDK](https://help.dfinery.io/hc/ko/articles/360006568953-SDK-Release-Note-iOS) **v1.6.5801** released on 2021.06.30
+- [Android SDK](https://help.dfinery.io/hc/ko/articles/360006568493-SDK-Release-Note-Android) 
+- [iOS SDK](https://help.dfinery.io/hc/ko/articles/360006568953-SDK-Release-Note-iOS) 
 
 > 
 Pls check [release log](https://help.dfinery.io/hc/ko/articles/360006568953-SDK-Release-Note-iOS) to find suitable version for your development environment.
-To change iOS xcframework version, after installing plugin from npm, go to node_modules/react-native-adbrix-remaster/react-native-adbrix-remaster.podspec, update native dependency:  **s.dependency 'AdBrixRemastered_XC', '1.0.0'**. Then use pod update command:
+To change iOS xcframework version, after installing plugin from npm, Use pod update command:
 ```
 cd ios && pod update
 ```

@@ -105,7 +105,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setUserProperties(String jsonString) {
+    public void saveUserProperties(String jsonString) {
         JSONObject userPropertiesJSON = new JSONObject();
         try {
             if (!AdbrixUtils.isNullString(jsonString)) {
@@ -288,9 +288,9 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void  saveUserCiProperties(String userCiAttrJson) {
+    public void  saveCiProperties(String userCiAttrJson) {
         if (CommonUtils.isNullOrEmpty(userCiAttrJson)) {
-            AbxLog.e("saveUserCiWithAttr() userCiAttrJson is null or empty.", false);
+            AbxLog.e("saveCiProperties() userCiAttrJson is null or empty.", false);
             return;
         }
 
@@ -299,7 +299,7 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
             AdBrixRm.CiProperties ciProperties = getCiProperties(jsonObject);
             AdBrixRm.saveCiProperties(ciProperties);
         } catch (JSONException e) {
-            AbxLog.e("saveUserCiWithAttr() - userCiAttrJson is not fit to jsonobject ", false);
+            AbxLog.e("saveCiProperties()) - userCiAttrJson is not fit to jsonobject ", false);
         }
     }
 

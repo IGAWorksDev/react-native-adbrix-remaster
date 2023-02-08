@@ -455,8 +455,17 @@ AdbrixRmReact.setKakaoId = (kakaoId) => {
     AdbrixRm.setKakaoId(kakaoId);
 }
 
-AdbrixRmReact.saveUserCiProperties = (userCiProperties) => {
-    AdbrixRm.saveUserCiProperties(assignUserProperties(userCiProperties));
+// Deprecated : saveUserProperties로 API명 통일. 구버전 사용자를 위해 지원.
+AdbrixRmReact.setUserProperties = (userProperties) => {
+    AdbrixRm.saveUserProperties(assignUserProperties(userProperties));
+}
+
+AdbrixRmReact.saveUserProperties = (userProperties) => {
+    AdbrixRm.saveUserProperties(assignUserProperties(userProperties));
+}
+
+AdbrixRmReact.saveCiProperties = (userCiProperties) => {
+    AdbrixRm.saveCiProperties(assignUserProperties(userCiProperties));
 }
 
 AdbrixRmReact.parsePushData = (pushMap) => {

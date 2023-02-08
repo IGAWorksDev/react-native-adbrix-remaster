@@ -263,7 +263,7 @@ RCT_EXPORT_METHOD(setGender:(int)gender)
 {
     [[AdBrixRM sharedInstance] setGenderWithAdBrixGenderType:[[AdBrixRM sharedInstance] convertGender:gender]];
 }
-RCT_EXPORT_METHOD(setUserProperties:(NSString *)dictionaryString)
+RCT_EXPORT_METHOD(saveUserProperties:(NSString *)dictionaryString)
 {
     AdBrixRmAttrModel *attrModel = [AdBrixRmAttrModel new];
     if(dictionaryString != NULL){
@@ -341,7 +341,7 @@ RCT_EXPORT_METHOD(setKakaoId:(NSString*) kakaoId)
     [[AdBrixRM sharedInstance] setKakaoIdWithKakaoId:kakaoId];
 }
 
-RCT_EXPORT_METHOD(saveUserCiProperties:(NSString*)userAttrJson)
+RCT_EXPORT_METHOD(saveCiProperties:(NSString*)userAttrJson)
 {
     if ([RNAdbrixRmUtil isNullString:userAttrJson])
     {
