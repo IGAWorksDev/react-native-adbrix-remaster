@@ -6,7 +6,7 @@
 //
 
 #import <UserNotifications/UserNotifications.h>
-#import <AdBrixRm_XC/AdBrixPushServiceObjC.h>
+#import <AdBrixRmKit/AdBrixPushServiceObjC.h>
 
 @interface NotificationService : AdBrixPushServiceObjC
 

@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   s.homepage     = pkg["homepage"]
   s.author       = pkg["author"]
   s.source       = { :git => pkg["repository"]["url"] }
-  s.source_files = 'ios/**/*.{h,m}'
+  s.source_files    = "ios/**/*.{h,m,mm,swift}"
   s.platform     = :ios, "9.0"
-  s.dependency 'AdBrixRemastered_XC', '1.6.5803'
+  s.dependency 'AdBrixRmKit', '~> 2'
   s.dependency 'React'
 end

@@ -1,7 +1,7 @@
 #import "AppDelegate.h"
 #import <AdSupport/AdSupport.h>
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import <AdBrixRM_XC/AdBrixRM_XC-Swift.h> // We use AdBrixRM_XC module name instead of AdBrixRM
+#import <AdBrixRmKit/AdBrixRmKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 // iOS 9.x or newer
@@ -18,8 +18,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-
-
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -39,7 +37,6 @@ static void InitializeFlipper(UIApplication *application) {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
-
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"example"
@@ -59,15 +56,19 @@ static void InitializeFlipper(UIApplication *application) {
   
   // Create AdBrixRM Instance, Only need with Adbrix RN Plugin V2
   AdBrixRM *adBrix = [AdBrixRM sharedInstance];
-  [adBrix initAdBrixWithAppKey:@"dW6eSX9fbk2r0Rr4KJIQ0A" secretKey:@"tkBFgB2bOUK0L0Jo9FKqyw"];
+      
+  // Tokyo InAppMessage Test API KEY set server mode 1
+  [adBrix initAdBrixWithAppKey:@"IqDU25JtZkaTEoy0VquaAw" secretKey:@"HiZeD4ZdCU6TVRwS4QPHQg"];
+  // [adBrix initAdBrixWithAppKey:@"bccpaGIxvUGEcITGOVMoUQ" secretKey:@"qdQHZrbtuEm8YDSnsOGJfQ"];
+  // 리스너 설정
+  RNAdbrixRmReact* rnAdbrixRmReact = [RNAdbrixRmReact new];
+  [rnAdbrixRmReact setDeferredDeeplinkListener];
+  [rnAdbrixRmReact setAdBrixDeeplinkDelegate];
+  [rnAdbrixRmReact setAdBrixPushRemoteDelegate];
+  [rnAdbrixRmReact setInAppMessageFetchDelegateWithDelegate];
+  [rnAdbrixRmReact setInAppMessageClickDelegate];
+  [rnAdbrixRmReact setLogDelegate];
 
-//  if ((NSClassFromString(@"ASIdentifierManager")) != nil) {
-//     NSUUID *ifa =[[ASIdentifierManager sharedManager]advertisingIdentifier];
-//     // Get IDFA from a Device and Set it in SDK
-//     [adBrix setAppleAdvertisingIdentifier:[ifa UUIDString]];
-//  }
-  
-  
   if (@available(iOS 14, *)) {
     [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
       switch (status) {
@@ -89,15 +90,15 @@ static void InitializeFlipper(UIApplication *application) {
       }
     }];
   }
-  
+    
   // Push notification service
-  
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
-    
     if(granted){
-      [[UIApplication sharedApplication] registerForRemoteNotifications];
+      dispatch_async(dispatch_get_main_queue(), ^{
+           [[UIApplication sharedApplication] registerForRemoteNotifications];
+       });
       AdBrixRM * adBrix = [AdBrixRM sharedInstance];
       [adBrix setPushEnableToPushEnable:true];
     }
@@ -106,7 +107,6 @@ static void InitializeFlipper(UIApplication *application) {
       AdBrixRM * adBrix = [AdBrixRM sharedInstance];
       [adBrix setPushEnableToPushEnable:false];
     }
-    
   }];
   
   return YES;
@@ -115,7 +115,7 @@ static void InitializeFlipper(UIApplication *application) {
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
@@ -164,6 +164,5 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 
-
-
 @end
+
