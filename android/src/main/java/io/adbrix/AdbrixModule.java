@@ -118,20 +118,20 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         AdBrixRm.saveUserProperties(userProperties);
     }
 
-    @ReactMethod
-    public void clearUserProperties() {
-        AdBrixRm.clearUserProperties();
-    }
+    // @ReactMethod
+    // public void clearUserProperties() {
+    //     AdBrixRm.clearUserProperties();
+    // }
 
-    @ReactMethod
-    public void setEnableLocationListening(boolean option) {
-        AdBrixRm.setEnableLocationListening(option);
-    }
+    // @ReactMethod
+    // public void setEnableLocationListening(boolean option) {
+    //     AdBrixRm.setEnableLocationListening(option);
+    // }
 
-    @ReactMethod
-    public void setLocation(double lat, double lon) {
-        AdBrixRm.setLocation(lat, lon);
-    }
+    // @ReactMethod
+    // public void setLocation(double lat, double lon) {
+    //     AdBrixRm.setLocation(lat, lon);
+    // }
 
     @ReactMethod
     public void event(String eventName, String paramJson) {
@@ -162,10 +162,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         });
     }
 
-    @ReactMethod
-    public void disableSDK(String reason) {
-        AdBrixRm.disableSDK(reason);
-    }
+    // @ReactMethod
+    // public void disableSDK(String reason) {
+    //     AdBrixRm.disableSDK(reason);
+    // }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public boolean isAdbrixDisabled() {
@@ -220,10 +220,10 @@ public class AdbrixModule extends ReactContextBaseJavaModule {
         }
     }
 
-    @ReactMethod
-    public void setAppScanEnable(boolean enable) {
-        AdBrixRm.setAppScanEnable(enable);
-    }
+    // @ReactMethod
+    // public void setAppScanEnable(boolean enable) {
+    //     AdBrixRm.setAppScanEnable(enable);
+    // }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public boolean getPushEnable(){

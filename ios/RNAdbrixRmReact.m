@@ -271,15 +271,15 @@ RCT_EXPORT_METHOD(saveUserProperties:(NSString *)dictionaryString)
     }
     [[AdBrixRM sharedInstance] setUserPropertiesWithAttrWithAttrModel:attrModel];
 }
-RCT_EXPORT_METHOD(clearUserProperties)
-{
-    [[AdBrixRM sharedInstance] clearUserProperties];
-}
+// RCT_EXPORT_METHOD(clearUserProperties)
+// {
+//     [[AdBrixRM sharedInstance] clearUserProperties];
+// }
 
-RCT_EXPORT_METHOD(setLocation:(double)latitude longitude:(double)longitude )
-{
-    [[AdBrixRM sharedInstance] setLocationWithLatitude:latitude longitude:longitude];
-}
+// RCT_EXPORT_METHOD(setLocation:(double)latitude longitude:(double)longitude )
+// {
+//     [[AdBrixRM sharedInstance] setLocationWithLatitude:latitude longitude:longitude];
+// }
 
 RCT_EXPORT_METHOD(event:(NSString *)eventName attrs:(NSString *)attrs)
 {

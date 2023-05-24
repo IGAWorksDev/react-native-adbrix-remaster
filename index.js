@@ -363,19 +363,19 @@ AdbrixRmReact.setUserProperties = (userProperties) => {
     AdbrixRm.setUserProperties(assignUserProperties(userProperties));
 }
 
-AdbrixRmReact.clearUserProperties = () => {
-    AdbrixRm.clearUserProperties();
-}
+// AdbrixRmReact.clearUserProperties = () => {
+//     AdbrixRm.clearUserProperties();
+// }
 
-AdbrixRmReact.setEnableLocationListening = (option) => {
-    if (Platform.OS == 'android') {
-        AdbrixRm.setEnableLocationListening(option);
-    }
-}
+// AdbrixRmReact.setEnableLocationListening = (option) => {
+//     if (Platform.OS == 'android') {
+//         AdbrixRm.setEnableLocationListening(option);
+//     }
+// }
 
-AdbrixRmReact.setLocation = (lat, lon) => {
-    AdbrixRm.setLocation(lat, lon);
-}
+// AdbrixRmReact.setLocation = (lat, lon) => {
+//     AdbrixRm.setLocation(lat, lon);
+// }
 
 AdbrixRmReact.event = (eventName, attrs) => {
     AdbrixRm.event(eventName, assignAttrModel(attrs));
@@ -394,11 +394,11 @@ AdbrixRmReact.setEventUploadTimeInterval = (interval) => {
 }
 
 // Aos Only
- AdbrixRmReact.setAppScanEnable = (enable) => {
-    if (Platform.OS == 'android') {
-        AdbrixRm.setAppScanEnable(enable);
-    }
-}
+//  AdbrixRmReact.setAppScanEnable = (enable) => {
+//     if (Platform.OS == 'android') {
+//         AdbrixRm.setAppScanEnable(enable);
+//     }
+// }
 
 AdbrixRmReact.getPushEnable = () => {
     return AdbrixRm.getPushEnable();
