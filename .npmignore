@@ -30,3 +30,5 @@ ios/DerivedData/
 
 # Java class files
 *.class
+
+tsconfig.json

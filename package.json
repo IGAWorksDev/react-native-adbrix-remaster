@@ -1,32 +1,40 @@
 {
   "name": "react-native-adbrix-remaster",
-  "version": "2.3.2",
+  "version": "3.0.0",
   "description": "Adbrix SDK for react-native",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "react-native": "src/index",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+      "src",
+      "android",
+      "ios",
+      "react-native-adbrix-remaster.podspec",
+      "!android/build",
+      "!ios/build",
+      "!**/__tests__",
+      "!**/__fixtures__",
+      "!**/__mocks__"
+  ],
+  "keywords": [
+      "react-native",
+      "android",
+      "ios",
+      "adbrix",
+      "dfinery",
+      "igaworks"
+  ],
+  "repository": "https://github.com/IGAWorksDev/react-native-adbrix-remaster.git",
+  "author": "IGAWorks Inc.",
+  "license": "IGAWORKS",
+  "homepage": "https://www.adbrix.io",
   "devDependencies": {
-    "react": "18.1.0",
-    "react-native": "0.70.6"
+      "eslint": "^8.43.0",
+      "react": "18.1.0",
+      "react-native": "^0.70.6",
+      "typescript": "4.9.5"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
-  },
-  "keywords": [
-    "react-native",
-    "android",
-    "ios",
-    "adbrix",
-    "dfinery",
-    "igaworks"
-  ],
-  "author": "jonathan-igaw",
-  "homepage": "https://www.adbrix.io",
-  "license": "IGAWORKS",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IGAWorksDev/react-native-adbrix-remaster.git"
+      "react-native": ">= 0.60"
   }
 }
