@@ -1,6 +1,6 @@
 {
   "name": "react-native-adbrix-remaster",
-  "version": "3.0.0-beta.0",
+  "version": "3.0.0-beta.1",
   "description": "Adbrix SDK for react-native",
   "react-native": "src/index",
   "main": "src/index.js",
