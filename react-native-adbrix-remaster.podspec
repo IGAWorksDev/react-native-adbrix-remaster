@@ -17,11 +17,6 @@ Pod::Spec.new do |s|
   s.source_files    = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React"
-  s.dependency 'AdBrixRmKit'
-  
-  s.subspec 'AdBrixRmKit' do |ss|
-    # 배포전에 꼭 확인!!
-    ss.source_files = "~/Desktop/jimmy.gangsehun/Desktop/COCOA/SDK-V2-IOS-Abx.Remaster-Cocoapod/**"
-  end
+  s.dependency 'AdBrixRmKit', '2.4.0.6'
 
 end
