@@ -1,9 +1,6 @@
-
-
-export function minus(a: number, b: number): Promidse<number>;
-
 export function deeplinkListener(subscriber: (deeplink: {deeplink: string}) => void): EmitterSubscription;
 export function inAppMessageClickListener(subscriber: (args: { actionId: string, actionType: string, actionArg: string, isClosed: boolean }) => void): EmitterSubscription 
+export function remoteNotificationClickListener(subscriber: (args: {pushData: string}) => void): EmitterSubscription
 
 //#region - UserProperty
 export function login(userId: string): void;
@@ -129,7 +126,6 @@ export function gameLevelAchieved(
 
 //#region - Growth Action
 export function setPushEnable(isEnabled: boolean): void;
-export function createNotificationChannel(channelName: string, channelDescription: string): void;
 export function setSubscriptionStatus(status: SubscriptionStatus): Promise<any>;
 export function getSubscriptionStatus(): Promise<SubscriptionStatus>;
 export function setKakaoId(kakaoId: string): Promise<any>
@@ -140,6 +136,8 @@ export function setPhoneNumber(number: string): Promise<any>;
 export function gdprForgetMe(): void;
 export function setEventUploadCountInterval(interval: UploadCountIntervalType[keyof UploadCountIntervalType]);
 export function setEventUploadTimeInterval(interval: UploadTimeIntervalType[keyof UploadTimeIntervalType]);
+//#region - Platform specific
+export function createNotificationChannel(channelName: string, channelDescription: string): void;
 export function requestATTPermission(): Promise<ATTStatusType>;
 export function requestNotificationPermissionForiOS(): Promise<boolean>
 //#endregion

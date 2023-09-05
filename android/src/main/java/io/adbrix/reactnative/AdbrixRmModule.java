@@ -26,6 +26,7 @@ public class AdbrixRmModule extends ReactContextBaseJavaModule {
         super(context);
         this.reactContext = context;
         impl = AdbrixRmModuleImpl.shared();
+        impl.setReactContext(context);
     }
 
     @Override
@@ -68,54 +69,13 @@ public class AdbrixRmModule extends ReactContextBaseJavaModule {
         impl.createNotificationChannel(channelName, channelDescription);
     }
 
-    private void sendEvent(
-            ReactContext reactContext,
-            String eventName,
-            @Nullable WritableMap params) {
-
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
-    }
-
-    private int listenerCount = 0;
-
     @ReactMethod
     public void addListener(String eventType) {
-        if (listenerCount == 0) {
-            impl.addAllListener();
-            impl.setDeeplinkListener(new DeeplinkCallback() {
-                @Override
-                public void onDeeplinkOccurred(String deeplink) {
-                    WritableMap data = Arguments.createMap();
-                    data.putString("deeplink", deeplink);
-
-                    sendEvent(reactContext, SupportedEvent.DEEPLINK.getValue(), data);
-                }
-            });
-
-            impl.setIAMClickListener(new IAMClickCallback() {
-                @Override
-                public void onIAMClickOccurred(String actionId, String actionType, String actionArg, boolean isClosed) {
-                    WritableMap data = Arguments.createMap();
-                    data.putString("actionId", actionId);
-                    data.putString("actionType", actionType);
-                    data.putString("actionArg", actionArg);
-                    data.putBoolean("isClosed", isClosed);
-
-                    sendEvent(reactContext, SupportedEvent.IAMCLICK.getValue(), data);
-                }
-            });
-        }
-        listenerCount += 1;
+        impl.addListener(eventType);
     }
 
     @ReactMethod
     public void removeListeners(double number) {
-        listenerCount -= 1;
-        if (listenerCount == 0) {
-            impl.removeAllListener();
-        }
     }
 
     // #region - UserProperty

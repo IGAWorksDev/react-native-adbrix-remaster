@@ -10,12 +10,15 @@
 static AdBrixRM *adbrixrm;
 static ReactAdbrix *_sharedInstance = nil;
 
-NSString *const DEEP_LINK_LISTENER_CALLBACK = @"dfn_deeplink_listener";
-NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listener";
+NSString *const LISTENER_DEEPLINK = @"dfn_deeplink_listener";
+NSString *const LISTENER_DEFERRED_DEEPLINK = @"dfn_deferred_deeplink_listener";
+NSString *const LISTENER_IAM_CLICK = @"dfn_inappmessage_click_listener";
+NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listener";
 
-@interface ReactAdbrix () <AdBrixRMDeferredDeeplinkDelegate, AdBrixRMInAppMessageClickDelegate>
+@interface ReactAdbrix () <AdBrixRMDeeplinkDelegate, AdBrixRMDeferredDeeplinkDelegate, AdBrixRMInAppMessageClickDelegate, AdBrixRmPushRemoteDelegate>
 
-@property (nonatomic, strong) NSString *deeplink;
+@property (nonatomic, strong) NSString *initialDeeplink;
+@property (nonatomic, strong) NSString *initialRemoteNotification;
 
 @end
 
@@ -56,6 +59,8 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
     ];
     [adbrixrm setInAppMessageClickDelegateWithDelegate:self];
     [adbrixrm setDeferredDeeplinkDelegateWithDelegate:self];
+    [adbrixrm setDeeplinkDelegateWithDelegate:self];
+    [adbrixrm setAdBrixRmPushRemoteDelegateWithDelegate:self];
         
     // NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     // [self emitDeeplinkFromPushWithUserInfo:userInfo];
@@ -86,14 +91,7 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
         return NO;
     }
     [adbrixrm deepLinkOpenWithUrl:url];
-
-    NSString *deeplink = [url absoluteString];
-
-    if (hasListeners) {
-        [self deeplinkCallbackWithDeeplink:deeplink];
-    } else {
-        self.deeplink = deeplink;
-    }
+    
     return YES;
 }
 
@@ -114,13 +112,6 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
     }
     
     [adbrixrm userNotificationCenterWithCenter:center response:response];
-    
-    void (^originalCompletionHandler)(void) = completionHandler;
-    completionHandler = ^{
-        originalCompletionHandler();
-        NSDictionary *userInfo = response.notification.request.content.userInfo;
-        [self emitDeeplinkFromPushWithUserInfo:userInfo];
-    };
 
     completionHandler();
 }
@@ -139,26 +130,39 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
     completionHandler(UNNotificationPresentationOptionNone);
 }
 
-//private
-- (void)emitDeeplinkFromPushWithUserInfo:(NSDictionary *)userInfo {
-    if (userInfo == nil) {
-        return;
-    }
-    
-    NSDictionary *aps = [userInfo objectForKey:@"aps"];
-    
-    NSString *deeplink = [aps objectForKey:@"deep_link_url"];
-    
-    if (deeplink == nil || [deeplink isEqualToString: @""]) {
-        return;
-    }
-    
+#pragma mark - delegate
+
+- (void)didReceiveDeeplinkWithDeeplink:(NSString * _Nonnull)deeplink {
     if (hasListeners) {
         [self deeplinkCallbackWithDeeplink:deeplink];
     } else {
-        self.deeplink = deeplink;
+        _initialDeeplink = deeplink;
     }
-    
+}
+
+- (void)didReceiveDeferredDeeplinkWithDeeplink:(NSString * _Nonnull)deeplink
+{
+    if (hasListeners) {
+        [self deeplinkCallbackWithDeeplink:deeplink];
+    } else {
+        self.initialDeeplink = deeplink;
+    }
+}
+
+
+- (void)pushRemoteCallbackWithData:(NSDictionary<NSString *,id> *)data state:(enum UIApplicationState)state
+{
+    NSString *deeplinkFromPush = [data objectForKey:@"deep_link_url"];
+
+    if (deeplinkFromPush == nil) {
+        deeplinkFromPush = @"";
+    }
+
+    if (hasListeners) {
+        [self remoteNotificationClickCallbackWithPushData:deeplinkFromPush];
+    } else {
+        _initialRemoteNotification = deeplinkFromPush;
+    }
 }
 
 - (void)onReceiveInAppMessageClickWithActionId:(NSString * _Nonnull)actionId actionType:(NSString * _Nonnull)actionType actionArg:(NSString * _Nonnull)actionArg isClosed:(BOOL)isClosed
@@ -174,18 +178,9 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
     
 }
 
-- (void)didReceiveDeferredDeeplinkWithDeeplink:(NSString * _Nonnull)deeplink 
-{
-    if (hasListeners) {
-        [self deeplinkCallbackWithDeeplink:deeplink];
-    } else {
-        self.deeplink = deeplink;
-    }
-}
-
 #pragma mark - EventEmitter
 
--(void)startObserving 
+- (void)startObserving
 {
     hasListeners = YES;
     
@@ -193,13 +188,16 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
         return;
     }
     
-    if (_deeplink != nil) {
-        [self deeplinkCallbackWithDeeplink:_deeplink];
-        _deeplink = nil;
+    if (_initialDeeplink != nil) {
+        [self deeplinkCallbackWithDeeplink:_initialDeeplink];
+        _initialDeeplink = nil;
+    } else if (_initialRemoteNotification != nil) {
+        [self remoteNotificationClickCallbackWithPushData:_initialRemoteNotification];
+        _initialRemoteNotification = nil;
     }
 }
 
--(void)stopObserving 
+- (void)stopObserving
 {
     hasListeners = NO;
 }
@@ -207,19 +205,24 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
 - (NSArray<NSString *> *)supportedEvents 
 {
     return @[
-        DEEP_LINK_LISTENER_CALLBACK,
-        IN_APP_MESSAGE_CLICK_CALLBACK
+        LISTENER_DEEPLINK,
+        LISTENER_DEFERRED_DEEPLINK,
+        LISTENER_IAM_CLICK,
+        LISTENER_REMOTE_NOTIFICATION
     ];
 }
 
-
--(void)deeplinkCallbackWithDeeplink:(NSString *)deeplink
+- (void)deeplinkCallbackWithDeeplink:(NSString *)deeplink
 {
-    [self sendEventWithName:DEEP_LINK_LISTENER_CALLBACK body:@{@"deeplink" : deeplink}];
-    
+    [self sendEventWithName:LISTENER_DEEPLINK body:@{@"deeplink" : deeplink}];
 }
 
--(void)inappmessageClickCallbackWithActionId:(NSString * _Nonnull)actionId actionType:(NSString * _Nonnull)actionType actionArg:(NSString * _Nonnull)actionArg isClosed:(BOOL)isClosed
+- (void)deferredDeeplinkCallbackWithDeferredDeeplink:(NSString *)deferredDeeplink
+{
+    [self sendEventWithName:LISTENER_DEFERRED_DEEPLINK body:@{@"deferredDeeplink" : deferredDeeplink}];
+}
+
+- (void)inappmessageClickCallbackWithActionId:(NSString * _Nonnull)actionId actionType:(NSString * _Nonnull)actionType actionArg:(NSString * _Nonnull)actionArg isClosed:(BOOL)isClosed
 {
     NSDictionary *arguments = @{
         @"actionId" : actionId,
@@ -228,8 +231,13 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
         @"isClosed" : @(isClosed)
     };
     
-    [self sendEventWithName:IN_APP_MESSAGE_CLICK_CALLBACK body:arguments];
+    [self sendEventWithName:LISTENER_IAM_CLICK body:arguments];
     
+}
+
+- (void)remoteNotificationClickCallbackWithPushData:(NSString *)pushData
+{
+    [self sendEventWithName:LISTENER_REMOTE_NOTIFICATION body:@{@"pushData" : pushData}];
 }
 
 - (void)setPushEnableWith:(BOOL)isEnabled
@@ -239,24 +247,6 @@ NSString *const IN_APP_MESSAGE_CLICK_CALLBACK = @"dfn_inappmessage_click_listene
 
 
 #pragma mark - Bridge
-
-// - (void)minus:(double)a
-//             b:(double)b
-//       resolve:(RCTPromiseResolveBlock)resolve
-//        reject:(RCTPromiseRejectBlock)reject
-// {
-//     NSNumber *result = [[NSNumber alloc] initWithInteger:a-b];
-//     resolve(result);
-// }
-
-RCT_REMAP_METHOD(minus, minusA:(double)a
-                 minusB:(double)b
-                 withResolver:(RCTPromiseResolveBlock) resolve
-                 withRejecter:(RCTPromiseRejectBlock) reject)
-{
-    NSNumber *result = [[NSNumber alloc] initWithInteger:a-b];
-    resolve(result);
-}
 
 #pragma mark - UserProperty
 

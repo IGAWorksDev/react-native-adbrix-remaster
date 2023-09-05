@@ -1,106 +1,196 @@
 package io.adbrix.reactnative;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments;
 
-import com.igaworks.v2.core.AbxCommerce;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.firebase.messaging.RemoteMessage;
 import com.igaworks.v2.core.AbxCommon;
 import com.igaworks.v2.core.AdBrixRm;
 import com.igaworks.v2.core.AdBrixRm.UserProperties;
 import com.igaworks.v2.core.AdBrixRm.AttrModel;
-import com.igaworks.v2.core.AdBrixRm.DeferredDeeplinkListener;
-import com.igaworks.v2.core.AdBrixRm.DeeplinkListener;
 import com.igaworks.v2.core.AdBrixRm.InAppMessageClickListener;
+import com.igaworks.v2.core.application.AbxActivityHelper;
 import com.igaworks.v2.core.result.GetSubscriptionStatusResult;
+import com.igaworks.v2.core.result.OnDeeplinkResult;
+import com.igaworks.v2.core.result.OnDeferredDeeplinkResult;
+import com.igaworks.v2.core.result.OnRemotePushClickResult;
 import com.igaworks.v2.core.result.SetCiProfileResult;
 import com.igaworks.v2.core.result.SetSubscriptionStatusResult;
 import io.adbrix.sdk.domain.model.SubscriptionStatus;
 
 
-import io.adbrix.reactnative.AdbrixRmModule;
-
-public class AdbrixRmModuleImpl implements DeferredDeeplinkListener, InAppMessageClickListener {
+public class AdbrixRmModuleImpl {
 
     private static final AdbrixRmModuleImpl instance = new AdbrixRmModuleImpl();
+
+    private static final String LISTENER_DEEPLINK = "dfn_deeplink_listener";
+    private static final String LISTENER_DEFERRED_DEEPLINK = "dfn_deferred_deeplink_listener";
+    private static final String LISTENER_IAM_CLICK = "dfn_inappmessage_click_listener";
+    private static final String LISTENER_REMOTE_NOTIFICATION = "dfn_remote_notification_listener";
+
+    public static final String NAME = "ReactAdbrixBridge";
+
+    private String initialDeeplink;
+    private String initialRemoteNotification;
+    private boolean isDeeplinkListenerSet = false;
+    private boolean isDeeplinkEmitterReady = false;
+    private boolean isRemoteListenerSet = false;
+    private boolean isRemoteEmitterReady = false;
+
+    private ReactApplicationContext reactContext;
 
     private AdbrixRmModuleImpl() {
     }
 
-    public static AdbrixRmModuleImpl shared() {
+    static AdbrixRmModuleImpl shared() {
         return instance;
     }
 
-    private DeeplinkCallback deeplinkCallback;
-    private IAMClickCallback iamClickCallback;
-    private String deeplink;
-    private boolean hasListener = false;
+    public void sdkInit(Application application, String appKey, String secretKey) {
+        AbxActivityHelper.initializeSdk(application, appKey, secretKey);
+    }
 
-    @Override
-    public void onReceiveDeferredDeeplink(String uriStr) {
-        if (hasListener) {
-            if (deeplinkCallback != null) {
-                deeplinkCallback.onDeeplinkOccurred(uriStr);
-            }
-        } else {
-            this.deeplink = uriStr;
+    public void deeplinkEvent(Activity deeplinkActivity) {
+        AdBrixRm.deeplinkEvent(deeplinkActivity);
+        if (!isDeeplinkListenerSet) {
+            setDeeplinkListener();
         }
     }
 
-    @Override
-    public void onReceiveInAppMessageClick(String actionId, String actionType, String actionArg, boolean isClosed) {
-        if (hasListener) {
-            if (iamClickCallback != null) {
-                iamClickCallback.onIAMClickOccurred(actionId, actionType, actionArg, isClosed);
-            }
+    public void onResume(Activity activity) {
+        AdBrixRm.onResume(activity);
+    }
+
+    public void onMessageReceived(Context context, RemoteMessage remoteMessage) {
+        AdBrixRm.onMessageReceived(context, remoteMessage);
+        if (!isRemoteListenerSet) {
+            setRemoteNotificationClickListener();
         }
     }
 
-    public void onReceiveDeeplink(String deeplink) {
-        if (hasListener) {
-            if (deeplinkCallback != null) {
-                deeplinkCallback.onDeeplinkOccurred(deeplink);
+    public void setRegistrationId(String token) {
+        AdBrixRm.setRegistrationId(token);
+    }
+
+    public void setPushIconStyle(Context context, String smallIconName, String largeIconName, int argb) {
+        AdBrixRm.setPushIconStyle(context, smallIconName, largeIconName, argb);
+    }
+
+    public void setReactContext(ReactApplicationContext reactContext) {
+        this.reactContext = reactContext;
+    }
+
+    private void setDeeplinkListener() {
+        AdBrixRm.setOnDeeplinkListener(new AdBrixRm.onDeeplinkListener() {
+            @Override
+            public void onReceive(OnDeeplinkResult onDeeplinkResult) {
+                String deeplink = onDeeplinkResult.getDeeplink();
+                WritableMap data = Arguments.createMap();
+                data.putString("deeplink", deeplink);
+
+                if (isDeeplinkEmitterReady) {
+                    sendEvent(reactContext, LISTENER_DEEPLINK, data);
+                } else {
+                    initialDeeplink = deeplink;
+                }
             }
-        } else {
-            this.deeplink = deeplink;
+        });
+    }
+    private void setDeferredDeeplinkListener() {
+        AdBrixRm.setOnDeferredDeeplinkListener(new AdBrixRm.onDeferredDeeplinkListener() {
+            @Override
+            public void onReceive(OnDeferredDeeplinkResult onDeferredDeeplinkResult) {
+                WritableMap data = Arguments.createMap();
+                data.putString("deeplink", onDeferredDeeplinkResult.getDeeplink());
+
+                sendEvent(reactContext, LISTENER_DEFERRED_DEEPLINK, data);
+            }
+        });
+    }
+
+    private void setInAppMessageClickListener() {
+        AdBrixRm.setInAppMessageClickListener(new InAppMessageClickListener() {
+            @Override
+            public void onReceiveInAppMessageClick(String s, String s1, String s2, boolean b) {
+                WritableMap data = Arguments.createMap();
+                data.putString("actionId", s);
+                data.putString("actionType", s1);
+                data.putString("actionArg", s2);
+                data.putBoolean("isClosed", b);
+
+                sendEvent(reactContext, LISTENER_IAM_CLICK, data);
+            }
+        });
+    }
+
+    private void setRemoteNotificationClickListener() {
+        AdBrixRm.setOnRemotePushClickListener(new AdBrixRm.onRemotePushClickListener() {
+            @Override
+            public void onClick(OnRemotePushClickResult onRemotePushClickResult) {
+                String remoteNotificationData = onRemotePushClickResult.getDeeplink();
+                if (remoteNotificationData == null) {
+                    remoteNotificationData = "";
+                }
+                WritableMap data = Arguments.createMap();
+                data.putString("pushData", remoteNotificationData);
+
+                if (isRemoteEmitterReady) {
+                    sendEvent(reactContext, LISTENER_REMOTE_NOTIFICATION, data);
+                } else {
+                    initialRemoteNotification = remoteNotificationData;
+                }
+            }
+        });
+    }
+
+    public void addListener(String eventType) {
+        switch (eventType) {
+            case LISTENER_DEEPLINK:
+                if (initialDeeplink != null) {
+                    WritableMap data = Arguments.createMap();
+                    data.putString("deeplink", initialDeeplink);
+                    sendEvent(reactContext, LISTENER_DEEPLINK, data);
+                    initialDeeplink = null;
+                }
+                isDeeplinkEmitterReady = true;
+            case LISTENER_DEFERRED_DEEPLINK:
+                setDeferredDeeplinkListener();
+            case LISTENER_IAM_CLICK:
+                setInAppMessageClickListener();
+            case LISTENER_REMOTE_NOTIFICATION:
+                if (initialRemoteNotification != null) {
+                    WritableMap data = Arguments.createMap();
+                    data.putString("pushData", initialRemoteNotification);
+                    sendEvent(reactContext, LISTENER_REMOTE_NOTIFICATION, data);
+                    initialRemoteNotification = null;
+                }
+                isRemoteEmitterReady = true;
         }
     }
 
-    public void setDeeplinkListener(DeeplinkCallback callback) {
-        this.deeplinkCallback = callback;
-        if (deeplink != null) {
-            if (deeplinkCallback != null) {
-                deeplinkCallback.onDeeplinkOccurred(deeplink);
-                deeplink = null;
-            }
-        }
+    private void sendEvent(
+            ReactContext reactContext,
+            String eventName,
+            @Nullable WritableMap params) {
 
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 
-    public void setIAMClickListener(IAMClickCallback callback) {
-        this.iamClickCallback = callback;
-    }
-
-    public void addAllListener() {
-        hasListener = true;
-        AdBrixRm.setDeferredDeeplinkListener(instance);
-        AdBrixRm.setInAppMessageClickListener(instance);
-    }
-
-    public void removeAllListener() {
-        hasListener = false;
-        AdBrixRm.setDeferredDeeplinkListener(null);
-        AdBrixRm.setInAppMessageClickListener(null);
-        deeplinkCallback = null;
-        iamClickCallback = null;
-    }
-
-    public static final String NAME = "ReactAdbrixBridge";
 
     public void setPushEnable(boolean isEnabled) {
         AdBrixRm.setPushEnable(isEnabled);

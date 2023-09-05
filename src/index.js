@@ -48,8 +48,9 @@ export default class AdbrixRm {
     static ATTStatus = ATTStatus;
 
     static LISTENER_DEEPLINK = "dfn_deeplink_listener";
+    static LISTENER_DEFERRED_DEEPLINK = "dfn_deferred_deeplink_listener";
     static LISTENER_IAM_CLICK = "dfn_inappmessage_click_listener";
-
+    static LISTENER_REMOTE_NOTIFICATION = "dfn_remote_notification_listener";
     //#endregion
     static bridge = NativeModules.ReactAdbrixBridge
     static emitter = new NativeEventEmitter(this.bridge)
@@ -90,16 +91,16 @@ export default class AdbrixRm {
             return this.emitter.addListener(this.LISTENER_IAM_CLICK, subscriber)
         }
     }
-    //#endregion
 
-    static minus(a: number, b: number): Promise<number> {
-        if (isTurboModuleEnabled) {
-            console.log("this is new arch")
-        } else {
-            console.log("old arch")
+    static remoteNotificationClickListener(subscriber): EmitterSubscription {
+        this.bridge.addListener(this.LISTENER_REMOTE_NOTIFICATION);
+
+        if (typeof subscriber === "function") {
+            return this.emitter.addListener(this.LISTENER_REMOTE_NOTIFICATION, subscriber);
         }
-        return this.bridge.minus(a, b);
     }
+
+    //#endregion
 
     //#region - UserProperty
     /**
