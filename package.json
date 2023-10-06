@@ -1,21 +1,10 @@
 {
   "name": "react-native-adbrix-remaster",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.4",
   "description": "Adbrix SDK for react-native",
   "react-native": "src/index",
   "main": "src/index.js",
   "types": "src/index.d.ts",
-  "files": [
-    "src",
-    "android",
-    "ios",
-    "react-native-adbrix-remaster.podspec",
-    "!android/build",
-    "!ios/build",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__"
-  ],
   "keywords": [
     "react-native",
     "android",

@@ -18,6 +18,7 @@ NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listene
 @interface ReactAdbrix () <AdBrixRMDeeplinkDelegate, AdBrixRMDeferredDeeplinkDelegate, AdBrixRMInAppMessageClickDelegate, AdBrixRmPushRemoteDelegate>
 
 @property (nonatomic, strong) NSString *initialDeeplink;
+@property (nonatomic, strong) NSString *initialDeferredDeeplink;
 @property (nonatomic, strong) NSString *initialRemoteNotification;
 
 @end
@@ -143,9 +144,9 @@ NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listene
 - (void)didReceiveDeferredDeeplinkWithDeeplink:(NSString * _Nonnull)deeplink
 {
     if (hasListeners) {
-        [self deeplinkCallbackWithDeeplink:deeplink];
+        [self deferredDeeplinkCallbackWithDeferredDeeplink:deeplink];
     } else {
-        self.initialDeeplink = deeplink;
+        _initialDeferredDeeplink = deeplink;
     }
 }
 
@@ -191,7 +192,12 @@ NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listene
     if (_initialDeeplink != nil) {
         [self deeplinkCallbackWithDeeplink:_initialDeeplink];
         _initialDeeplink = nil;
-    } else if (_initialRemoteNotification != nil) {
+    }
+    if (_initialDeferredDeeplink != nil) {
+        [self deferredDeeplinkCallbackWithDeferredDeeplink:_initialDeferredDeeplink];
+        _initialDeferredDeeplink = nil;
+    }
+    if (_initialRemoteNotification != nil) {
         [self remoteNotificationClickCallbackWithPushData:_initialRemoteNotification];
         _initialRemoteNotification = nil;
     }
@@ -219,7 +225,7 @@ NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listene
 
 - (void)deferredDeeplinkCallbackWithDeferredDeeplink:(NSString *)deferredDeeplink
 {
-    [self sendEventWithName:LISTENER_DEFERRED_DEEPLINK body:@{@"deferredDeeplink" : deferredDeeplink}];
+    [self sendEventWithName:LISTENER_DEFERRED_DEEPLINK body:@{@"deeplink" : deferredDeeplink}];
 }
 
 - (void)inappmessageClickCallbackWithActionId:(NSString * _Nonnull)actionId actionType:(NSString * _Nonnull)actionType actionArg:(NSString * _Nonnull)actionArg isClosed:(BOOL)isClosed
@@ -243,6 +249,16 @@ NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listene
 - (void)setPushEnableWith:(BOOL)isEnabled
 {
     [adbrixrm setPushEnableToPushEnable:isEnabled];
+}
+
+-(void)startGettingIdfa
+{
+    [adbrixrm startGettingIDFA];
+}
+
+-(void)stopGettingIdfa
+{
+    [adbrixrm stopGettingIDFA];
 }
 
 
@@ -662,7 +678,9 @@ RCT_EXPORT_METHOD(requestNotificationPermissionForiOS:(RCTPromiseResolveBlock) r
     dispatch_async(dispatch_get_main_queue(), ^{
         [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
             if (granted) {
-                [[UIApplication sharedApplication] registerForRemoteNotifications];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] registerForRemoteNotifications];
+                });
                 [self setPushEnable:true];
                 resolve(@YES);
             } else {

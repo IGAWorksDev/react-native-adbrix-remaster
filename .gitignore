@@ -60,3 +60,39 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+example/
+SampleProject/
+
+# android
+android/.gradle/*
+android/.idea/*
+android/build
+android/*/build/
+android/proguard/
+android/gradle
+android/gradlew
+android/.gradle
+android/gradlew.bat
+android/local.properites
+
+# IOS
+ios/build/
+ios/DerivedData/
+ios/AdbrixRm.xcodeproj/project.xcworkspace/xcuserdata/
+ios/AdbrixRm.xcodeproj/xcuserdata/
+
+# Log Files
+*.log
+
+# Built application files
+*.apk
+*.ap_
+
+# Files for the Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+tsconfig.json

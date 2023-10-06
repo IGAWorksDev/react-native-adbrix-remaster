@@ -24,6 +24,8 @@
 - (void)setPushEnableWith:(BOOL)isEnabled;
 - (BOOL)deeplinkOpenWith:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
 - (BOOL)deeplinkOpenWith:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler;
+- (void)startGettingIdfa;
+- (void)stopGettingIdfa;
 
 
 @end

@@ -76,6 +76,7 @@ public class AdbrixRmModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void removeListeners(double number) {
+        impl.removeListeners();
     }
 
     // #region - UserProperty

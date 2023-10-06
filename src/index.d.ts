@@ -1,4 +1,5 @@
 export function deeplinkListener(subscriber: (deeplink: {deeplink: string}) => void): EmitterSubscription;
+export function deferredDeeplinkListener(subscriber: (deeplink: {deeplink: string}) => void): EmitterSubscription
 export function inAppMessageClickListener(subscriber: (args: { actionId: string, actionType: string, actionArg: string, isClosed: boolean }) => void): EmitterSubscription 
 export function remoteNotificationClickListener(subscriber: (args: {pushData: string}) => void): EmitterSubscription
 

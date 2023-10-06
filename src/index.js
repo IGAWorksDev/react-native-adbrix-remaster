@@ -75,6 +75,23 @@ export default class AdbrixRm {
     }
 
     /**
+    * This function receives a callback function `subscriber` as an argument. 
+    * The `subscriber` is a callback that receives a string `deeplink` as an argument and returns void.
+    * The function returns an `EmitterSubscription`.
+    *
+    * @param {function({deeplink: string}): void} subscriber - A callback function that receives a deeplink string
+    * @returns {EmitterSubscription}
+    */
+       static deferredDeeplinkListener(subscriber): EmitterSubscription {
+
+        this.bridge.addListener(this.LISTENER_DEFERRED_DEEPLINK);
+
+        if (typeof subscriber === "function") {
+            return this.emitter.addListener(this.LISTENER_DEFERRED_DEEPLINK, subscriber)
+        }
+    }
+
+    /**
      * This function receives a callback function `subscriber` as an argument. 
      * The `subscriber` is a callback that receives an object `arguments` 
      * with properties `actionId`, `actionType`, `actionArg`, `isClosed` and returns void.
@@ -92,7 +109,16 @@ export default class AdbrixRm {
         }
     }
 
-    static remoteNotificationClickListener(subscriber): EmitterSubscription {
+    /**
+    * This function receives a callback function `subscriber` as an argument. 
+    * The `subscriber` is a callback that receives a string `pushData` as an argument and returns void.
+    * 'pushData' is a deeplink value set in Dfinery console. If deeplink value isn't set, 'pushData' is set to "".
+    * The function returns an `EmitterSubscription`.
+    *
+    * @param {function({pushData: string}): void} subscriber - A callback function that receives a pushData
+    * @returns {EmitterSubscription}
+    */
+     static remoteNotificationClickListener(subscriber): EmitterSubscription {
         this.bridge.addListener(this.LISTENER_REMOTE_NOTIFICATION);
 
         if (typeof subscriber === "function") {

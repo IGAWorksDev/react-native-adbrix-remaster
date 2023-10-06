@@ -44,11 +44,13 @@ public class AdbrixRmModuleImpl {
     public static final String NAME = "ReactAdbrixBridge";
 
     private String initialDeeplink;
+    private String initialDeferredDeeplink;
     private String initialRemoteNotification;
-    private boolean isDeeplinkListenerSet = false;
+
     private boolean isDeeplinkEmitterReady = false;
-    private boolean isRemoteListenerSet = false;
+    private boolean isDeferredDeeplinkEmitterReady = false;
     private boolean isRemoteEmitterReady = false;
+    private boolean isInAppMessageClickEmitterReady = false;
 
     private ReactApplicationContext reactContext;
 
@@ -61,13 +63,15 @@ public class AdbrixRmModuleImpl {
 
     public void sdkInit(Application application, String appKey, String secretKey) {
         AbxActivityHelper.initializeSdk(application, appKey, secretKey);
+        
+        setDeeplinkListener();
+        setDeferredDeeplinkListener();
+        setRemoteNotificationClickListener();
+        setInAppMessageClickListener();
     }
 
     public void deeplinkEvent(Activity deeplinkActivity) {
         AdBrixRm.deeplinkEvent(deeplinkActivity);
-        if (!isDeeplinkListenerSet) {
-            setDeeplinkListener();
-        }
     }
 
     public void onResume(Activity activity) {
@@ -76,9 +80,6 @@ public class AdbrixRmModuleImpl {
 
     public void onMessageReceived(Context context, RemoteMessage remoteMessage) {
         AdBrixRm.onMessageReceived(context, remoteMessage);
-        if (!isRemoteListenerSet) {
-            setRemoteNotificationClickListener();
-        }
     }
 
     public void setRegistrationId(String token) {
@@ -113,10 +114,15 @@ public class AdbrixRmModuleImpl {
         AdBrixRm.setOnDeferredDeeplinkListener(new AdBrixRm.onDeferredDeeplinkListener() {
             @Override
             public void onReceive(OnDeferredDeeplinkResult onDeferredDeeplinkResult) {
+                String deeplink = onDeferredDeeplinkResult.getDeeplink();
                 WritableMap data = Arguments.createMap();
-                data.putString("deeplink", onDeferredDeeplinkResult.getDeeplink());
+                data.putString("deeplink", deeplink);
 
-                sendEvent(reactContext, LISTENER_DEFERRED_DEEPLINK, data);
+                if (isDeferredDeeplinkEmitterReady) {
+                    sendEvent(reactContext, LISTENER_DEFERRED_DEEPLINK, data);
+                } else {
+                    initialDeferredDeeplink = deeplink;
+                }
             }
         });
     }
@@ -131,7 +137,9 @@ public class AdbrixRmModuleImpl {
                 data.putString("actionArg", s2);
                 data.putBoolean("isClosed", b);
 
-                sendEvent(reactContext, LISTENER_IAM_CLICK, data);
+                if (isInAppMessageClickEmitterReady) {
+                    sendEvent(reactContext, LISTENER_IAM_CLICK, data);
+                }
             }
         });
     }
@@ -166,10 +174,19 @@ public class AdbrixRmModuleImpl {
                     initialDeeplink = null;
                 }
                 isDeeplinkEmitterReady = true;
+                break;
             case LISTENER_DEFERRED_DEEPLINK:
-                setDeferredDeeplinkListener();
+                if (initialDeferredDeeplink != null) {
+                    WritableMap data = Arguments.createMap();
+                    data.putString("deeplink", initialDeferredDeeplink);
+                    sendEvent(reactContext, LISTENER_DEFERRED_DEEPLINK, data);
+                    initialDeferredDeeplink = null;
+                }
+                isDeferredDeeplinkEmitterReady = true;
+                break;
             case LISTENER_IAM_CLICK:
-                setInAppMessageClickListener();
+                isInAppMessageClickEmitterReady = true;
+                break;
             case LISTENER_REMOTE_NOTIFICATION:
                 if (initialRemoteNotification != null) {
                     WritableMap data = Arguments.createMap();
@@ -178,7 +195,15 @@ public class AdbrixRmModuleImpl {
                     initialRemoteNotification = null;
                 }
                 isRemoteEmitterReady = true;
+                break;
         }
+    }
+
+    public void removeListeners() {
+        isDeeplinkEmitterReady = false;
+        isDeferredDeeplinkEmitterReady = false;
+        isInAppMessageClickEmitterReady = false;
+        isRemoteEmitterReady = false;
     }
 
     private void sendEvent(
