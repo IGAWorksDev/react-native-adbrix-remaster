@@ -173,6 +173,9 @@ NSString *const LISTENER_REMOTE_NOTIFICATION = @"dfn_remote_notification_listene
                                          actionType:actionType
                                           actionArg:actionArg
                                            isClosed:isClosed];
+        if ([actionType isEqualToString:@"deeplink"] || [actionType isEqualToString:@"deeplink_and_close"]) {
+            [self deeplinkCallbackWithDeeplink:actionArg];
+        }
     } else {
         return;
     }
