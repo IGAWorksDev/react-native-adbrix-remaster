@@ -140,6 +140,13 @@ public class AdbrixRmModuleImpl {
                 if (isInAppMessageClickEmitterReady) {
                     sendEvent(reactContext, LISTENER_IAM_CLICK, data);
                 }
+                if (isDeeplinkEmitterReady) {
+                    if (s1.equals("deeplink") || s1.equals("deeplink_and_close")) {
+                        WritableMap deeplink = Arguments.createMap();
+                        deeplink.putString("deeplink", s2);
+                        sendEvent(reactContext, LISTENER_DEEPLINK, deeplink);
+                    }
+                }
             }
         });
     }
