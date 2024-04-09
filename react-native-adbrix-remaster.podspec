@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
   s.source_files    = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React"
-  s.dependency 'AdBrixRmKit', '2.6.0.2'
+  s.dependency 'AdBrixRmKit', '2.6.0.4'
 
 end
